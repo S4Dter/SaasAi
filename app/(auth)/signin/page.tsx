@@ -1,43 +1,151 @@
-import React from 'react';
-import { Metadata } from 'next';
-import AuthForm from '@/components/auth/AuthForm';
-import { APP_NAME } from '@/constants';
+'use client';
 
-export const metadata: Metadata = {
-  title: `Connexion | ${APP_NAME}`,
-  description: 'Connectez-vous à votre compte AgentMarket',
+import React from 'react';
+import Button from '../ui/Button';
+import Link from 'next/link';
+import { ROUTES } from '@/constants';
+
+type AuthFormData = {
+  email: string;
+  password: string;
 };
 
+interface AuthFormProps {
+  mode: 'signin' | 'signup';
+  onSubmit: (data: AuthFormData) => void;
+}
+
 /**
- * Page de connexion
+ * Composant de formulaire d'authentification réutilisable
+ * 
+ * @param {AuthFormProps} props - Propriétés du composant
  */
-export default function SignInPage() {
-  // Cette fonction serait connectée à une API d'authentification dans une application réelle
-  const handleSubmit = (data: any) => {
-    console.log('SignIn form submitted with data:', data);
-    // Dans une vraie application, nous aurions un appel API ici
-    // puis une redirection vers le dashboard approprié
+const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit }) => {
+  const isSignIn = mode === 'signin';
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const data: AuthFormData = {
+      email: formData.get('email') as string,
+      password: formData.get('password') as string,
+    };
+
+    onSubmit(data);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h1 className="text-center text-3xl font-extrabold text-gray-900 mb-8">
-          {APP_NAME}
-        </h1>
-        
-        <AuthForm 
-          mode="signin" 
-          onSubmit={handleSubmit} 
-        />
-        
-        <div className="mt-8 text-center text-sm text-gray-600">
-          <p>
-            Note: Cette page est une maquette. Dans une application réelle, l&apos;authentification
-            serait connectée à un backend sécurisé.
-          </p>
+    <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200 w-full max-w-md">
+      <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+        {isSignIn ? 'Connexion' : 'Créer un compte'}
+      </h2>
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {!isSignIn && (
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+              Nom
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Votre nom"
+              required
+            />
+          </div>
+        )}
+
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            Email
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            placeholder="votre@email.com"
+            required
+          />
         </div>
+
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+            Mot de passe
+          </label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            placeholder={isSignIn ? 'Votre mot de passe' : 'Créez un mot de passe'}
+            required
+          />
+        </div>
+
+        {!isSignIn && (
+          <div>
+            <label htmlFor="userType" className="block text-sm font-medium text-gray-700 mb-1">
+              Je suis
+            </label>
+            <select
+              id="userType"
+              name="userType"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              required
+            >
+              <option value="">Sélectionnez votre profil</option>
+              <option value="enterprise">Une entreprise cherchant des agents IA</option>
+              <option value="creator">Un créateur d'agents IA</option>
+            </select>
+          </div>
+        )}
+
+        {isSignIn && (
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <input
+                id="remember-me"
+                type="checkbox"
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+                Se souvenir de moi
+              </label>
+            </div>
+
+            <div className="text-sm">
+              <a href="#" className="text-blue-600 hover:text-blue-500">
+                Mot de passe oublié ?
+              </a>
+            </div>
+          </div>
+        )}
+
+        <div>
+          <Button type="submit" fullWidth>
+            {isSignIn ? 'Se connecter' : 'Créer un compte'}
+          </Button>
+        </div>
+      </form>
+
+      <div className="mt-6 text-center">
+        <p className="text-sm text-gray-600">
+          {isSignIn ? "Vous n'avez pas de compte ?" : 'Vous avez déjà un compte ?'}{' '}
+          <Link
+            href={isSignIn ? ROUTES.AUTH.SIGNUP : ROUTES.AUTH.SIGNIN}
+            className="text-blue-600 hover:text-blue-500 font-medium"
+          >
+            {isSignIn ? "S'inscrire" : 'Se connecter'}
+          </Link>
+        </p>
       </div>
     </div>
   );
-}
+};
+
+export default AuthForm;
