@@ -14,7 +14,12 @@ export const metadata: Metadata = {
  * 
  * Affiche tous les agents avec des filtres par catégorie, type d'intégration et recherche
  */
-export default function AgentsPage() {
+interface PageProps {
+  params?: { [key: string]: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}
+
+export default function AgentsPage({}: PageProps) {
   // Dans une vraie application, ces états seraient gérés côté client avec useState
   // Ici on utilise simplement les données statiques car c'est une page server component
   const agents = getAllAgents();
@@ -152,18 +157,4 @@ export default function AgentsPage() {
       </div>
     </div>
   );
-}
-
-type AgentDetailPageProps = {
-  params: {
-    id: string;
-  };
-  searchParams?: { [key: string]: string | string[] | undefined };
-}
-
-export default async function AgentDetailPage({ params }: { 
-  params: { id: string },
-  searchParams?: { [key: string]: string | string[] | undefined }
-}) {
-  // ...existing code...
 }

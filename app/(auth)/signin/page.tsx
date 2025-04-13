@@ -11,7 +11,12 @@ export const metadata: Metadata = {
 /**
  * Page de connexion
  */
-export default function SignInPage() {
+interface PageProps {
+  params?: { [key: string]: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}
+
+export default function SignInPage({}: PageProps) {
   const handleSubmit = (data: AuthFormData) => {
     console.log('SignIn form submitted with data:', data);
   };  

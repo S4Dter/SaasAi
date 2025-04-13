@@ -11,7 +11,12 @@ export const metadata: Metadata = {
 /**
  * Page d'inscription
  */
-export default function SignUpPage() {
+interface PageProps {
+  params?: { [key: string]: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}
+
+export default function SignUpPage({}: PageProps) {
   // Cette fonction serait connectée à une API d'authentification dans une application réelle
   const handleSubmit = (data: { email: string; password: string }) => {
     console.log('SignUp form submitted with data:', data);
