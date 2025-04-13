@@ -13,7 +13,7 @@ export const metadata: Metadata = {
  */
 export default function SignUpPage() {
   // Cette fonction serait connectée à une API d'authentification dans une application réelle
-  const handleSubmit = (data: any) => {
+  const handleSubmit = (data: { email: string; password: string }) => {
     console.log('SignUp form submitted with data:', data);
     // Dans une vraie application, nous aurions un appel API ici
     // puis une redirection vers le dashboard approprié

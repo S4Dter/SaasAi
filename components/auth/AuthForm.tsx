@@ -3,9 +3,14 @@ import Button from '../ui/Button';
 import Link from 'next/link';
 import { ROUTES } from '@/constants';
 
+type AuthFormData = {
+  email: string;
+  password: string;
+};
+
 interface AuthFormProps {
   mode: 'signin' | 'signup';
-  onSubmit: (data: any) => void;
+  onSubmit: (data: AuthFormData) => void;
 }
 
 /**
@@ -16,12 +21,17 @@ interface AuthFormProps {
 const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit }) => {
   const isSignIn = mode === 'signin';
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Pour le prototype, nous simulons simplement une soumission de formulaire
-    // Dans une application réelle, nous récupérerions les données du formulaire ici
-    onSubmit({ email: 'user@example.com', password: 'password' });
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+  
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+  
+    onSubmit({ email, password });
   };
+  
   
   return (
     <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200 w-full max-w-md">
@@ -51,6 +61,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit }) => {
           </label>
           <input
             id="email"
+            name="email"
             type="email"
             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             placeholder="votre@email.com"
@@ -64,6 +75,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit }) => {
           </label>
           <input
             id="password"
+            name="password"
             type="password"
             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             placeholder={isSignIn ? "Votre mot de passe" : "Créez un mot de passe"}
