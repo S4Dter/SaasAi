@@ -1,9 +1,11 @@
+'use client';
+
 import React from 'react';
 import Button from '../ui/Button';
 import Link from 'next/link';
 import { ROUTES } from '@/constants';
 
-type AuthFormData = {
+export type AuthFormData = {
   email: string;
   password: string;
 };
@@ -13,32 +15,28 @@ interface AuthFormProps {
   onSubmit: (data: AuthFormData) => void;
 }
 
-/**
- * Composant de formulaire d'authentification réutilisable
- * 
- * @param {AuthFormProps} props - Propriétés du composant
- */
 const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit }) => {
   const isSignIn = mode === 'signin';
-  
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const formData = new FormData(form);
-  
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
-  
-    onSubmit({ email, password });
+
+    const data: AuthFormData = {
+      email: formData.get('email') as string,
+      password: formData.get('password') as string,
+    };
+
+    onSubmit(data);
   };
-  
-  
+
   return (
     <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200 w-full max-w-md">
       <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
         {isSignIn ? 'Connexion' : 'Créer un compte'}
       </h2>
-      
+
       <form onSubmit={handleSubmit} className="space-y-6">
         {!isSignIn && (
           <div>
@@ -47,6 +45,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit }) => {
             </label>
             <input
               id="name"
+              name="name"
               type="text"
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="Votre nom"
@@ -54,7 +53,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit }) => {
             />
           </div>
         )}
-        
+
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
             Email
@@ -68,7 +67,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit }) => {
             required
           />
         </div>
-        
+
         <div>
           <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
             Mot de passe
@@ -78,11 +77,11 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit }) => {
             name="password"
             type="password"
             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            placeholder={isSignIn ? "Votre mot de passe" : "Créez un mot de passe"}
+            placeholder={isSignIn ? 'Votre mot de passe' : 'Créez un mot de passe'}
             required
           />
         </div>
-        
+
         {!isSignIn && (
           <div>
             <label htmlFor="userType" className="block text-sm font-medium text-gray-700 mb-1">
@@ -90,16 +89,17 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit }) => {
             </label>
             <select
               id="userType"
+              name="userType"
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               required
             >
               <option value="">Sélectionnez votre profil</option>
               <option value="enterprise">Une entreprise cherchant des agents IA</option>
-              <option value="creator">Un créateur d&apos;agents IA</option>
+              <option value="creator">Un créateur d'agents IA</option>
             </select>
           </div>
         )}
-        
+
         {isSignIn && (
           <div className="flex items-center justify-between">
             <div className="flex items-center">
@@ -112,7 +112,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit }) => {
                 Se souvenir de moi
               </label>
             </div>
-            
+
             <div className="text-sm">
               <a href="#" className="text-blue-600 hover:text-blue-500">
                 Mot de passe oublié ?
@@ -120,23 +120,22 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit }) => {
             </div>
           </div>
         )}
-        
+
         <div>
           <Button type="submit" fullWidth>
             {isSignIn ? 'Se connecter' : 'Créer un compte'}
           </Button>
         </div>
       </form>
-      
+
       <div className="mt-6 text-center">
         <p className="text-sm text-gray-600">
-          {isSignIn ? "Vous n'avez pas de compte ?" : "Vous avez déjà un compte ?"}
-          {' '}
-          <Link 
+          {isSignIn ? "Vous n'avez pas de compte ?" : 'Vous avez déjà un compte ?'}{' '}
+          <Link
             href={isSignIn ? ROUTES.AUTH.SIGNUP : ROUTES.AUTH.SIGNIN}
             className="text-blue-600 hover:text-blue-500 font-medium"
           >
-            {isSignIn ? "S'inscrire" : "Se connecter"}
+            {isSignIn ? "S'inscrire" : 'Se connecter'}
           </Link>
         </p>
       </div>
