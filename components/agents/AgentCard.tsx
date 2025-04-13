@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-import { Agent } from '../../types';
-import { ROUTES } from '../../constants';
+import { Agent } from '@/types';
+import { ROUTES } from '@/constants';
 import Card, { CardBody, CardFooter } from '../ui/Card';
 import Button from '../ui/Button';
 

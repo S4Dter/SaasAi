@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { APP_NAME, ROUTES, SOCIAL_LINKS } from '../../constants';
+import { APP_NAME, ROUTES, SOCIAL_LINKS } from '@/constants';
 
 /**
  * Composant Footer pour le pied de page

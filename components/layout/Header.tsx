@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Button from '../ui/Button';
-import { APP_NAME, ROUTES } from '../../constants';
+import { APP_NAME, ROUTES } from '@/constants';
 
 /**
  * Composant Header pour la navigation principale

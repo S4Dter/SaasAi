@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ROUTES } from '../../constants';
+import { ROUTES } from '@/constants';
 
 interface SidebarProps {
   type: 'enterprise' | 'creator';

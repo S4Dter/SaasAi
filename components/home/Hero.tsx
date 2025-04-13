@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Button from '../ui/Button';
-import { APP_NAME, APP_SLOGAN, ROUTES } from '../../constants';
+import { APP_NAME, APP_SLOGAN, ROUTES } from '@/constants';
 
 /**
  * Composant Hero pour la page d'accueil

@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '../ui/Button';
 import Link from 'next/link';
-import { ROUTES } from '../../constants';
+import { ROUTES } from '@/constants';
 
 interface AuthFormProps {
   mode: 'signin' | 'signup';

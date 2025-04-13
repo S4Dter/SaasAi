@@ -1,7 +1,7 @@
 import React from 'react';
-import { Agent } from '../../types';
+import { Agent } from '@/types';
 import Button from '../ui/Button';
-import { AGENT_CATEGORIES, INTEGRATION_TYPES } from '../../constants';
+import { AGENT_CATEGORIES, INTEGRATION_TYPES } from '@/constants';
 
 interface AgentDetailsProps {
   agent: Agent;

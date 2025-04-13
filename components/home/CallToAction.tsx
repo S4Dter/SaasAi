@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Button from '../ui/Button';
-import { ROUTES } from '../../constants';
+import { ROUTES } from '@/constants';
 
 /**
  * Composant CallToAction pour la page d'accueil
