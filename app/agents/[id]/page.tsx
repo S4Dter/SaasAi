@@ -5,11 +5,50 @@ import AgentDetails from '@/components/agents/AgentDetails';
 import Button from '@/components/ui/Button';
 import Link from 'next/link';
 import { ROUTES, APP_NAME } from '@/constants';
+import { Metadata } from 'next';
+import { getUserById } from '@/mock/users';
 
-// Using server component instead of client component
-// to avoid issues with params handling
+// Type pour les paramètres de la page
+type AgentDetailPageProps = {
+  params: {
+    id: string;
+  };
+};
 
-export default function AgentDetailPage({ params }: any) {
+// Fonction de génération de métadonnées pour le SEO
+export async function generateMetadata({ params }: AgentDetailPageProps): Promise<Metadata> {
+  const agent = getAgentById(params.id);
+  
+  if (!agent) {
+    return {
+      title: 'Agent non trouvé',
+      description: 'L\'agent demandé n\'existe pas ou a été supprimé.'
+    };
+  }
+  
+  const creator = getUserById(agent.creatorId);
+  
+  return {
+    title: agent.name,
+    description: agent.shortDescription,
+    keywords: [agent.category, 'agent IA', 'intelligence artificielle', ...agent.integrations],
+    openGraph: {
+      title: agent.name,
+      description: agent.shortDescription,
+      type: 'website',
+      images: [
+        {
+          url: agent.logoUrl.startsWith('http') ? agent.logoUrl : `${process.env.NEXT_PUBLIC_BASE_URL || ''}${agent.logoUrl}`,
+          width: 1200,
+          height: 630,
+          alt: agent.name
+        }
+      ]
+    }
+  };
+}
+
+export default function AgentDetailPage({ params }: AgentDetailPageProps) {
   // Access the id directly from params
   const id = params.id;
   
@@ -20,6 +59,9 @@ export default function AgentDetailPage({ params }: any) {
   if (!agent) {
     notFound();
   }
+  
+  // Get the creator information
+  const creator = getUserById(agent.creatorId);
   
   return (
     <div className="bg-gray-50 py-12">
