@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { APP_NAME } from '../../../constants';
+import { APP_NAME } from '@/constants';
 
 /**
  * Layout pour les pages de dashboard
