@@ -14,10 +14,11 @@ export const metadata: Metadata = {
   description: 'Découvrez les détails et fonctionnalités de cet agent IA',
 };
 
-interface AgentDetailPageProps {
+interface PageProps {
   params: {
     id: string;
   };
+  searchParams?: { [key: string]: string | string[] | undefined };
 }
 
 /**
@@ -25,8 +26,10 @@ interface AgentDetailPageProps {
  * 
  * Affiche les informations détaillées d'un agent, sa description, sa vidéo et ses intégrations
  */
-export default function AgentDetailPage({ params }: AgentDetailPageProps) {
-  const { id } = params;
+export default async function AgentDetailPage({ params }: PageProps) {
+  // Await the params object to ensure we can safely access its properties
+  const resolvedParams = await params;
+  const { id } = resolvedParams;
   const agent = getAgentById(id);
   
   // Si l'agent n'existe pas, on redirige vers une page 404

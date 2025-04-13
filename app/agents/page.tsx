@@ -153,3 +153,17 @@ export default function AgentsPage() {
     </div>
   );
 }
+
+type AgentDetailPageProps = {
+  params: {
+    id: string;
+  };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}
+
+export default async function AgentDetailPage({ params }: { 
+  params: { id: string },
+  searchParams?: { [key: string]: string | string[] | undefined }
+}) {
+  // ...existing code...
+}

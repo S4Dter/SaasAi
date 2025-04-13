@@ -14,8 +14,7 @@ export const metadata: Metadata = {
 export default function SignInPage() {
   const handleSubmit = (data: AuthFormData) => {
     console.log('SignIn form submitted with data:', data);
-  };
-  
+  };  
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
