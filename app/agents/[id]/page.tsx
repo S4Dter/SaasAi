@@ -1,5 +1,4 @@
 import React from 'react';
-import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getAgentById } from '@/mock/agents';
 import AgentDetails from '@/components/agents/AgentDetails';
@@ -7,32 +6,17 @@ import Button from '@/components/ui/Button';
 import Link from 'next/link';
 import { ROUTES, APP_NAME } from '@/constants';
 
-// Cette fonction sera remplacée par une génération dynamique de métadonnées
-// basée sur les données de l'agent dans une application réelle
-export const metadata: Metadata = {
-  title: `Détail de l'agent | ${APP_NAME}`,
-  description: 'Découvrez les détails et fonctionnalités de cet agent IA',
-};
+// Using server component instead of client component
+// to avoid issues with params handling
 
-interface PageProps {
-  params: {
-    id: string;
-  };
-  searchParams?: { [key: string]: string | string[] | undefined };
-}
-
-/**
- * Page de détail d'un agent IA
- * 
- * Affiche les informations détaillées d'un agent, sa description, sa vidéo et ses intégrations
- */
-export default async function AgentDetailPage({ params }: PageProps) {
-  // Await the params object to ensure we can safely access its properties
-  const resolvedParams = await params;
-  const { id } = resolvedParams;
+export default function AgentDetailPage({ params }: any) {
+  // Access the id directly from params
+  const id = params.id;
+  
+  // Get the agent data
   const agent = getAgentById(id);
   
-  // Si l'agent n'existe pas, on redirige vers une page 404
+  // Handle missing agent
   if (!agent) {
     notFound();
   }

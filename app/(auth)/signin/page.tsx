@@ -1,22 +1,13 @@
+'use client';
+
 import React from 'react';
-import { Metadata } from 'next';
 import AuthForm, { AuthFormData } from '@/components/auth/AuthForm';
 import { APP_NAME } from '@/constants';
-
-export const metadata: Metadata = {
-  title: `Connexion | ${APP_NAME}`,
-  description: 'Connectez-vous à votre compte AgentMarket',
-};
 
 /**
  * Page de connexion
  */
-interface PageProps {
-  params?: { [key: string]: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-}
-
-export default function SignInPage({}: PageProps) {
+export default function SignInPage() {
   const handleSubmit = (data: AuthFormData) => {
     console.log('SignIn form submitted with data:', data);
   };  

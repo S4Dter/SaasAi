@@ -1,22 +1,13 @@
+'use client';
+
 import React from 'react';
-import { Metadata } from 'next';
 import AuthForm from '@/components/auth/AuthForm';
 import { APP_NAME } from '@/constants';
-
-export const metadata: Metadata = {
-  title: `Inscription | ${APP_NAME}`,
-  description: 'Créez votre compte sur AgentMarket et découvrez les agents IA ou partagez vos créations',
-};
 
 /**
  * Page d'inscription
  */
-interface PageProps {
-  params?: { [key: string]: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-}
-
-export default function SignUpPage({}: PageProps) {
+export default function SignUpPage() {
   // Cette fonction serait connectée à une API d'authentification dans une application réelle
   const handleSubmit = (data: { email: string; password: string }) => {
     console.log('SignUp form submitted with data:', data);

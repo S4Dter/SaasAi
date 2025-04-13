@@ -95,7 +95,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit }) => {
             >
               <option value="">Sélectionnez votre profil</option>
               <option value="enterprise">Une entreprise cherchant des agents IA</option>
-              <option value="creator">Un créateur d'agents IA</option>
+              <option value="creator">Un créateur d&apos;agents IA</option>
             </select>
           </div>
         )}
@@ -130,12 +130,12 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit }) => {
 
       <div className="mt-6 text-center">
         <p className="text-sm text-gray-600">
-          {isSignIn ? "Vous n'avez pas de compte ?" : 'Vous avez déjà un compte ?'}{' '}
+          {isSignIn ? "Vous n&apos;avez pas de compte ?" : 'Vous avez déjà un compte ?'}{' '}
           <Link
             href={isSignIn ? ROUTES.AUTH.SIGNUP : ROUTES.AUTH.SIGNIN}
             className="text-blue-600 hover:text-blue-500 font-medium"
           >
-            {isSignIn ? "S'inscrire" : 'Se connecter'}
+            {isSignIn ? "S&apos;inscrire" : 'Se connecter'}
           </Link>
         </p>
       </div>
