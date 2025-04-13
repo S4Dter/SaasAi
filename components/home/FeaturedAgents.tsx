@@ -1,9 +1,25 @@
 import React from 'react';
 import Link from 'next/link';
-import { getFeaturedAgents } from '../../mock/agents';
-import { ROUTES, UI_CONFIG } from '../../constants';
+import { getFeaturedAgents } from '@/mock/agents';
+import { ROUTES, UI_CONFIG } from '@/constants';
 import Card, { CardBody, CardFooter } from '../ui/Card';
 import Button from '../ui/Button';
+
+type Agent = {
+  id: string;
+  name: string;
+  description: string;
+  shortDescription: string;
+  imageUrl?: string;
+  category: string;
+  integrations: string[];
+  pricing: {
+    model: 'subscription' | 'one-time' | string;
+    startingPrice: number;
+    currency: 'EUR' | 'USD' | 'GBP' | string;
+  };
+};
+
 
 /**
  * Composant FeaturedAgents pour la page d'accueil
@@ -15,7 +31,7 @@ const FeaturedAgents: React.FC = () => {
   const featuredAgents = getFeaturedAgents().slice(0, UI_CONFIG.FEATURED_AGENTS_COUNT);
 
   // Fonction pour formater le prix
-  const formatPrice = (agent: any) => {
+  const formatPrice = (agent: Agent) => {
     const { pricing } = agent;
     const currencySymbol = pricing.currency === 'EUR' ? '€' : pricing.currency === 'USD' ? '$' : '£';
     
