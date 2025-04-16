@@ -1,4 +1,3 @@
-import { type PageProps } from './$types';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getAgentById } from '@/mock/agents';
@@ -8,7 +7,13 @@ import Link from 'next/link';
 import { ROUTES } from '@/constants';
 import { getUserById } from '@/mock/users';
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+type Params = {
+  params: {
+    id: string;
+  };
+};
+
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const agent = getAgentById(params.id);
 
   if (!agent) {
@@ -40,7 +45,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function AgentDetailPage({ params }: PageProps) {
+export default async function AgentDetailPage({ params }: Params) {
   const agent = getAgentById(params.id);
   if (!agent) notFound();
 
