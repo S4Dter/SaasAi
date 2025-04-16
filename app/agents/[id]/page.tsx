@@ -1,3 +1,4 @@
+import { type PageProps } from './$types';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getAgentById } from '@/mock/agents';
@@ -6,12 +7,6 @@ import Button from '@/components/ui/Button';
 import Link from 'next/link';
 import { ROUTES } from '@/constants';
 import { getUserById } from '@/mock/users';
-
-type PageProps = {
-  params: {
-    id: string;
-  };
-};
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const agent = getAgentById(params.id);
