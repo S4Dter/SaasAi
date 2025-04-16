@@ -30,7 +30,17 @@ export const ROUTES = {
   AUTH: {
     SIGNIN: '/signin',
     SIGNUP: '/signup',
+    FORGOT_PASSWORD: '/forgot-password',
+    RESET_PASSWORD: '/reset-password',
   },
+  // Pages publiques supplémentaires
+  PRICING: '/pricing',
+  CONTACT: '/contact',
+  LEGAL: {
+    TERMS: '/legal/terms',
+    PRIVACY: '/legal/privacy',
+  },
+  ABOUT: '/about',
 };
 
 // Catégories d'agents
