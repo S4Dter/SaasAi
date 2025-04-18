@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getAgentById } from '@/mock/agents';
 import AgentDetails from '@/components/agents/AgentDetails';
@@ -7,21 +7,20 @@ import Link from 'next/link';
 import { ROUTES } from '@/constants';
 import { getUserById } from '@/mock/users';
 
-// Types compatibles avec Next.js App Router
-interface ParamsType {
-  id: string;
+// Types compatibles avec Next.js 15
+type Props = {
+  params: Promise<{ id: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
-type AgentPageProps = {
-  params: ParamsType | Promise<ParamsType>;
-  searchParams?: Record<string, string | string[] | undefined> | Promise<Record<string, string | string[] | undefined>>;
-};
-
-// Fonction generateMetadata typée correctement
-export async function generateMetadata({ params }: AgentPageProps): Promise<Metadata> {
-  // Résoudre params s'il s'agit d'une Promise
-  const resolvedParams = params instanceof Promise ? await params : params;
-  const agent = getAgentById(resolvedParams.id);
+// Fonction generateMetadata adaptée pour Next.js 15
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // Résoudre les params
+  const { id } = await params;
+  const agent = getAgentById(id);
 
   if (!agent) {
     return {
@@ -52,11 +51,11 @@ export async function generateMetadata({ params }: AgentPageProps): Promise<Meta
   };
 }
 
-// Composant de page avec une gestion correcte de params Promise
-export default async function AgentPage({ params }: AgentPageProps) {
-  // Résoudre params s'il s'agit d'une Promise
-  const resolvedParams = params instanceof Promise ? await params : params;
-  const agent = getAgentById(resolvedParams.id);
+// Composant de page adapté pour Next.js 15
+export default async function AgentPage({ params }: Props) {
+  // Résoudre les params
+  const { id } = await params;
+  const agent = getAgentById(id);
   
   if (!agent) notFound();
 
