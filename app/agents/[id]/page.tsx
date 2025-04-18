@@ -7,17 +7,21 @@ import Link from 'next/link';
 import { ROUTES } from '@/constants';
 import { getUserById } from '@/mock/users';
 
-// Define props for page parameters
-type PageProps = {
-  params: {
-    id: string;
-  };
-  searchParams?: { [key: string]: string | string[] | undefined };
+// Types compatibles avec Next.js App Router
+interface ParamsType {
+  id: string;
+}
+
+type AgentPageProps = {
+  params: ParamsType | Promise<ParamsType>;
+  searchParams?: Record<string, string | string[] | undefined> | Promise<Record<string, string | string[] | undefined>>;
 };
 
-// Correctly typed metadata generation function
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const agent = getAgentById(params.id);
+// Fonction generateMetadata typée correctement
+export async function generateMetadata({ params }: AgentPageProps): Promise<Metadata> {
+  // Résoudre params s'il s'agit d'une Promise
+  const resolvedParams = params instanceof Promise ? await params : params;
+  const agent = getAgentById(resolvedParams.id);
 
   if (!agent) {
     return {
@@ -48,9 +52,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-// Use the same PageProps type for the page component
-export default async function AgentPage({ params }: PageProps) {
-  const agent = getAgentById(params.id);
+// Composant de page avec une gestion correcte de params Promise
+export default async function AgentPage({ params }: AgentPageProps) {
+  // Résoudre params s'il s'agit d'une Promise
+  const resolvedParams = params instanceof Promise ? await params : params;
+  const agent = getAgentById(resolvedParams.id);
+  
   if (!agent) notFound();
 
   const creator = getUserById(agent.creatorId);
