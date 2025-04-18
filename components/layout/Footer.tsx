@@ -101,19 +101,19 @@ const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-blue-600">
+                <Link href="/entreprises/comment-ca-marche" className="text-gray-600 hover:text-blue-600">
                   Comment ça marche
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-blue-600">
+                <Link href="/entreprises/tarification" className="text-gray-600 hover:text-blue-600">
                   Tarification
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-blue-600">
+                <Link href="/entreprises/temoignages" className="text-gray-600 hover:text-blue-600">
                   Témoignages
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -125,24 +125,24 @@ const Footer: React.FC = () => {
             </h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-gray-600 hover:text-blue-600">
+                <Link href="/createurs/publier-agent" className="text-gray-600 hover:text-blue-600">
                   Publier un agent
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-blue-600">
+                <Link href="/createurs/outils-prospection" className="text-gray-600 hover:text-blue-600">
                   Outils de prospection
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-blue-600">
+                <Link href="/createurs/guide-createur" className="text-gray-600 hover:text-blue-600">
                   Guide du créateur
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-blue-600">
+                <Link href="/createurs/communaute" className="text-gray-600 hover:text-blue-600">
                   Communauté
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
