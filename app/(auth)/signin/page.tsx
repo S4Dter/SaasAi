@@ -14,10 +14,21 @@ export default function SignInPage() {
     try {
       const response = await signInWithEmail(data.email, data.password);
       console.log('SignIn response:', response);
-      // À compléter : gestion de la redirection sur succès, affichage d'erreur, etc.
-    } catch (error) {
+      
+      if (response.data.user) {
+        // Connexion réussie
+        alert('Connexion réussie! Vous allez être redirigé vers votre tableau de bord.');
+        
+        // Dans un vrai projet, on utiliserait le router Next.js pour rediriger
+        // Exemple: router.push('/dashboard');
+        
+        // Redirection simplifiée pour la maquette
+        // La destination réelle dépendrait du type d'utilisateur (creator/enterprise)
+        // window.location.href = '/dashboard';
+      }
+    } catch (error: any) {
       console.error('SignIn error:', error);
-      // À compléter : gestion des erreurs
+      alert(`Erreur de connexion: ${error?.message || 'Identifiants incorrects. Veuillez réessayer.'}`);
     }
   };  
 

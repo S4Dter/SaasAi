@@ -14,10 +14,21 @@ export default function SignUpPage() {
     try {
       const response = await signUpWithEmail(data.email, data.password);
       console.log('SignUp response:', response);
-      // À compléter : gestion de la redirection sur succès, affichage d'erreur, etc.
-    } catch (error) {
+      
+      if (response.data.user) {
+        // Si l'inscription nécessite une confirmation par email
+        if (response.data.user.identities?.length === 0) {
+          alert('Un email de confirmation a été envoyé à votre adresse. Veuillez vérifier votre boîte de réception.');
+        } else {
+          // Sinon, redirection vers la page d'accueil du dashboard
+          // Dans un vrai projet, utiliser un router pour rediriger
+          alert('Inscription réussie! Vous allez être redirigé vers votre tableau de bord.');
+          // window.location.href = '/dashboard';
+        }
+      }
+    } catch (error: any) {
       console.error('SignUp error:', error);
-      // À compléter : gestion des erreurs
+      alert(`Erreur lors de l'inscription: ${error?.message || 'Veuillez réessayer'}`);
     }
   };
 
