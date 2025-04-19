@@ -8,14 +8,16 @@ import { ROUTES } from '@/constants';
 export type AuthFormData = {
   email: string;
   password: string;
+  userType?: string;
 };
 
 interface AuthFormProps {
   mode: 'signin' | 'signup';
   onSubmit: (data: AuthFormData) => void;
+  isLoading?: boolean;
 }
 
-const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit }) => {
+const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit, isLoading = false }) => {
   const isSignIn = mode === 'signin';
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -27,6 +29,11 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit }) => {
       email: formData.get('email') as string,
       password: formData.get('password') as string,
     };
+
+    // Ajout du type d'utilisateur pour l'inscription
+    if (mode === 'signup') {
+      data.userType = formData.get('userType') as string;
+    }
 
     onSubmit(data);
   };
@@ -122,8 +129,11 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit }) => {
         )}
 
         <div>
-          <Button type="submit" fullWidth>
-            {isSignIn ? 'Se connecter' : 'Créer un compte'}
+          <Button type="submit" fullWidth disabled={isLoading}>
+            {isLoading 
+              ? 'Chargement...' 
+              : (isSignIn ? 'Se connecter' : 'Créer un compte')
+            }
           </Button>
         </div>
       </form>

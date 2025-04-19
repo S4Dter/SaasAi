@@ -1,32 +1,69 @@
-import React from 'react';
-import { Metadata } from 'next';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { APP_NAME, ROUTES, STATS_METRICS, AGENT_CATEGORIES } from '@/constants';
 import Card, { CardBody, CardHeader } from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import { getAllAgents } from '@/mock/agents';
-
-export const metadata: Metadata = {
-  title: `Tableau de bord Créateur | ${APP_NAME}`,
-  description: 'Gérez vos agents IA, suivez vos statistiques et trouvez de nouveaux clients',
-};
+import ProspectionTool from '@/components/dashboard/creator/ProspectionTool';
+import { useRouter } from 'next/navigation';
 
 /**
  * Page principale du dashboard créateur
  */
 export default function CreatorDashboardPage() {
+  const router = useRouter();
+  const [userData, setUserData] = useState<{email: string; name?: string} | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  
   // Simulation d'agents créés par l'utilisateur (les 3 premiers de la liste)
   const userAgents = getAllAgents().slice(0, 3);
   
   // Génération de statistiques aléatoires pour la démo
   const getRandomStat = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+  // Protection de la route basée sur le rôle
+  useEffect(() => {
+    // Dans une vraie application, nous ferions une requête API pour vérifier l'authentification
+    // Ici nous utilisons localStorage comme un mock temporaire
+    const userRole = localStorage.getItem('user-role');
+    const userEmail = localStorage.getItem('user-email');
+    
+    // Vérifier si un cookie de session existe également (pour le middleware)
+    const hasSession = document.cookie.includes('user-session=');
+    
+    if (!hasSession || userRole !== 'creator') {
+      // Rediriger vers la page de connexion si non authentifié ou non autorisé
+      router.push(ROUTES.AUTH.SIGNIN);
+    } else {
+      // Simulation de récupération des données utilisateur
+      setUserData({
+        email: userEmail || 'createur@example.com',
+        name: localStorage.getItem('user-name') || 'Créateur'
+      });
+      setIsLoading(false);
+    }
+  }, [router]);
+
+  // Afficher un écran de chargement pendant la vérification
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
+          <p className="mt-4">Chargement de votre tableau de bord...</p>
+        </div>
+      </div>
+    );
+  }
   
   return (
     <div>
       <div className="mb-6 flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">
-            Bienvenue dans votre espace créateur
+            Bienvenue {userData?.name} dans votre espace créateur
           </h1>
           <p className="text-gray-600 mt-1">
             Gérez vos agents IA, suivez vos performances et développez votre activité
@@ -79,6 +116,65 @@ export default function CreatorDashboardPage() {
           </Card>
         ))}
       </div>
+      
+      {/* Statistiques rapides */}
+      <Card className="mb-8">
+        <CardHeader>
+          <h2 className="text-lg font-medium text-gray-900">
+            Statistiques rapides
+          </h2>
+        </CardHeader>
+        <CardBody>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <div className="flex items-center">
+                <div className="bg-blue-100 p-3 rounded-full mr-4">
+                  <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-500">Agents publiés</p>
+                  <p className="text-2xl font-bold text-gray-900">{userAgents.length}</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <div className="flex items-center">
+                <div className="bg-green-100 p-3 rounded-full mr-4">
+                  <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-500">Prospects contactés</p>
+                  <p className="text-2xl font-bold text-gray-900">{getRandomStat(15, 50)}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardBody>
+      </Card>
+      
+      {/* Outil de prospection */}
+      <Card className="mb-8">
+        <CardHeader>
+          <h2 className="text-lg font-medium text-gray-900">
+            Outil de prospection
+          </h2>
+        </CardHeader>
+        <CardBody>
+          <ProspectionTool 
+            agents={userAgents}
+            onContactEnterprise={async (enterpriseId, agentId, message) => {
+              console.log('Contact entreprise', {enterpriseId, agentId, message});
+              // Simulation d'un appel API
+              return new Promise(resolve => setTimeout(resolve, 1000));
+            }}
+          />
+        </CardBody>
+      </Card>
       
       {/* Revenus récents */}
       <Card className="mb-8">
@@ -162,13 +258,20 @@ export default function CreatorDashboardPage() {
       <Card className="mb-8">
         <CardHeader className="flex justify-between items-center">
           <h2 className="text-lg font-medium text-gray-900">
-            Vos agents récents
+            Vos agents
           </h2>
-          <Link href={ROUTES.DASHBOARD.CREATOR.AGENTS}>
-            <Button variant="outline" size="sm">
-              Gérer tous vos agents
-            </Button>
-          </Link>
+          <div>
+            <Link href={ROUTES.DASHBOARD.CREATOR.ADD_AGENT} className="mr-2">
+              <Button>
+                Créer un agent
+              </Button>
+            </Link>
+            <Link href={ROUTES.DASHBOARD.CREATOR.AGENTS}>
+              <Button variant="outline" size="sm">
+                Voir tous
+              </Button>
+            </Link>
+          </div>
         </CardHeader>
         <CardBody>
           <div className="overflow-x-auto">
@@ -256,10 +359,10 @@ export default function CreatorDashboardPage() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <button className="text-blue-600 hover:text-blue-900 mr-4">
-                          Modifier
+                          Éditer
                         </button>
-                        <button className="text-gray-600 hover:text-gray-900">
-                          Stats
+                        <button className="text-red-600 hover:text-red-900">
+                          Supprimer
                         </button>
                       </td>
                     </tr>
