@@ -4,6 +4,7 @@ import { getFeaturedAgents } from '@/mock/agents';
 import { ROUTES, UI_CONFIG } from '@/constants';
 import Card, { CardBody, CardFooter } from '../ui/Card';
 import Button from '../ui/Button';
+import type { Route } from 'next';
 
 type Agent = {
   id: string;
@@ -110,7 +111,7 @@ const FeaturedAgents: React.FC = () => {
                   {formatPrice(agent)}
                 </span>
                 
-                <Link href={ROUTES.AGENT_DETAILS(agent.id)}>
+                <Link href={ROUTES.AGENT_DETAILS(agent.id)as Route}>
                   <Button variant="primary" size="sm">
                     Voir les détails
                   </Button>

@@ -4,6 +4,8 @@ import React from 'react';
 import Link from 'next/link';
 import { ROUTES, PRICING_MODELS } from '@/constants';
 import Button from '@/components/ui/Button';
+import type { Route } from 'next';
+
 
 // Types pour les plans de tarification
 interface PricingFeature {
@@ -475,9 +477,10 @@ export default function PricingClient() {
             <div className="text-center pt-8">
               <p className="text-gray-500">
                 Vous avez d&apos;autres questions ?{' '}
-                <Link href={ROUTES.CONTACT} className="text-blue-600 font-medium hover:text-blue-500">
+                <Link href={ROUTES.CONTACT as Route} className="text-blue-600 font-medium hover:text-blue-500">
                   Contactez-nous
                 </Link>
+
               </p>
             </div>
           </div>

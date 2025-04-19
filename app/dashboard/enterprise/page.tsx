@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export default function EnterpriseDashboardPage() {
   // Utiliser les agents en vedette comme suggestions pour la démo
   const suggestedAgents = getFeaturedAgents().slice(0, 2);
-  
+
   return (
     <div>
       <div className="mb-6">
@@ -29,7 +29,7 @@ export default function EnterpriseDashboardPage() {
           Retrouvez vos agents favoris, contactez des créateurs et découvrez de nouvelles solutions.
         </p>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {/* Widgets de statistiques */}
         {STATS_METRICS.map((metric) => (
@@ -57,7 +57,6 @@ export default function EnterpriseDashboardPage() {
                     {metric.label}
                   </p>
                   <p className="text-2xl font-bold text-gray-900">
-                    {/* Nombres générés aléatoirement pour la démo */}
                     {Math.floor(Math.random() * 100) + 10}
                   </p>
                 </div>
@@ -66,14 +65,14 @@ export default function EnterpriseDashboardPage() {
           </Card>
         ))}
       </div>
-      
+
       {/* Agents favoris récents */}
       <Card className="mb-8">
         <CardHeader className="flex items-center justify-between">
           <h2 className="text-lg font-medium text-gray-900">
             Vos agents favoris récents
           </h2>
-          <Link href={ROUTES.DASHBOARD.ENTERPRISE.FAVORITES}>
+          <Link href="/dashboard/enterprise/favorites">
             <Button variant="outline" size="sm">
               Voir tous
             </Button>
@@ -87,7 +86,7 @@ export default function EnterpriseDashboardPage() {
             {suggestedAgents.length === 0 && (
               <p className="text-gray-500 col-span-2 text-center py-4">
                 Vous n&apos;avez pas encore d&apos;agents favoris. 
-                <Link href={ROUTES.AGENTS} className="text-blue-600 ml-1 hover:underline">
+                <Link href="/agents" className="text-blue-600 ml-1 hover:underline">
                   Découvrez notre catalogue
                 </Link>
               </p>
@@ -95,14 +94,14 @@ export default function EnterpriseDashboardPage() {
           </div>
         </CardBody>
       </Card>
-      
+
       {/* Suggestions personnalisées */}
       <Card>
         <CardHeader className="flex items-center justify-between">
           <h2 className="text-lg font-medium text-gray-900">
             Suggestions personnalisées
           </h2>
-          <Link href={ROUTES.DASHBOARD.ENTERPRISE.SUGGESTIONS}>
+          <Link href="/dashboard/enterprise/suggestions">
             <Button variant="outline" size="sm">
               Voir toutes
             </Button>
@@ -117,7 +116,7 @@ export default function EnterpriseDashboardPage() {
                 </div>
                 <div>
                   <Link 
-                    href={ROUTES.AGENT_DETAILS(agent.id)}
+                    href={`/agents/${agent.id}`}
                     className="text-gray-900 font-medium hover:text-blue-600"
                   >
                     {agent.name}

@@ -4,6 +4,7 @@ import { Agent } from '@/types';
 import { ROUTES } from '@/constants';
 import Card, { CardBody, CardFooter } from '../ui/Card';
 import Button from '../ui/Button';
+import type { Route } from 'next';
 
 interface AgentCardProps {
   agent: Agent;
@@ -94,7 +95,7 @@ const AgentCard: React.FC<AgentCardProps> = ({ agent, compact = false }) => {
           {formatPrice()}
         </span>
         
-        <Link href={ROUTES.AGENT_DETAILS(agent.id)}>
+        <Link href={ROUTES.AGENT_DETAILS(agent.id) as Route}>
           <Button variant="primary" size="sm">
             Voir les détails
           </Button>

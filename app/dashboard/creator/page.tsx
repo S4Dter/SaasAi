@@ -9,6 +9,7 @@ import { getAllAgents } from '@/mock/agents';
 import ProspectionTool from '@/components/dashboard/creator/ProspectionTool';
 import { useRouter } from 'next/navigation';
 
+
 /**
  * Page principale du dashboard créateur
  */
@@ -315,7 +316,7 @@ export default function CreatorDashboardPage() {
                           </div>
                           <div className="ml-4">
                             <div className="text-sm font-medium text-gray-900">
-                              <Link href={ROUTES.AGENT_DETAILS(agent.id)} className="hover:text-blue-600">
+                            <Link href={ROUTES.AGENT_DETAILS(agent.id) as unknown as URL} className="hover:text-blue-600">
                                 {agent.name}
                               </Link>
                             </div>

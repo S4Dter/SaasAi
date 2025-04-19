@@ -1,11 +1,6 @@
-/**
- * Constantes de l'application AgentMarket
- */
-
 export const APP_NAME = 'AgentMarket';
 export const APP_SLOGAN = 'La marketplace des meilleurs agents IA pour votre entreprise';
-export const APP_DESCRIPTION =
-  'AgentMarket est la première marketplace qui connecte les créateurs d\'agents IA avec les entreprises à la recherche de solutions d\'automatisation intelligentes.';
+export const APP_DESCRIPTION = 'AgentMarket est la première marketplace qui connecte les créateurs d\'agents IA avec les entreprises à la recherche de solutions d\'automatisation intelligentes.';
 
 export const ROUTES = {
   HOME: '/',
@@ -41,20 +36,7 @@ export const ROUTES = {
   ABOUT: '/about',
 } as const;
 
-// Types sécurisés pour les routes littérales
-export type RoutePath =
-  | typeof ROUTES.HOME
-  | typeof ROUTES.AGENTS
-  | typeof ROUTES.PRICING
-  | typeof ROUTES.CONTACT
-  | typeof ROUTES.ABOUT
-  | typeof ROUTES.LEGAL.TERMS
-  | typeof ROUTES.LEGAL.PRIVACY
-  | typeof ROUTES.AUTH[keyof typeof ROUTES.AUTH]
-  | typeof ROUTES.DASHBOARD.ENTERPRISE[keyof typeof ROUTES.DASHBOARD.ENTERPRISE]
-  | typeof ROUTES.DASHBOARD.CREATOR[keyof typeof ROUTES.DASHBOARD.CREATOR];
-
-// Le reste reste inchangé
+// Les autres constantes restent inchangées :
 export const AGENT_CATEGORIES = [
   { value: 'customer-service', label: 'Service Client' },
   { value: 'marketing', label: 'Marketing' },
@@ -78,7 +60,7 @@ export const INTEGRATION_TYPES = [
 export const PRICING_MODELS = [
   { value: 'subscription', label: 'Abonnement' },
   { value: 'one-time', label: 'Achat unique' },
-  { value: 'usage-based', label: "Basé sur l'usage" },
+  { value: 'usage-based', label: 'Basé sur l\'usage' },
 ];
 
 export const CURRENCIES = [
@@ -108,7 +90,7 @@ export const SOCIAL_LINKS = {
   TWITTER: 'https://twitter.com/agentmarket',
   LINKEDIN: 'https://linkedin.com/company/agentmarket',
   GITHUB: 'https://github.com/agentmarket',
-};
+} as const;
 
 export const UI_CONFIG = {
   GRID_COLUMNS: {
@@ -119,4 +101,4 @@ export const UI_CONFIG = {
   },
   FEATURED_AGENTS_COUNT: 3,
   MAX_DESCRIPTION_LENGTH: 200,
-};
+} as const;
