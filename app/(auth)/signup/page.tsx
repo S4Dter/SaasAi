@@ -5,6 +5,9 @@ import AuthForm from '@/components/auth/AuthForm';
 import { APP_NAME } from '@/constants';
 import { signUpWithEmail } from '@/lib/api/auth';
 
+// Indique à Next.js de ne pas prérender cette page
+export const dynamic = 'force-dynamic';
+
 /**
  * Page d'inscription
  */
