@@ -2,12 +2,11 @@
  * Constantes de l'application AgentMarket
  */
 
-// Informations sur l'application
 export const APP_NAME = 'AgentMarket';
 export const APP_SLOGAN = 'La marketplace des meilleurs agents IA pour votre entreprise';
-export const APP_DESCRIPTION = 'AgentMarket est la première marketplace qui connecte les créateurs d\'agents IA avec les entreprises à la recherche de solutions d\'automatisation intelligentes.';
+export const APP_DESCRIPTION =
+  'AgentMarket est la première marketplace qui connecte les créateurs d\'agents IA avec les entreprises à la recherche de solutions d\'automatisation intelligentes.';
 
-// Routes principales
 export const ROUTES = {
   HOME: '/',
   AGENTS: '/agents',
@@ -33,7 +32,6 @@ export const ROUTES = {
     FORGOT_PASSWORD: '/forgot-password',
     RESET_PASSWORD: '/reset-password',
   },
-  // Pages publiques supplémentaires
   PRICING: '/pricing',
   CONTACT: '/contact',
   LEGAL: {
@@ -41,9 +39,22 @@ export const ROUTES = {
     PRIVACY: '/legal/privacy',
   },
   ABOUT: '/about',
-};
+} as const;
 
-// Catégories d'agents
+// Types sécurisés pour les routes littérales
+export type RoutePath =
+  | typeof ROUTES.HOME
+  | typeof ROUTES.AGENTS
+  | typeof ROUTES.PRICING
+  | typeof ROUTES.CONTACT
+  | typeof ROUTES.ABOUT
+  | typeof ROUTES.LEGAL.TERMS
+  | typeof ROUTES.LEGAL.PRIVACY
+  | typeof ROUTES.AUTH[keyof typeof ROUTES.AUTH]
+  | typeof ROUTES.DASHBOARD.ENTERPRISE[keyof typeof ROUTES.DASHBOARD.ENTERPRISE]
+  | typeof ROUTES.DASHBOARD.CREATOR[keyof typeof ROUTES.DASHBOARD.CREATOR];
+
+// Le reste reste inchangé
 export const AGENT_CATEGORIES = [
   { value: 'customer-service', label: 'Service Client' },
   { value: 'marketing', label: 'Marketing' },
@@ -55,7 +66,6 @@ export const AGENT_CATEGORIES = [
   { value: 'other', label: 'Autres' },
 ];
 
-// Types d'intégration
 export const INTEGRATION_TYPES = [
   { value: 'api', label: 'API' },
   { value: 'widget', label: 'Widget' },
@@ -65,21 +75,18 @@ export const INTEGRATION_TYPES = [
   { value: 'standalone', label: 'Autonome' },
 ];
 
-// Modèles de tarification
 export const PRICING_MODELS = [
   { value: 'subscription', label: 'Abonnement' },
   { value: 'one-time', label: 'Achat unique' },
-  { value: 'usage-based', label: 'Basé sur l\'usage' },
+  { value: 'usage-based', label: "Basé sur l'usage" },
 ];
 
-// Devises supportées
 export const CURRENCIES = [
   { value: 'EUR', label: '€', name: 'Euro' },
   { value: 'USD', label: '$', name: 'Dollar US' },
   { value: 'GBP', label: '£', name: 'Livre Sterling' },
 ];
 
-// Filtres par défaut
 export const DEFAULT_FILTERS = {
   category: 'all',
   priceRange: {
@@ -90,7 +97,6 @@ export const DEFAULT_FILTERS = {
   searchQuery: '',
 };
 
-// Configuration pour les métriques de statistiques
 export const STATS_METRICS = [
   { id: 'views', label: 'Vues', color: 'bg-blue-500' },
   { id: 'clicks', label: 'Clics', color: 'bg-green-500' },
@@ -98,14 +104,12 @@ export const STATS_METRICS = [
   { id: 'conversions', label: 'Conversions', color: 'bg-purple-500' },
 ];
 
-// Liens des réseaux sociaux
 export const SOCIAL_LINKS = {
   TWITTER: 'https://twitter.com/agentmarket',
   LINKEDIN: 'https://linkedin.com/company/agentmarket',
   GITHUB: 'https://github.com/agentmarket',
 };
 
-// Configuration d'affichage
 export const UI_CONFIG = {
   GRID_COLUMNS: {
     SM: 1,

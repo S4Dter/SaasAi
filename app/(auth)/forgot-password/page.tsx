@@ -14,7 +14,6 @@ export default function ForgotPasswordPage() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // TODO: Intégrer l'API pour la demande de réinitialisation du mot de passe
     console.log('Forgot password request for email:', email);
     setSubmitted(true);
   };
@@ -26,24 +25,24 @@ export default function ForgotPasswordPage() {
           <h1 className="text-center text-3xl font-extrabold text-gray-900 mb-8">
             {APP_NAME}
           </h1>
-          
+
           <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200 w-full max-w-md">
             <div className="text-center">
-              <svg 
-                className="mx-auto h-12 w-12 text-green-500" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24" 
+              <svg
+                className="mx-auto h-12 w-12 text-green-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M5 13l4 4L19 7" 
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
                 />
               </svg>
-              
+
               <h2 className="mt-2 text-xl font-semibold text-gray-900">
                 Email envoyé
               </h2>
@@ -51,8 +50,10 @@ export default function ForgotPasswordPage() {
                 Si un compte existe avec l&apos;adresse {email}, vous recevrez un email avec les instructions pour réinitialiser votre mot de passe.
               </p>
               <div className="mt-6">
-                <Link href={ROUTES.AUTH.SIGNIN} className="text-blue-600 hover:underline">
-                  Retour à la connexion
+                <Link href={{ pathname: ROUTES.AUTH.SIGNIN }}>
+                  <span className="text-blue-600 hover:underline">
+                    Retour à la connexion
+                  </span>
                 </Link>
               </div>
             </div>
@@ -68,16 +69,16 @@ export default function ForgotPasswordPage() {
         <h1 className="text-center text-3xl font-extrabold text-gray-900 mb-8">
           {APP_NAME}
         </h1>
-        
+
         <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200 w-full max-w-md">
           <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
             Récupération de mot de passe
           </h2>
-          
+
           <p className="mb-6 text-sm text-gray-600">
             Entrez l&apos;adresse email associée à votre compte et nous vous enverrons un lien pour réinitialiser votre mot de passe.
           </p>
-          
+
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
@@ -94,22 +95,21 @@ export default function ForgotPasswordPage() {
                 required
               />
             </div>
-            
+
             <div>
               <Button type="submit" fullWidth>
                 Envoyer les instructions
               </Button>
             </div>
           </form>
-          
+
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
               Vous vous souvenez de votre mot de passe ?{' '}
-              <Link
-                href={ROUTES.AUTH.SIGNIN}
-                className="text-blue-600 hover:text-blue-500 font-medium"
-              >
-                Se connecter
+              <Link href={{ pathname: ROUTES.AUTH.SIGNIN }}>
+                <span className="text-blue-600 hover:text-blue-500 font-medium">
+                  Se connecter
+                </span>
               </Link>
             </p>
           </div>
