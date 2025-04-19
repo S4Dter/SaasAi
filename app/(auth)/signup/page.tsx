@@ -3,16 +3,22 @@
 import React from 'react';
 import AuthForm from '@/components/auth/AuthForm';
 import { APP_NAME } from '@/constants';
+import { signUpWithEmail } from '@/lib/api/auth';
 
 /**
  * Page d'inscription
  */
 export default function SignUpPage() {
-  // Cette fonction serait connectée à une API d'authentification dans une application réelle
-  const handleSubmit = (data: { email: string; password: string }) => {
+  const handleSubmit = async (data: { email: string; password: string }) => {
     console.log('SignUp form submitted with data:', data);
-    // Dans une vraie application, nous aurions un appel API ici
-    // puis une redirection vers le dashboard approprié
+    try {
+      const response = await signUpWithEmail(data.email, data.password);
+      console.log('SignUp response:', response);
+      // À compléter : gestion de la redirection sur succès, affichage d'erreur, etc.
+    } catch (error) {
+      console.error('SignUp error:', error);
+      // À compléter : gestion des erreurs
+    }
   };
 
   return (

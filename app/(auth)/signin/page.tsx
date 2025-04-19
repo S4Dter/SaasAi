@@ -3,13 +3,22 @@
 import React from 'react';
 import AuthForm, { AuthFormData } from '@/components/auth/AuthForm';
 import { APP_NAME } from '@/constants';
+import { signInWithEmail } from '@/lib/api/auth';
 
 /**
  * Page de connexion
  */
 export default function SignInPage() {
-  const handleSubmit = (data: AuthFormData) => {
+  const handleSubmit = async (data: AuthFormData) => {
     console.log('SignIn form submitted with data:', data);
+    try {
+      const response = await signInWithEmail(data.email, data.password);
+      console.log('SignIn response:', response);
+      // À compléter : gestion de la redirection sur succès, affichage d'erreur, etc.
+    } catch (error) {
+      console.error('SignIn error:', error);
+      // À compléter : gestion des erreurs
+    }
   };  
 
   return (
