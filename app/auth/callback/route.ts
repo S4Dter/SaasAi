@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@supabase/supabase-js';
 
 /**
  * Gestionnaire de routes pour les callbacks d'authentification Supabase
@@ -11,10 +11,19 @@ export async function GET(request: NextRequest) {
   
   if (code) {
     try {
-      // Échange du code d'autorisation contre une session
-      // Note: Ceci est simplifié car normalement on utiliserait createRouteHandlerClient 
-      // avec auth-helpers-nextjs pour gérer les cookies correctement
-      await supabase.auth.exchangeCodeForSession(code);
+      // Créer un client Supabase spécifique pour cette requête serveur
+      // En utilisant explicitement les variables d'environnement
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+      
+      if (supabaseUrl && supabaseKey) {
+        const supabase = createClient(supabaseUrl, supabaseKey);
+        
+        // Échange du code d'autorisation contre une session
+        await supabase.auth.exchangeCodeForSession(code);
+      } else {
+        console.error('Variables d\'environnement Supabase manquantes');
+      }
     } catch (error) {
       console.error('Erreur lors de l\'échange de code:', error);
     }
