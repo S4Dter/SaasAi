@@ -9,9 +9,14 @@ import { createClient } from '@supabase/supabase-js';
  * Fonction client uniquement
  * @param email - L'adresse email de l'utilisateur
  * @param password - Le mot de passe de l'utilisateur
+ * @param metadata - Les métadonnées utilisateur à stocker (optionnel)
  * @returns Une promesse contenant la réponse d'authentification
  */
-export async function signUpWithEmail(email: string, password: string): Promise<AuthResponse> {
+export async function signUpWithEmail(
+  email: string, 
+  password: string, 
+  metadata?: Record<string, any>
+): Promise<AuthResponse> {
   // Vérifier que nous sommes bien côté client
   if (typeof window === 'undefined') {
     throw new Error('La fonction signUpWithEmail ne peut être utilisée que côté client');
@@ -35,6 +40,7 @@ export async function signUpWithEmail(email: string, password: string): Promise<
         password,
         options: {
           emailRedirectTo: `${window.location.origin}/auth/callback`,
+          data: metadata, // Ajouter les métadonnées utilisateur
         }
       });
       
@@ -52,6 +58,7 @@ export async function signUpWithEmail(email: string, password: string): Promise<
       password,
       options: {
         emailRedirectTo: `${window.location.origin}/auth/callback`,
+        data: metadata, // Ajouter les métadonnées utilisateur
       }
     });
     

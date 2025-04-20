@@ -15,9 +15,14 @@ interface AuthFormProps {
   mode: 'signin' | 'signup';
   onSubmit: (data: AuthFormData) => void;
   isLoading?: boolean;
+  errors?: {
+    email?: string;
+    password?: string;
+    general?: string;
+  };
 }
 
-const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit, isLoading = false }) => {
+const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit, isLoading = false, errors = {} }) => {
   const isSignIn = mode === 'signin';
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -69,10 +74,13 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit, isLoading = false }
             id="email"
             name="email"
             type="email"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className={`w-full px-3 py-2 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
             placeholder="votre@email.com"
             required
           />
+          {errors.email && (
+            <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+          )}
         </div>
 
         <div>
@@ -83,10 +91,13 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit, isLoading = false }
             id="password"
             name="password"
             type="password"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className={`w-full px-3 py-2 border ${errors.password ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
             placeholder={isSignIn ? 'Votre mot de passe' : 'Créez un mot de passe'}
             required
           />
+          {errors.password && (
+            <p className="mt-1 text-sm text-red-600">{errors.password}</p>
+          )}
         </div>
 
         {!isSignIn && (
@@ -125,6 +136,12 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit, isLoading = false }
                 Mot de passe oublié ?
               </a>
             </div>
+          </div>
+        )}
+
+        {errors.general && (
+          <div className="text-center text-red-600 text-sm">
+            {errors.general}
           </div>
         )}
 
