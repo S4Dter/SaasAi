@@ -30,8 +30,8 @@ export async function GET(request: NextRequest) {
       // Échange du code d'autorisation contre une session
       await supabase.auth.exchangeCodeForSession(code);
       
-      // Rediriger vers la page d'accueil après succès
-      return NextResponse.redirect(new URL('/?verified=true', request.url));
+      // Rediriger vers la page de confirmation d'email après succès
+      return NextResponse.redirect(new URL('/confirm', request.url));
     }
   } catch (error) {
     console.error('Erreur lors de l\'échange de code:', error);
