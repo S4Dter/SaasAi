@@ -51,6 +51,13 @@ export async function signUpWithEmail(
       if (response.data.user && !response.error) {
         try {
           // Création de l'entrée dans la table users
+          // Log de débogage
+          console.log('Tentative d\'insertion utilisateur:', {
+            id: response.data.user.id,
+            email: email,
+            role: metadata?.role || 'enterprise'
+          });
+          
           await tempClient
             .from('users')
             .insert({
@@ -58,8 +65,9 @@ export async function signUpWithEmail(
               email: email,
               name: metadata?.name || email.split('@')[0], // Nom par défaut basé sur l'email
               role: metadata?.role || 'enterprise', // Rôle par défaut si non spécifié
-              createdAt: new Date().toISOString()
-            });
+              created_at: new Date().toISOString() // Utilisation de snake_case pour la compatibilité Supabase
+            })
+            .select();
         } catch (insertError) {
           console.error("Erreur lors de l'insertion dans la table users:", insertError);
           // On ne bloque pas l'inscription si l'insertion échoue
@@ -89,6 +97,13 @@ export async function signUpWithEmail(
       if (response.data.user && !response.error) {
         try {
           // Création de l'entrée dans la table users
+          // Log de débogage
+          console.log('Tentative d\'insertion utilisateur:', {
+            id: response.data.user.id,
+            email: email,
+            role: metadata?.role || 'enterprise'
+          });
+          
           await supabase
             .from('users')
             .insert({
@@ -96,8 +111,9 @@ export async function signUpWithEmail(
               email: email,
               name: metadata?.name || email.split('@')[0], // Nom par défaut basé sur l'email
               role: metadata?.role || 'enterprise', // Rôle par défaut si non spécifié
-              createdAt: new Date().toISOString()
-            });
+              created_at: new Date().toISOString() // Utilisation de snake_case pour la compatibilité Supabase
+            })
+            .select(); // Ajout de select() pour voir si l'insertion réussit
         } catch (insertError) {
           console.error("Erreur lors de l'insertion dans la table users:", insertError);
           // On ne bloque pas l'inscription si l'insertion échoue

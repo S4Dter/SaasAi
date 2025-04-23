@@ -71,7 +71,7 @@ export default function ConfirmPage() {
               email: user.email,
               name: user.user_metadata?.name || user.email?.split('@')[0] || 'Utilisateur',
               role: role,
-              createdAt: new Date().toISOString()
+              created_at: new Date().toISOString() // Utilisation de snake_case pour la compatibilité Supabase
             });
 
           if (insertError) {

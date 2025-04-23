@@ -61,7 +61,7 @@ export function useAuth(): HookState<User> {
           avatar: dbUser?.avatar || supaUser.user_metadata.avatar_url,
           company: dbUser?.company || supaUser.user_metadata.company,
           bio: dbUser?.bio || supaUser.user_metadata.bio,
-          createdAt: dbUser?.createdAt ? new Date(dbUser.createdAt) : new Date(supaUser.created_at),
+          createdAt: dbUser?.created_at ? new Date(dbUser.created_at) : new Date(supaUser.created_at),
         };
         
         setState({
