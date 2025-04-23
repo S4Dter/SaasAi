@@ -61,7 +61,10 @@ export default function ConfirmPage() {
         // Si l'utilisateur n'existe pas dans la table users, on l'insère
         if (userDataError && userDataError.code === 'PGRST116') { // PGRST116 est le code pour "No rows found"
           // Récupération du rôle depuis les métadonnées
+          // S'assurer que le rôle 'creator' est correctement préservé
           const role = user.user_metadata?.role || 'enterprise';
+          console.log('Métadonnées utilisateur:', user.user_metadata);
+          console.log('Rôle détecté:', role);
           
           // Insertion dans la table users
           const { error: insertError } = await client

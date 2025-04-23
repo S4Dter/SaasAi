@@ -57,14 +57,27 @@ export default function SignInPage() {
           
           if (error) {
             console.error('Erreur lors de la récupération du rôle:', error);
-            router.push('/'); // Redirection par défaut en cas d'erreur
+            
+            // Essayer de récupérer le rôle depuis les métadonnées de l'utilisateur
+            const userMetadataRole = user.user_metadata?.role;
+            console.log('Métadonnées utilisateur après connexion:', user.user_metadata);
+            
+            if (userMetadataRole === 'creator') {
+              console.log('Redirection vers tableau de bord créateur (depuis métadonnées)');
+              router.push(ROUTES.DASHBOARD.CREATOR.ROOT);
+            } else {
+              console.log('Redirection vers tableau de bord entreprise (défaut)');
+              router.push(ROUTES.DASHBOARD.ENTERPRISE.ROOT);
+            }
             return;
           }
           
           // Redirection basée sur le rôle
           if (userData?.role === 'creator') {
+            console.log('Redirection vers tableau de bord créateur (depuis BD)');
             router.push(ROUTES.DASHBOARD.CREATOR.ROOT);
           } else {
+            console.log('Redirection vers tableau de bord entreprise (depuis BD)');
             router.push(ROUTES.DASHBOARD.ENTERPRISE.ROOT);
           }
         }

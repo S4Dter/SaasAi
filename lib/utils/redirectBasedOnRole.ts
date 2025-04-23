@@ -44,8 +44,21 @@ export function useRoleBasedRedirection() {
           .single();
         
         if (roleError) {
-          console.error('Erreur lors de la récupération du rôle:', roleError);
-          setIsLoading(false);
+          console.error('Erreur lors de la récupération du rôle dans la BD:', roleError);
+          
+          // Si l'utilisateur n'est pas dans la table users, essayer de récupérer le rôle depuis les métadonnées
+          const userMetadataRole = user.user_metadata?.role;
+          console.log('Métadonnées utilisateur dans hook:', user.user_metadata);
+          
+          if (userMetadataRole === 'creator') {
+            console.log('Hook: Redirection vers tableau de bord créateur (depuis métadonnées)');
+            router.push(ROUTES.DASHBOARD.CREATOR.ROOT);
+          } else if (userMetadataRole) {
+            console.log('Hook: Redirection vers tableau de bord enterprise (depuis métadonnées)');
+            router.push(ROUTES.DASHBOARD.ENTERPRISE.ROOT);
+          } else {
+            setIsLoading(false);
+          }
           return;
         }
         
