@@ -5,15 +5,34 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Environment, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 
-// Preload the model to ensure it's ready when needed
+// Register and preload the model to ensure it's ready when needed
 useGLTF.preload('/model/model.gltf');
 
-// GLTF Model component
+// GLTF Model component with error handling
 function Model({ scale = 1.5 }) {
   const gltfRef = useRef<THREE.Group>(null);
+  const [hasError, setHasError] = React.useState(false);
   
-  // Load the model
-  const { scene } = useGLTF('/model/model.gltf');
+  // Load the model with error handling
+  const { scene, nodes } = useGLTF('/model/model.gltf');
+
+  // Add error handling
+  useEffect(() => {
+    const handleSuccess = () => console.log('Model loaded successfully');
+    const handleError = (error: any) => {
+      console.error('Error loading model:', error);
+      setHasError(true);
+    };
+
+    // We can't pass callbacks to useGLTF directly, so we handle it with listeners
+    window.addEventListener('model-loaded', handleSuccess);
+    window.addEventListener('model-error', handleError);
+    
+    return () => {
+      window.removeEventListener('model-loaded', handleSuccess);
+      window.removeEventListener('model-error', handleError);
+    };
+  }, []);
   
   // Add a subtle animation to the model
   useFrame(({ clock }) => {
@@ -22,6 +41,16 @@ function Model({ scale = 1.5 }) {
       gltfRef.current.position.y = Math.sin(clock.getElapsedTime() * 0.5) * 0.1;
     }
   });
+
+  // If there's an error, show a fallback sphere
+  if (hasError) {
+    return (
+      <mesh scale={scale} position={[0, 0, 0]}>
+        <sphereGeometry args={[1, 32, 32]} />
+        <meshStandardMaterial color="#4285F4" roughness={0.3} metalness={0.7} />
+      </mesh>
+    );
+  }
 
   return (
     <primitive 
@@ -45,31 +74,56 @@ function LoadingPlaceholder() {
 
 // Main component that exports the 3D scene
 export default function ThreeDScene() {
-  // Use effect to handle binary file name remapping
+  // Global error boundary for the 3D scene
+  const [hasGlobalError, setHasGlobalError] = React.useState(false);
+  
+  // Use effect to handle errors and load issues
   useEffect(() => {
-    // Patch to handle binary file naming
-    // Model may be looking for "scene.bin" but we have "model.bin"
-    const originalFetch = window.fetch;
-    window.fetch = function(input, init) {
-      // If this is a request for scene.bin, redirect to model.bin
-      if (typeof input === 'string' && input.includes('scene.bin')) {
-        const newUrl = input.replace('scene.bin', 'model.bin');
-        return originalFetch(newUrl, init);
-      }
-      return originalFetch(input, init);
+    const handleError = (event: ErrorEvent) => {
+      console.error('Error in 3D scene:', event.message);
+      setHasGlobalError(true);
     };
     
-    // Cleanup function to restore original fetch
+    window.addEventListener('error', handleError);
+    
+    // Timeout to detect if the model takes too long to load
+    const timeoutId = setTimeout(() => {
+      // Only set timeout error if we haven't already set an error
+      const canvas = document.querySelector('canvas');
+      if (canvas && !hasGlobalError) {
+        console.warn('Model may be taking too long to load, but continuing render');
+      }
+    }, 5000);
+    
     return () => {
-      window.fetch = originalFetch;
+      window.removeEventListener('error', handleError);
+      clearTimeout(timeoutId);
     };
-  }, []);
+  }, [hasGlobalError]);
+
+  // If we have a global error, show a simplified scene
+  if (hasGlobalError) {
+    return (
+      <div className="w-full h-[500px] flex items-center justify-center bg-blue-50">
+        <div className="w-32 h-32 relative">
+          <div className="absolute animate-ping w-full h-full rounded-full bg-blue-400 opacity-75"></div>
+          <div className="relative w-full h-full rounded-full bg-blue-500 flex items-center justify-center text-white">
+            AI Agent
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full h-[500px]">
       <Canvas
         camera={{ position: [0, 2, 5], fov: 45 }}
         shadows
+        onError={(e) => {
+          console.error('Canvas error:', e);
+          setHasGlobalError(true);
+        }}
       >
         {/* Environment lighting */}
         <Environment preset="city" />
