@@ -1,11 +1,33 @@
-// This file is now redundant since we're using .eslintrc.json
-// Basic config only to avoid build errors
+// eslint.config.mjs
+import next from 'eslint-plugin-next';
+import js from '@eslint/js';
+import ts from '@typescript-eslint/eslint-plugin';
+import parser from '@typescript-eslint/parser';
+
+/** @type {import("eslint").Linter.FlatConfig[]} */
 export default [
   {
+    ignores: ['node_modules/**', '.next/**'],
+  },
+  js.configs.recommended,
+  {
+    languageOptions: {
+      parser,
+      parserOptions: {
+        project: './tsconfig.json',
+        sourceType: 'module',
+        ecmaVersion: 'latest',
+      },
+    },
+    plugins: {
+      '@typescript-eslint': ts,
+      'next': next,
+    },
     rules: {
-      "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-unused-vars": "off",
-      "react/no-unescaped-entities": "off"
-    }
-  }
-]
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-explicit-any': 'warn',
+    },
+  },
+  next.configs.recommended,
+];
