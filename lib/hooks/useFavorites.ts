@@ -37,7 +37,7 @@ export function useFavorites(userId: string | undefined): HookState<Favorite[]> 
             *,
             agent:agent_id(*)
           `)
-          .eq('user_id', userId);
+          .eq('user_id', userId); // Note: La table favorites utilise toujours user_id pour la clé étrangère
 
         if (error) throw error;
 

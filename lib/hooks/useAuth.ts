@@ -38,18 +38,30 @@ export function useAuth(): HookState<User> {
         
         if (userError) throw userError;
         
-        // Conversion du format Supabase vers notre format d'utilisateur
+        // Récupération de l'utilisateur Supabase
         const supaUser = userData.user as SupabaseUser;
         
+        // Récupération des données utilisateur depuis la table users (au lieu de profiles)
+        const { data: dbUser, error: dbUserError } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', supaUser.id)
+          .single();
+        
+        if (dbUserError) {
+          console.error('Erreur lors de la récupération des données utilisateur:', dbUserError);
+        }
+        
+        // Création de l'objet utilisateur en combinant les données de auth.users et de la table users
         const user: User = {
           id: supaUser.id,
           email: supaUser.email,
-          name: supaUser.user_metadata.name || 'Utilisateur',
-          role: (supaUser.user_metadata.role as User['role']) || 'enterprise',
-          avatar: supaUser.user_metadata.avatar_url,
-          company: supaUser.user_metadata.company,
-          bio: supaUser.user_metadata.bio,
-          createdAt: new Date(supaUser.created_at),
+          name: dbUser?.name || supaUser.user_metadata.name || 'Utilisateur',
+          role: (dbUser?.role as User['role']) || (supaUser.user_metadata.role as User['role']) || 'enterprise',
+          avatar: dbUser?.avatar || supaUser.user_metadata.avatar_url,
+          company: dbUser?.company || supaUser.user_metadata.company,
+          bio: dbUser?.bio || supaUser.user_metadata.bio,
+          createdAt: dbUser?.createdAt ? new Date(dbUser.createdAt) : new Date(supaUser.created_at),
         };
         
         setState({

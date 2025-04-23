@@ -36,6 +36,7 @@ export function useRoleBasedRedirection() {
         }
         
         // 2. Récupérer le rôle de l'utilisateur depuis la table users
+        // La table users est liée directement à auth.users via id (et non user_id)
         const { data: userData, error: roleError } = await supabase
           .from('users')
           .select('role')
