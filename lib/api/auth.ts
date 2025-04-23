@@ -24,7 +24,8 @@ export async function signUpWithEmail(
   }
 
   try {
-    const redirectUrl = options?.emailRedirectTo || `${window.location.origin}/auth/callback`;
+    // Use global domain for redirects - important for email confirmation to work correctly
+    const redirectUrl = options?.emailRedirectTo || `https://marketplaceagentai.vercel.app/auth/callback`;
 
     if (!supabase) {
       const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -36,6 +37,7 @@ export async function signUpWithEmail(
 
       const tempClient = createClient(supabaseUrl, supabaseKey);
 
+      // S'inscrire avec Supabase Auth
       const response = await tempClient.auth.signUp({
         email,
         password,
@@ -45,6 +47,26 @@ export async function signUpWithEmail(
         }
       });
 
+      // Si l'inscription a réussi, insérer l'utilisateur dans la table users
+      if (response.data.user && !response.error) {
+        try {
+          // Création de l'entrée dans la table users
+          await tempClient
+            .from('users')
+            .insert({
+              id: response.data.user.id,
+              email: email,
+              name: metadata?.name || email.split('@')[0], // Nom par défaut basé sur l'email
+              role: metadata?.role || 'enterprise', // Rôle par défaut si non spécifié
+              createdAt: new Date().toISOString()
+            });
+        } catch (insertError) {
+          console.error("Erreur lors de l'insertion dans la table users:", insertError);
+          // On ne bloque pas l'inscription si l'insertion échoue
+          // Le middleware de confirmation peut réessayer
+        }
+      }
+
       if (response.error) {
         console.error("Erreur d'inscription:", response.error.message);
         throw response.error;
@@ -53,14 +75,35 @@ export async function signUpWithEmail(
       return response;
     }
 
-    const response = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: redirectUrl,
-        data: metadata,
+      // S'inscrire avec Supabase Auth
+      const response = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: metadata,
+        }
+      });
+
+      // Si l'inscription a réussi, insérer l'utilisateur dans la table users
+      if (response.data.user && !response.error) {
+        try {
+          // Création de l'entrée dans la table users
+          await supabase
+            .from('users')
+            .insert({
+              id: response.data.user.id,
+              email: email,
+              name: metadata?.name || email.split('@')[0], // Nom par défaut basé sur l'email
+              role: metadata?.role || 'enterprise', // Rôle par défaut si non spécifié
+              createdAt: new Date().toISOString()
+            });
+        } catch (insertError) {
+          console.error("Erreur lors de l'insertion dans la table users:", insertError);
+          // On ne bloque pas l'inscription si l'insertion échoue
+          // Le middleware de confirmation peut réessayer
+        }
       }
-    });
 
     if (response.error) {
       console.error("Erreur d'inscription:", response.error.message);

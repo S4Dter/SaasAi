@@ -110,7 +110,6 @@ export default function SignUpPage() {
         data.email, 
         data.password, 
         { role: data.userType },
-        { emailRedirectTo: 'https://ton-site.vercel.app/connexion' }
       );
 
       if (response.data.user) {

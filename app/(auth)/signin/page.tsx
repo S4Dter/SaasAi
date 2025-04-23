@@ -5,6 +5,8 @@ import AuthForm, { AuthFormData } from '@/components/auth/AuthForm';
 import { APP_NAME, ROUTES } from '@/constants';
 import { signInWithEmail } from '@/lib/api/auth';
 import { useRouter } from 'next/navigation';
+import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@supabase/supabase-js';
 
 // Indique à Next.js de ne pas prérender cette page
 export const dynamic = 'force-dynamic';
@@ -36,13 +38,35 @@ export default function SignInPage() {
         
         if (user) {
           // Créer un cookie de session pour le middleware
-          // Note: Le rôle sera récupéré depuis la base de données dans RoleBasedRedirect
           document.cookie = `user-session=${encodeURIComponent(JSON.stringify({
             id: user.id,
             email: data.email
           }))}; path=/; max-age=86400`;
           
-          // La redirection se fera automatiquement grâce au composant RoleBasedRedirect
+          // Chercher le rôle dans la base de données
+          const supabaseClient = supabase || createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+          );
+          
+          const { data: userData, error } = await supabaseClient
+            .from('users')
+            .select('role')
+            .eq('id', user.id)
+            .single();
+          
+          if (error) {
+            console.error('Erreur lors de la récupération du rôle:', error);
+            router.push('/'); // Redirection par défaut en cas d'erreur
+            return;
+          }
+          
+          // Redirection basée sur le rôle
+          if (userData?.role === 'creator') {
+            router.push(ROUTES.DASHBOARD.CREATOR.ROOT);
+          } else {
+            router.push(ROUTES.DASHBOARD.ENTERPRISE.ROOT);
+          }
         }
       }
     } catch (error: any) {

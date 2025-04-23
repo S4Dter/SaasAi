@@ -31,7 +31,8 @@ export async function GET(request: NextRequest) {
       await supabase.auth.exchangeCodeForSession(code);
       
       // Rediriger vers la page de confirmation d'email après succès
-      return NextResponse.redirect(new URL('/confirm', request.url));
+      // Utiliser le domaine complet pour la redirection
+      return NextResponse.redirect(new URL('https://marketplaceagentai.vercel.app/confirm', requestUrl));
     }
   } catch (error) {
     console.error('Erreur lors de l\'échange de code:', error);
@@ -42,5 +43,5 @@ export async function GET(request: NextRequest) {
   }
 
   // Rediriger vers la page d'accueil si aucun code trouvé
-  return NextResponse.redirect(new URL('/', request.url));
+  return NextResponse.redirect(new URL('https://marketplaceagentai.vercel.app/', request.url));
 }
