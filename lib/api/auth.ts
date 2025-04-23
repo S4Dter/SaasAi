@@ -10,20 +10,22 @@ import { createClient } from '@supabase/supabase-js';
  * @param email - L'adresse email de l'utilisateur
  * @param password - Le mot de passe de l'utilisateur
  * @param metadata - Les métadonnées utilisateur à stocker (optionnel)
+ * @param options - Options supplémentaires (comme emailRedirectTo)
  * @returns Une promesse contenant la réponse d'authentification
  */
 export async function signUpWithEmail(
   email: string, 
   password: string, 
-  metadata?: Record<string, any>
+  metadata?: Record<string, any>,
+  options?: { emailRedirectTo?: string }
 ): Promise<AuthResponse> {
-  // Vérifier que nous sommes bien côté client
   if (typeof window === 'undefined') {
     throw new Error('La fonction signUpWithEmail ne peut être utilisée que côté client');
   }
 
   try {
-    // Vérifier si le client supabase est disponible
+    const redirectUrl = options?.emailRedirectTo || `${window.location.origin}/auth/callback`;
+
     if (!supabase) {
       const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
       const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -31,42 +33,40 @@ export async function signUpWithEmail(
       if (!supabaseUrl || !supabaseKey) {
         throw new Error('Variables d\'environnement Supabase manquantes');
       }
-      
-      // Créer un client temporaire si nécessaire
+
       const tempClient = createClient(supabaseUrl, supabaseKey);
-      
+
       const response = await tempClient.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
-          data: metadata, // Ajouter les métadonnées utilisateur
+          emailRedirectTo: redirectUrl,
+          data: metadata,
         }
       });
-      
+
       if (response.error) {
         console.error("Erreur d'inscription:", response.error.message);
         throw response.error;
       }
-      
+
       return response;
     }
-    
-    // Utiliser le client supabase global si disponible
+
     const response = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
-        data: metadata, // Ajouter les métadonnées utilisateur
+        emailRedirectTo: redirectUrl,
+        data: metadata,
       }
     });
-    
+
     if (response.error) {
       console.error("Erreur d'inscription:", response.error.message);
       throw response.error;
     }
-    
+
     return response;
   } catch (error) {
     console.error("Erreur lors de l'inscription:", error);
@@ -82,13 +82,11 @@ export async function signUpWithEmail(
  * @returns Une promesse contenant la réponse d'authentification
  */
 export async function signInWithEmail(email: string, password: string): Promise<AuthResponse> {
-  // Vérifier que nous sommes bien côté client
   if (typeof window === 'undefined') {
     throw new Error('La fonction signInWithEmail ne peut être utilisée que côté client');
   }
 
   try {
-    // Vérifier si le client supabase est disponible
     if (!supabase) {
       const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
       const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -96,28 +94,26 @@ export async function signInWithEmail(email: string, password: string): Promise<
       if (!supabaseUrl || !supabaseKey) {
         throw new Error('Variables d\'environnement Supabase manquantes');
       }
-      
-      // Créer un client temporaire si nécessaire
+
       const tempClient = createClient(supabaseUrl, supabaseKey);
-      
+
       const response = await tempClient.auth.signInWithPassword({ email, password });
-      
+
       if (response.error) {
         console.error("Erreur de connexion:", response.error.message);
         throw response.error;
       }
-      
+
       return response;
     }
-    
-    // Utiliser le client supabase global si disponible
+
     const response = await supabase.auth.signInWithPassword({ email, password });
-    
+
     if (response.error) {
       console.error("Erreur de connexion:", response.error.message);
       throw response.error;
     }
-    
+
     return response;
   } catch (error) {
     console.error("Erreur lors de la connexion:", error);
@@ -131,7 +127,6 @@ export async function signInWithEmail(email: string, password: string): Promise<
  * @returns Une promesse indiquant le succès ou l'échec de la déconnexion
  */
 export async function signOut(): Promise<{ error: AuthError | null }> {
-  // Vérifier que nous sommes bien côté client
   if (typeof window === 'undefined') {
     throw new Error('La fonction signOut ne peut être utilisée que côté client');
   }
@@ -139,6 +134,6 @@ export async function signOut(): Promise<{ error: AuthError | null }> {
   if (!supabase) {
     throw new Error('Client Supabase non disponible');
   }
-  
+
   return await supabase.auth.signOut();
 }
