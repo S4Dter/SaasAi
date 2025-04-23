@@ -14,7 +14,7 @@ function Model({ scale = 1.5 }) {
   const [hasError, setHasError] = React.useState(false);
   
   // Load the model with error handling
-  const { scene, nodes } = useGLTF('/model/model.gltf');
+  const { scene, nodes, materials } = useGLTF('/model/model.gltf');
 
   // Add error handling
   useEffect(() => {
@@ -28,11 +28,31 @@ function Model({ scale = 1.5 }) {
     window.addEventListener('model-loaded', handleSuccess);
     window.addEventListener('model-error', handleError);
     
+    // Ensure textures are properly loaded from the textures folder
+    if (materials) {
+      Object.values(materials).forEach(material => {
+        // Type cast to MeshStandardMaterial which has map property
+        const stdMaterial = material as THREE.MeshStandardMaterial;
+        
+        if (stdMaterial.map && stdMaterial.map.source && stdMaterial.map.source.data) {
+          // Fix texture paths if needed
+          const src = stdMaterial.map.source.data.src;
+          if (src && !src.includes('/model/textures/')) {
+            const textureName = src.split('/').pop();
+            // Update the texture path to point to our textures folder
+            if (textureName) {
+              stdMaterial.map.source.data.src = `/model/textures/${textureName}`;
+            }
+          }
+        }
+      });
+    }
+    
     return () => {
       window.removeEventListener('model-loaded', handleSuccess);
       window.removeEventListener('model-error', handleError);
     };
-  }, []);
+  }, [materials]);
   
   // Add a subtle animation to the model
   useFrame(({ clock }) => {
