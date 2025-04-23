@@ -53,8 +53,8 @@ function SignupConfirmationMessage({ email, onResendEmail }: { email: string, on
         </h2>
 
         <p className="text-gray-600">
-          Un email de confirmation a été envoyé à <span className="font-semibold">{email}</span>. 
-          Merci de vérifier votre boîte de réception pour finaliser l'inscription.
+          Un email de confirmation vous a été envoyé à <span className="font-semibold">{email}</span>. 
+          Veuillez cliquer sur le lien pour activer votre compte.
         </p>
 
         {onResendEmail && (
@@ -169,4 +169,3 @@ export default function SignUpPage() {
     </div>
   );
 }
-

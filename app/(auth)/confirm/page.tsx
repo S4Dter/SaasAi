@@ -83,21 +83,7 @@ export default function ConfirmPage() {
           throw userDataError;
         }
 
-        // Redirection en fonction du rôle
-        if (userData?.role) {
-          setTimeout(() => {
-            if (userData.role === 'creator') {
-              router.push(ROUTES.DASHBOARD.CREATOR.ROOT);
-            } else {
-              router.push(ROUTES.DASHBOARD.ENTERPRISE.ROOT);
-            }
-          }, 2000); // Délai de 2 secondes pour permettre à l'utilisateur de voir le message de confirmation
-        } else {
-          // Utiliser le rôle par défaut si aucun rôle n'est défini
-          setTimeout(() => {
-            router.push(ROUTES.DASHBOARD.ENTERPRISE.ROOT);
-          }, 2000);
-        }
+        // Ne pas rediriger automatiquement - l'utilisateur doit cliquer sur le bouton "Se connecter"
       } catch (err: any) {
         console.error('Erreur lors de la vérification de l\'authentification:', err);
         setError(err.message || 'Une erreur est survenue lors de la vérification');
@@ -159,8 +145,16 @@ export default function ConfirmPage() {
                 </h2>
                 
                 <p className="text-gray-600">
-                  Vous allez être redirigé automatiquement vers votre tableau de bord...
+                  Vous pouvez maintenant vous connecter.
                 </p>
+                
+                <div className="pt-4">
+                  <Link href={ROUTES.AUTH.SIGNIN}>
+                    <Button variant="primary" size="lg">
+                      Se connecter
+                    </Button>
+                  </Link>
+                </div>
               </>
             )}
           </div>

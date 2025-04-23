@@ -47,33 +47,9 @@ export async function signUpWithEmail(
         }
       });
 
-      // Si l'inscription a réussi, insérer l'utilisateur dans la table users
-      if (response.data.user && !response.error) {
-        try {
-          // Création de l'entrée dans la table users
-          // Log de débogage
-          console.log('Tentative d\'insertion utilisateur:', {
-            id: response.data.user.id,
-            email: email,
-            role: metadata?.role || 'enterprise'
-          });
-          
-          await tempClient
-            .from('users')
-            .insert({
-              id: response.data.user.id,
-              email: email,
-              name: metadata?.name || email.split('@')[0], // Nom par défaut basé sur l'email
-              role: metadata?.role || 'enterprise', // Rôle par défaut si non spécifié
-              created_at: new Date().toISOString() // Utilisation de snake_case pour la compatibilité Supabase
-            })
-            .select();
-        } catch (insertError) {
-          console.error("Erreur lors de l'insertion dans la table users:", insertError);
-          // On ne bloque pas l'inscription si l'insertion échoue
-          // Le middleware de confirmation peut réessayer
-        }
-      }
+      // Note: Nous n'insérons plus l'utilisateur dans la table users ici
+      // L'insertion sera effectuée seulement après confirmation de l'email
+      // via la page de confirmation (/confirm)
 
       if (response.error) {
         console.error("Erreur d'inscription:", response.error.message);
@@ -93,33 +69,9 @@ export async function signUpWithEmail(
         }
       });
 
-      // Si l'inscription a réussi, insérer l'utilisateur dans la table users
-      if (response.data.user && !response.error) {
-        try {
-          // Création de l'entrée dans la table users
-          // Log de débogage
-          console.log('Tentative d\'insertion utilisateur:', {
-            id: response.data.user.id,
-            email: email,
-            role: metadata?.role || 'enterprise'
-          });
-          
-          await supabase
-            .from('users')
-            .insert({
-              id: response.data.user.id,
-              email: email,
-              name: metadata?.name || email.split('@')[0], // Nom par défaut basé sur l'email
-              role: metadata?.role || 'enterprise', // Rôle par défaut si non spécifié
-              created_at: new Date().toISOString() // Utilisation de snake_case pour la compatibilité Supabase
-            })
-            .select(); // Ajout de select() pour voir si l'insertion réussit
-        } catch (insertError) {
-          console.error("Erreur lors de l'insertion dans la table users:", insertError);
-          // On ne bloque pas l'inscription si l'insertion échoue
-          // Le middleware de confirmation peut réessayer
-        }
-      }
+      // Note: Nous n'insérons plus l'utilisateur dans la table users ici
+      // L'insertion sera effectuée seulement après confirmation de l'email
+      // via la page de confirmation (/confirm)
 
     if (response.error) {
       console.error("Erreur d'inscription:", response.error.message);
