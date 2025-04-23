@@ -4,6 +4,7 @@ import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { APP_NAME, APP_DESCRIPTION } from '@/constants';
+import RoleBasedRedirect from '@/components/auth/RoleBasedRedirect';
 
 // Définition de la police Inter avec les sous-ensembles latin
 const inter = Inter({ 
@@ -31,11 +32,13 @@ export default function RootLayout({
   return (
     <html lang="fr" className={inter.variable}>
       <body className="flex flex-col min-h-screen bg-gray-50">
-        <Header />
-        <main className="flex-grow">
-          {children}
-        </main>
-        <Footer />
+        <RoleBasedRedirect>
+          <Header />
+          <main className="flex-grow">
+            {children}
+          </main>
+          <Footer />
+        </RoleBasedRedirect>
       </body>
     </html>
   );

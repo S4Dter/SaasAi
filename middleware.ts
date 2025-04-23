@@ -12,10 +12,10 @@ export function middleware(request: NextRequest) {
   // Informations sur la session utilisateur à partir des cookies (à adapter selon l'implémentation d'auth)
   const userSession = request.cookies.get('user-session')?.value;
   
-  // Simulation de décodage de session pour récupérer le rôle utilisateur
-  // À remplacer par votre logique d'authentification réelle
-  const userRole = userSession 
-    ? (JSON.parse(decodeURIComponent(userSession)).role as 'enterprise' | 'creator' | 'admin' | undefined)
+  // Décodage de session pour récupérer l'ID utilisateur
+  // Le rôle est récupéré depuis la base de données dans RoleBasedRedirect
+  const userId = userSession 
+    ? JSON.parse(decodeURIComponent(userSession)).id
     : undefined;
   
   const { pathname } = request.nextUrl;
@@ -27,26 +27,16 @@ export function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL(ROUTES.AUTH.SIGNIN, request.url));
     }
 
-    // Vérification des accès spécifiques par rôle
-    if (pathname.startsWith('/dashboard/enterprise') && userRole !== 'enterprise' && userRole !== 'admin') {
-      return NextResponse.redirect(new URL('/', request.url));
-    }
-
-    if (pathname.startsWith('/dashboard/creator') && userRole !== 'creator' && userRole !== 'admin') {
-      return NextResponse.redirect(new URL('/', request.url));
-    }
+    // Note: La vérification des rôles spécifiques est maintenant gérée côté client
+    // dans le composant RoleBasedRedirect, qui consulte directement la base de données
+    // pour obtenir le rôle à jour de l'utilisateur
   }
 
   // Les routes d'authentification ne sont pas accessibles si déjà connecté
+  // La redirection basée sur le rôle est maintenant gérée par le composant RoleBasedRedirect
   if ((pathname === ROUTES.AUTH.SIGNIN || pathname === ROUTES.AUTH.SIGNUP) && userSession) {
-    // Redirection en fonction du rôle
-    if (userRole === 'enterprise') {
-      return NextResponse.redirect(new URL(ROUTES.DASHBOARD.ENTERPRISE.ROOT, request.url));
-    }
-    if (userRole === 'creator') {
-      return NextResponse.redirect(new URL(ROUTES.DASHBOARD.CREATOR.ROOT, request.url));
-    }
-    // Par défaut, redirection vers la page d'accueil
+    // Redirection simple vers la page d'accueil, le composant RoleBasedRedirect
+    // s'occupera de la redirection spécifique selon le rôle
     return NextResponse.redirect(new URL('/', request.url));
   }
 

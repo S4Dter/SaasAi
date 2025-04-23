@@ -31,22 +31,18 @@ export default function SignInPage() {
       const response = await signInWithEmail(data.email, data.password);
       
       if (response.data.user) {
-        // Récupérer le rôle de l'utilisateur depuis user_metadata
+        // Récupérer l'utilisateur
         const user = response.data.user;
-        const userRole = user.user_metadata?.role || 'creator'; // Par défaut creator
         
-        // Créer un cookie de session (pour middleware)
-        document.cookie = `user-session=${encodeURIComponent(JSON.stringify({
-          id: user.id,
-          email: data.email,
-          role: userRole
-        }))}; path=/; max-age=86400`;
-        
-        // Redirection vers le tableau de bord approprié en fonction du rôle
-        if (userRole === 'enterprise') {
-          router.push(ROUTES.DASHBOARD.ENTERPRISE.ROOT);
-        } else {
-          router.push(ROUTES.DASHBOARD.CREATOR.ROOT);
+        if (user) {
+          // Créer un cookie de session pour le middleware
+          // Note: Le rôle sera récupéré depuis la base de données dans RoleBasedRedirect
+          document.cookie = `user-session=${encodeURIComponent(JSON.stringify({
+            id: user.id,
+            email: data.email
+          }))}; path=/; max-age=86400`;
+          
+          // La redirection se fera automatiquement grâce au composant RoleBasedRedirect
         }
       }
     } catch (error: any) {
