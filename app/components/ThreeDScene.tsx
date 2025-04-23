@@ -1,8 +1,8 @@
 "use client";
 
-import React, { Suspense, useRef, useEffect } from 'react';
+import React, { Suspense, useRef, useEffect, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Environment, useGLTF } from '@react-three/drei';
+import { OrbitControls, Environment, useGLTF, useAnimations } from '@react-three/drei';
 import * as THREE from 'three';
 
 // Register and preload the model to ensure it's ready when needed
@@ -13,9 +13,32 @@ function Model({ scale = 1.5 }) {
   const gltfRef = useRef<THREE.Group>(null);
   const [hasError, setHasError] = React.useState(false);
   
-  // Load the model with error handling
-  const { scene, nodes, materials } = useGLTF('/model/model.gltf');
+  // Load the model with error handling including animations
+  const { scene, nodes, materials, animations } = useGLTF('/model/model.gltf');
+  
+  // Set up animation system
+  const { actions, mixer } = useAnimations(animations, gltfRef);
 
+  // Start playing the animation when model is loaded
+  useEffect(() => {
+    if (actions && actions["Scene"]) {
+      // Get the "Scene" animation and play it
+      const sceneAction = actions["Scene"];
+      sceneAction.reset().fadeIn(0.5).play();
+      
+      console.log('Animation "Scene" started playing');
+    } else {
+      console.warn('Animation "Scene" not found in model or not yet loaded');
+    }
+    
+    // Clean up on unmount
+    return () => {
+      if (actions && actions["Scene"]) {
+        actions["Scene"].fadeOut(0.5);
+      }
+    };
+  }, [actions]);
+  
   // Add error handling
   useEffect(() => {
     const handleSuccess = () => console.log('Model loaded successfully');
@@ -54,11 +77,17 @@ function Model({ scale = 1.5 }) {
     };
   }, [materials]);
   
-  // Add a subtle animation to the model
-  useFrame(({ clock }) => {
-    if (gltfRef.current) {
-      gltfRef.current.rotation.y = clock.getElapsedTime() * 0.2;
-      gltfRef.current.position.y = Math.sin(clock.getElapsedTime() * 0.5) * 0.1;
+  // Update animation mixer on each frame
+  useFrame((state, delta) => {
+    // Update the animation mixer (required for animations to play)
+    if (mixer) {
+      mixer.update(delta);
+    }
+    
+    // Only apply the default rotation animation if no Scene animation is available/playing
+    if (gltfRef.current && (!mixer || !actions["Scene"] || !actions["Scene"].isRunning())) {
+      gltfRef.current.rotation.y = state.clock.getElapsedTime() * 0.2;
+      gltfRef.current.position.y = Math.sin(state.clock.getElapsedTime() * 0.5) * 0.1;
     }
   });
 
@@ -71,6 +100,53 @@ function Model({ scale = 1.5 }) {
       </mesh>
     );
   }
+
+  // Apply modifications to the model before rendering
+  useEffect(() => {
+    if (scene) {
+      // Hide any axis helpers or debug elements that might be in the model
+      scene.traverse((child) => {
+        // Check if it's a mesh
+        if (child instanceof THREE.Mesh) {
+          // Look for helpers by name pattern
+          if (child.name && (
+            child.name.toLowerCase().includes('helper') || 
+            child.name.toLowerCase().includes('axis') ||
+            child.name.toLowerCase().includes('debug')
+          )) {
+            child.visible = false;
+          }
+          
+          // Check for typical axes/helper materials (usually bright green, red, or blue solid colors)
+          const material = child.material as THREE.MeshStandardMaterial;
+          if (material && material.color) {
+            // Check for bright green (common for axes)
+            const color = material.color;
+            if (
+              (color.r < 0.2 && color.g > 0.8 && color.b < 0.2) || // Bright green
+              (color.r > 0.8 && color.g < 0.2 && color.b < 0.2) || // Bright red (x-axis)
+              (color.r < 0.2 && color.g < 0.2 && color.b > 0.8)    // Bright blue (z-axis)
+            ) {
+              child.visible = false;
+            }
+          }
+        }
+        
+        // Check for Line objects (often used for helpers)
+        if (child instanceof THREE.Line) {
+          child.visible = false;
+        }
+        
+        // Check for AxesHelper or GridHelper specific objects
+        if (child instanceof THREE.AxesHelper || 
+            child instanceof THREE.GridHelper || 
+            child.type === 'AxesHelper' || 
+            child.type === 'GridHelper') {
+          child.visible = false;
+        }
+      });
+    }
+  }, [scene]);
 
   return (
     <primitive 
@@ -96,6 +172,24 @@ function LoadingPlaceholder() {
 export default function ThreeDScene() {
   // Global error boundary for the 3D scene
   const [hasGlobalError, setHasGlobalError] = React.useState(false);
+  
+  // Handle filename remapping for model.bin vs scene.bin
+  useEffect(() => {
+    // Patch for binary filename issue - model is looking for scene.bin but we have model.bin
+    const originalFetch = window.fetch;
+    window.fetch = function(input, init) {
+      if (typeof input === 'string' && input.includes('/model/scene.bin')) {
+        console.log('Redirecting scene.bin request to model.bin');
+        const newUrl = input.replace('scene.bin', 'model.bin');
+        return originalFetch(newUrl, init);
+      }
+      return originalFetch(input, init);
+    };
+    
+    return () => {
+      window.fetch = originalFetch;
+    };
+  }, []);
   
   // Use effect to handle errors and load issues
   useEffect(() => {
