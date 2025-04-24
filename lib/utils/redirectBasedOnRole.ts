@@ -52,10 +52,14 @@ export function useRoleBasedRedirection() {
           
           if (userMetadataRole === 'creator') {
             console.log('Hook: Redirection vers tableau de bord créateur (depuis métadonnées)');
-            router.push(ROUTES.DASHBOARD.CREATOR.ROOT);
+            if (window.location.pathname !== ROUTES.DASHBOARD.CREATOR.ROOT) {
+              router.push(ROUTES.DASHBOARD.CREATOR.ROOT);
+            }
           } else if (userMetadataRole) {
             console.log('Hook: Redirection vers tableau de bord enterprise (depuis métadonnées)');
-            router.push(ROUTES.DASHBOARD.ENTERPRISE.ROOT);
+            if (window.location.pathname !== ROUTES.DASHBOARD.ENTERPRISE.ROOT) {
+              router.push(ROUTES.DASHBOARD.ENTERPRISE.ROOT);
+            }
           } else {
             setIsLoading(false);
           }
@@ -66,10 +70,14 @@ export function useRoleBasedRedirection() {
         if (userData && userData.role) {
           switch (userData.role) {
             case 'creator':
-              router.push(ROUTES.DASHBOARD.CREATOR.ROOT);
+              if (window.location.pathname !== ROUTES.DASHBOARD.CREATOR.ROOT) {
+                router.push(ROUTES.DASHBOARD.CREATOR.ROOT);
+              }
               break;
             case 'enterprise':
-              router.push(ROUTES.DASHBOARD.ENTERPRISE.ROOT);
+              if (window.location.pathname !== ROUTES.DASHBOARD.ENTERPRISE.ROOT) {
+                router.push(ROUTES.DASHBOARD.ENTERPRISE.ROOT);
+              }
               break;
             default:
               // Si le rôle n'est pas reconnu, on ne redirige pas
