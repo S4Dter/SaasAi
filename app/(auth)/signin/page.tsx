@@ -31,10 +31,12 @@ export default function SignInPage() {
     
     try {
       const response = await signInWithEmail(data.email, data.password);
+      console.log('response:', response);
       
       if (response.data.user) {
         // Récupérer l'utilisateur
         const user = response.data.user;
+        console.log('user:', user);
         
         if (user) {
           // Créer un cookie de session pour le middleware
@@ -64,9 +66,11 @@ export default function SignInPage() {
             
             if (userMetadataRole === 'creator') {
               console.log('Redirection vers tableau de bord créateur (depuis métadonnées)');
+              console.log('Redirecting to:', ROUTES.DASHBOARD.CREATOR.ROOT);
               router.push(ROUTES.DASHBOARD.CREATOR.ROOT);
             } else {
               console.log('Redirection vers tableau de bord entreprise (défaut)');
+              console.log('Redirecting to:', ROUTES.DASHBOARD.ENTERPRISE.ROOT);
               router.push(ROUTES.DASHBOARD.ENTERPRISE.ROOT);
             }
             return;
@@ -75,9 +79,11 @@ export default function SignInPage() {
           // Redirection basée sur le rôle
           if (userData?.role === 'creator') {
             console.log('Redirection vers tableau de bord créateur (depuis BD)');
+            console.log('Redirecting to:', ROUTES.DASHBOARD.CREATOR.ROOT);
             router.push(ROUTES.DASHBOARD.CREATOR.ROOT);
           } else {
             console.log('Redirection vers tableau de bord entreprise (depuis BD)');
+            console.log('Redirecting to:', ROUTES.DASHBOARD.ENTERPRISE.ROOT);
             router.push(ROUTES.DASHBOARD.ENTERPRISE.ROOT);
           }
         }
@@ -120,13 +126,6 @@ export default function SignInPage() {
           isLoading={isLoading} 
           errors={errors}
         />
-
-        <div className="mt-8 text-center text-sm text-gray-600">
-          <p>
-            Note : cette page est une maquette. Dans une application réelle,
-            l'authentification serait connectée à un backend sécurisé.
-          </p>
-        </div>
       </div>
     </div>
   );
