@@ -31,19 +31,18 @@ export default function SignInPage() {
     
     try {
       const response = await signInWithEmail(data.email, data.password);
-      console.log('response:', response);
       
       if (response.data.user) {
         // Récupérer l'utilisateur
         const user = response.data.user;
-        console.log('user:', user);
         
         if (user) {
           // Créer un cookie de session pour le middleware
-          document.cookie = `user-session=${encodeURIComponent(JSON.stringify({
+          const sessionData = {
             id: user.id,
             email: data.email
-          }))}; path=/; max-age=86400`;
+          };
+          document.cookie = `user-session=${encodeURIComponent(JSON.stringify(sessionData))}; path=/; max-age=86400`;
           
           // Chercher le rôle dans la base de données
           const supabaseClient = supabase || createClient(
@@ -58,21 +57,22 @@ export default function SignInPage() {
             .single();
           
           if (error) {
-            console.error('Erreur lors de la récupération du rôle:', error);
-            
+            // Erreur lors de la récupération du rôle de la BD
             // Essayer de récupérer le rôle depuis les métadonnées de l'utilisateur
-            const userMetadataRole = user.user_metadata?.role;
-            console.log('Métadonnées utilisateur après connexion:', user.user_metadata);
+            const userMetadataRole = user.user_metadata?.role || '';
+            
+            // Stocker les informations utilisateur dans localStorage
+            localStorage.setItem('user-role', String(userMetadataRole || 'enterprise'));
+            localStorage.setItem('user-email', String(user.email || data.email));
+            localStorage.setItem('user-name', String(user.user_metadata?.name || data.email || ''));
             
             if (userMetadataRole === 'creator') {
-              console.log('Redirection vers tableau de bord créateur (depuis métadonnées)');
-              console.log('Redirecting to:', ROUTES.DASHBOARD.CREATOR.ROOT);
+              // Redirection vers tableau de bord créateur (depuis métadonnées)
               if (window.location.pathname !== ROUTES.DASHBOARD.CREATOR.ROOT) {
                 router.push(ROUTES.DASHBOARD.CREATOR.ROOT);
               }
             } else {
-              console.log('Redirection vers tableau de bord entreprise (défaut)');
-              console.log('Redirecting to:', ROUTES.DASHBOARD.ENTERPRISE.ROOT);
+              // Redirection vers tableau de bord entreprise (défaut)
               if (window.location.pathname !== ROUTES.DASHBOARD.ENTERPRISE.ROOT) {
                 router.push(ROUTES.DASHBOARD.ENTERPRISE.ROOT);
               }
@@ -80,16 +80,19 @@ export default function SignInPage() {
             return;
           }
           
+          // Stocker les informations utilisateur dans localStorage
+          localStorage.setItem('user-role', String(userData?.role || 'enterprise'));
+          localStorage.setItem('user-email', String(user.email || data.email));
+          localStorage.setItem('user-name', String(user.user_metadata?.name || data.email || ''));
+          
           // Redirection basée sur le rôle
           if (userData?.role === 'creator') {
-            console.log('Redirection vers tableau de bord créateur (depuis BD)');
-            console.log('Redirecting to:', ROUTES.DASHBOARD.CREATOR.ROOT);
+            // Redirection vers tableau de bord créateur (depuis BD)
             if (window.location.pathname !== ROUTES.DASHBOARD.CREATOR.ROOT) {
               router.push(ROUTES.DASHBOARD.CREATOR.ROOT);
             }
           } else {
-            console.log('Redirection vers tableau de bord entreprise (depuis BD)');
-            console.log('Redirecting to:', ROUTES.DASHBOARD.ENTERPRISE.ROOT);
+            // Redirection vers tableau de bord entreprise (depuis BD)
             if (window.location.pathname !== ROUTES.DASHBOARD.ENTERPRISE.ROOT) {
               router.push(ROUTES.DASHBOARD.ENTERPRISE.ROOT);
             }
