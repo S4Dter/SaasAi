@@ -4,11 +4,8 @@ import React, { useState } from 'react';
 import AuthForm, { AuthFormData } from '@/components/auth/AuthForm';
 import { APP_NAME, ROUTES } from '@/constants';
 import { signInWithEmail } from '@/lib/api/auth';
-import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
-import { createClient } from '@supabase/supabase-js';
 
-// Indique à Next.js de ne pas prérender cette page
 export const dynamic = 'force-dynamic';
 
 type FormErrors = {
@@ -18,102 +15,82 @@ type FormErrors = {
 };
 
 /**
- * Page de connexion
+ * Page de connexion optimisée pour éviter les boucles de redirection
  */
 export default function SignInPage() {
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
-  
+
   const handleSubmit = async (data: AuthFormData) => {
-    setIsLoading(true);
-    setErrors({});
-    
     try {
-      const response = await signInWithEmail(data.email, data.password);
+      setIsLoading(true);
+      setErrors({});
       
-      if (response.data.user) {
-        // Récupérer l'utilisateur
-        const user = response.data.user;
-        
-        if (user) {
-          // Créer un cookie de session pour le middleware
-          const sessionData = {
-            id: user.id,
-            email: data.email
-          };
-          document.cookie = `user-session=${encodeURIComponent(JSON.stringify(sessionData))}; path=/; max-age=86400`;
-          
-          // Chercher le rôle dans la base de données
-          const supabaseClient = supabase || createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-          );
-          
-          const { data: userData, error } = await supabaseClient
-            .from('users')
-            .select('role')
-            .eq('id', user.id)
-            .single();
-          
-          if (error) {
-            // Erreur lors de la récupération du rôle de la BD
-            // Essayer de récupérer le rôle depuis les métadonnées de l'utilisateur
-            const userMetadataRole = user.user_metadata?.role || '';
-            
-            // Stocker les informations utilisateur dans localStorage
-            localStorage.setItem('user-role', String(userMetadataRole || 'enterprise'));
-            localStorage.setItem('user-email', String(user.email || data.email));
-            localStorage.setItem('user-name', String(user.user_metadata?.name || data.email || ''));
-            
-            if (userMetadataRole === 'creator') {
-              // Redirection vers tableau de bord créateur (depuis métadonnées)
-              if (window.location.pathname !== ROUTES.DASHBOARD.CREATOR.ROOT) {
-                router.push(ROUTES.DASHBOARD.CREATOR.ROOT);
-              }
-            } else {
-              // Redirection vers tableau de bord entreprise (défaut)
-              if (window.location.pathname !== ROUTES.DASHBOARD.ENTERPRISE.ROOT) {
-                router.push(ROUTES.DASHBOARD.ENTERPRISE.ROOT);
-              }
-            }
-            return;
-          }
-          
-          // Stocker les informations utilisateur dans localStorage
-          localStorage.setItem('user-role', String(userData?.role || 'enterprise'));
-          localStorage.setItem('user-email', String(user.email || data.email));
-          localStorage.setItem('user-name', String(user.user_metadata?.name || data.email || ''));
-          
-          // Redirection basée sur le rôle
-          if (userData?.role === 'creator') {
-            // Redirection vers tableau de bord créateur (depuis BD)
-            if (window.location.pathname !== ROUTES.DASHBOARD.CREATOR.ROOT) {
-              router.push(ROUTES.DASHBOARD.CREATOR.ROOT);
-            }
-          } else {
-            // Redirection vers tableau de bord entreprise (depuis BD)
-            if (window.location.pathname !== ROUTES.DASHBOARD.ENTERPRISE.ROOT) {
-              router.push(ROUTES.DASHBOARD.ENTERPRISE.ROOT);
-            }
-          }
-        }
+      // Authentification avec email et mot de passe
+      console.log('Tentative de connexion avec:', data.email);
+      const { data: authData, error: authError } = await signInWithEmail(data.email, data.password);
+      
+      if (authError) throw authError;
+      
+      if (!authData?.user) {
+        throw new Error("Échec d'authentification: aucun utilisateur retourné");
       }
-    } catch (error: any) {
-      console.error('SignIn error:', error);
       
-      // Gestion des erreurs spécifiques
+      const user = authData.user;
+      console.log('Utilisateur authentifié:', user.id);
+      
+      // Récupération du rôle depuis la base de données
+      const { data: userData, error: userError } = await supabase!
+        .from('users')
+        .select('role, name')
+        .eq('id', user.id)
+        .single();
+      
+      // Détermination du rôle
+      const userRole = !userError ? 
+        userData?.role : 
+        (user.user_metadata?.role || 'enterprise');
+      
+      const userName = !userError ? 
+        (userData?.name || user.user_metadata?.name || data.email) :
+        (user.user_metadata?.name || data.email);
+      
+      console.log('Rôle utilisateur:', userRole);
+      
+      // IMPORTANT: Inclure le rôle dans le cookie de session pour le middleware
+      const sessionData = {
+        id: user.id,
+        email: user.email || data.email,
+        role: userRole,
+        timestamp: Date.now()
+      };
+      
+      // Cookie avec le rôle pour que le middleware puisse faire les redirections appropriées
+      document.cookie = `user-session=${encodeURIComponent(JSON.stringify(sessionData))}; path=/; max-age=604800; SameSite=Strict`;
+      
+      // Stockage localStorage pour l'application
+      localStorage.setItem('user-id', user.id);
+      localStorage.setItem('user-role', userRole);
+      localStorage.setItem('user-email', user.email || data.email);
+      localStorage.setItem('user-name', userName);
+      
+      // Redirection - le middleware s'occupera de rediriger selon le rôle
+      // car le rôle est maintenant inclus dans le cookie
+      window.location.href = userRole === 'creator' ? 
+        ROUTES.DASHBOARD.CREATOR.ROOT : 
+        ROUTES.DASHBOARD.ENTERPRISE.ROOT;
+      
+    } catch (error: any) {
+      console.error('Erreur de connexion:', error);
+      
       if (error.message?.includes('Invalid login credentials')) {
-        // Selon le message d'erreur, déterminer si c'est l'email ou le mot de passe
-        if (error.message.includes('User not found') || error.message.includes('Email not found')) {
-          setErrors({
-            email: "Aucun compte n'est associé à cette adresse email"
-          });
-        } else {
-          setErrors({
-            password: "Mot de passe incorrect"
-          });
-        }
+        setErrors({
+          password: "Email ou mot de passe incorrect"
+        });
+      } else if (error.message?.includes('not found')) {
+        setErrors({
+          email: "Aucun compte n'est associé à cette adresse email"
+        });
       } else {
         setErrors({
           general: error.message || 'Une erreur est survenue lors de la connexion'
@@ -122,7 +99,7 @@ export default function SignInPage() {
     } finally {
       setIsLoading(false);
     }
-  };  
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
