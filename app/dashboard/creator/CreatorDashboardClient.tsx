@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { ROUTES, STATS_METRICS, AGENT_CATEGORIES } from '@/constants';
 import Card, { CardBody, CardHeader } from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
@@ -19,20 +20,67 @@ type CreatorDashboardClientProps = {
 
 /**
  * Composant client du tableau de bord créateur
+ * Inclut une vérification d'authentification côté client pour éviter les redirections en boucle
  */
 export default function CreatorDashboardClient({ userData }: CreatorDashboardClientProps) {
   console.log("userData:", userData, typeof userData);
   
+  const router = useRouter();
   // État pour suivre le chargement
   const [isLoading, setIsLoading] = useState(true);
+  const [isClientSideAuthChecked, setIsClientSideAuthChecked] = useState(false);
   
-  // Utiliser le hook pour récupérer les données
-  const { data: dashboardData, loading, error } = useCreatorDashboard(userData?.id);
+  // Vérification d'authentification côté client après hydratation
+  useEffect(() => {
+    // Fonction pour vérifier l'authentification côté client
+    const checkClientSideAuth = async () => {
+      try {
+        // S'assurer que localStorage est disponible (hydratation complète)
+        if (typeof window !== 'undefined') {
+          // Vérifier la session utilisateur dans localStorage
+          const storedUser = localStorage.getItem('user');
+          
+          // Si pas d'utilisateur dans localStorage et pas d'ID utilisateur dans les props
+          if (!storedUser && !userData?.id) {
+            console.log('CreatorDashboardClient: Aucun utilisateur trouvé, redirection vers login');
+            router.replace(ROUTES.AUTH.SIGNIN);
+            return;
+          }
+          
+          // Si Supabase est disponible, vérifier également la session côté client
+          if (supabase) {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+              console.log('CreatorDashboardClient: Aucune session Supabase, redirection vers login');
+              router.replace(ROUTES.AUTH.SIGNIN);
+              return;
+            }
+          }
+          
+          console.log('CreatorDashboardClient: Authentification validée côté client');
+          setIsClientSideAuthChecked(true);
+        }
+      } catch (error) {
+        console.error('Erreur lors de la vérification d\'authentification côté client:', error);
+        // En cas d'erreur, on considère que la vérification est faite pour éviter les boucles
+        setIsClientSideAuthChecked(true);
+      }
+    };
+    
+    checkClientSideAuth();
+  }, [router, userData?.id]);
+  
+  // Utiliser le hook pour récupérer les données seulement après vérification d'authentification
+  const { data: dashboardData, loading, error } = useCreatorDashboard(
+    isClientSideAuthChecked ? userData?.id : undefined
+  );
   
   // Mettre à jour l'état de chargement global
   useEffect(() => {
-    setIsLoading(loading);
-  }, [loading]);
+    if (isClientSideAuthChecked) {
+      setIsLoading(loading);
+    }
+  }, [loading, isClientSideAuthChecked]);
   
   // Gérer les erreurs
   if (error) {

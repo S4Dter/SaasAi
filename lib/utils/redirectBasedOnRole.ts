@@ -63,6 +63,7 @@ export function useRoleBasedRedirection() {
           } else {
             setIsLoading(false);
           }
+          setIsLoading(false); // Important: toujours arrêter le chargement après traitement
           return;
         }
         
@@ -72,22 +73,30 @@ export function useRoleBasedRedirection() {
             case 'creator':
               if (window.location.pathname !== ROUTES.DASHBOARD.CREATOR.ROOT) {
                 router.push(ROUTES.DASHBOARD.CREATOR.ROOT);
+              } else {
+                // Déjà sur la bonne page, ne pas relancer de redirection
+                console.log('Déjà sur le dashboard créateur, pas de redirection');
               }
               break;
             case 'enterprise':
               if (window.location.pathname !== ROUTES.DASHBOARD.ENTERPRISE.ROOT) {
                 router.push(ROUTES.DASHBOARD.ENTERPRISE.ROOT);
+              } else {
+                // Déjà sur la bonne page, ne pas relancer de redirection
+                console.log('Déjà sur le dashboard enterprise, pas de redirection');
               }
               break;
             default:
               // Si le rôle n'est pas reconnu, on ne redirige pas
               console.warn(`Rôle non reconnu: ${userData.role}`);
-              setIsLoading(false);
           }
         } else {
           // Pas de rôle défini, on ne redirige pas
-          setIsLoading(false);
+          console.log('Pas de rôle défini dans la BD');
         }
+        
+        // Toujours arrêter le chargement après traitement, quelle que soit l'issue
+        setIsLoading(false);
       } catch (error) {
         console.error('Erreur lors de la redirection basée sur le rôle:', error);
         setIsLoading(false);
