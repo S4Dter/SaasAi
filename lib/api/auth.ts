@@ -24,6 +24,21 @@ export async function signUpWithEmail(
   }
 
   try {
+    console.log('Inscription avec les métadonnées:', metadata);
+    
+    // Valider les métadonnées essentielles pour correspondre à la structure de la base de données
+    if (!metadata?.role) {
+      console.warn('Aucun rôle spécifié dans les métadonnées, utilisation de "enterprise" par défaut');
+      metadata = { ...metadata, role: 'enterprise' };
+    }
+    
+    // S'assurer que les métadonnées comprennent les champs requis par la table users
+    if (!metadata.name && typeof email === 'string') {
+      // Extraire un nom d'utilisateur de l'email si aucun nom n'est fourni
+      const username = email.split('@')[0];
+      metadata = { ...metadata, name: username };
+    }
+    
     // Use global domain for redirects - important for email confirmation to work correctly
     const redirectUrl = options?.emailRedirectTo || `https://marketplaceagentai.vercel.app/auth/callback`;
 

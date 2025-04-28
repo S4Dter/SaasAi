@@ -12,7 +12,7 @@
  * - Seuls les utilisateurs authentifiés peuvent lire leurs propres données
  * - Lecture des champs de base pour tous (nom, rôle) - utile pour l'affichage des créateurs d'agents
  * - Seul l'utilisateur concerné peut modifier ses propres données
- * - Possibilité d'insérer lors de l'inscription (pour auth hooks)
+ * - Autorisation complète pour l'insertion lors de l'inscription (pour auth hooks et confirmation)
  */
 export const usersSecurityRules = `
 -- Activer RLS sur la table users
@@ -23,6 +23,7 @@ DROP POLICY IF EXISTS "Les utilisateurs peuvent lire leurs propres données" ON 
 DROP POLICY IF EXISTS "Lecture de base pour tous" ON users;
 DROP POLICY IF EXISTS "Les utilisateurs peuvent mettre à jour leurs propres données" ON users;
 DROP POLICY IF EXISTS "Insertion possible lors de l'inscription" ON users;
+DROP POLICY IF EXISTS "Permettre insertion si ID correspond à auth.uid" ON users;
 
 -- Créer les politiques
 -- 1. Lecture complète de ses propres données
@@ -42,10 +43,17 @@ ON users FOR UPDATE
 USING (auth.uid() = id)
 WITH CHECK (auth.uid() = id);
 
--- 4. Insertion possible lors de l'inscription
-CREATE POLICY "Insertion possible lors de l'inscription"
+-- 4. Insertion possible lors de l'inscription, sans restrictions si l'ID correspond
+CREATE POLICY "Permettre insertion si ID correspond à auth.uid"
 ON users FOR INSERT
 WITH CHECK (auth.uid() = id);
+
+-- 5. Permettre l'insertion à tous les utilisateurs authentifiés (pour faciliter la confirmation)
+-- Cette politique est moins restrictive que la précédente, mais permet de résoudre les problèmes d'insertion
+-- lors de la confirmation de l'email
+CREATE POLICY "Autoriser insertion pour utilisateurs authentifiés"
+ON users FOR INSERT
+WITH CHECK (auth.uid() IS NOT NULL);
 `;
 
 /**

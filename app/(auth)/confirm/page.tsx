@@ -61,26 +61,58 @@ export default function ConfirmPage() {
         // Si l'utilisateur n'existe pas dans la table users, on l'insère
         if (userDataError && userDataError.code === 'PGRST116') { // PGRST116 est le code pour "No rows found"
           // Récupération du rôle depuis les métadonnées
-          // S'assurer que le rôle 'creator' est correctement préservé
+          // S'assurer que le rôle est correctement préservé
           const role = user.user_metadata?.role || 'enterprise';
           console.log('Métadonnées utilisateur:', user.user_metadata);
           console.log('Rôle détecté:', role);
           
-          // Insertion dans la table users
-          const { error: insertError } = await client
-            .from('users')
-            .insert({
+          try {
+            // Préparation des données pour l'insertion en respectant la structure exacte
+            // définie dans la base de données Supabase
+            const userData = {
               id: user.id,
               email: user.email,
               name: user.user_metadata?.name || user.email?.split('@')[0] || 'Utilisateur',
               role: role,
-              created_at: new Date().toISOString() // Utilisation de snake_case pour la compatibilité Supabase
-            });
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString(),
+              avatar: user.user_metadata?.avatar_url || null,
+              bio: user.user_metadata?.bio || null,
+              company: user.user_metadata?.company || null
+            };
+            
+            console.log('Tentative d\'insertion avec les données:', userData);
+            
+            // Utilisation de upsert pour éviter les erreurs de duplication
+            // et permettre l'insertion même si des contraintes RLS sont strictes
+            const { data, error: insertError } = await client
+              .from('users')
+              .upsert(userData, { 
+                onConflict: 'id',
+                ignoreDuplicates: false
+              });
+            
+            // Récupérer l'utilisateur inséré pour confirmation
+            const { data: insertedData } = await client
+              .from('users')
+              .select('*')
+              .eq('id', user.id)
+              .single();
 
-          if (insertError) {
-            console.error("Erreur lors de l'insertion de l'utilisateur:", insertError);
-          } else {
-            userData = { role };
+            if (insertError) {
+              console.error("Erreur lors de l'insertion de l'utilisateur:", insertError);
+              console.error("Code d'erreur:", insertError.code);
+              console.error("Détails:", insertError.details);
+              console.error("Message:", insertError.message);
+              console.error("Hint:", insertError.hint);
+              setError(`Erreur lors de l'enregistrement: ${insertError.message}`);
+            } else {
+              console.log('Insertion réussie, données retournées:', data);
+              // Ne pas réassigner userData, seulement utiliser la valeur
+            }
+          } catch (error: any) {
+            console.error('Exception lors de l\'insertion:', error);
+            setError(`Exception: ${error.message || 'Erreur inconnue lors de l\'enregistrement'}`);
           }
         } else if (userDataError) {
           throw userDataError;
