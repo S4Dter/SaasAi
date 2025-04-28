@@ -45,6 +45,7 @@ export function middleware(request: NextRequest) {
   if (pathname.startsWith('/dashboard')) {
     // Utilisateur non authentifié ou session invalide
     if (!isValidSession || !userId) {
+      console.log('Utilisateur non authentifié redirection vers:', ROUTES.AUTH.SIGNIN);
       return NextResponse.redirect(new URL(ROUTES.AUTH.SIGNIN, request.url));
     }
     
@@ -59,7 +60,7 @@ export function middleware(request: NextRequest) {
   }
 
   // Pages d'authentification - rediriger si déjà connecté
-  if ((pathname === ROUTES.AUTH.SIGNIN || pathname === ROUTES.AUTH.SIGNUP) && userId) {
+  if ((pathname.includes('/signin') || pathname.includes('/signup')) && userId) {
     // Redirection basée sur le rôle si disponible dans le cookie
     if (userRole === 'creator') {
       return NextResponse.redirect(new URL(ROUTES.DASHBOARD.CREATOR.ROOT, request.url));
@@ -75,7 +76,9 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     '/dashboard/:path*',
+    '/(auth)/signin',
+    '/(auth)/signup',
     '/signin',
-    '/signup',
+    '/signup'
   ]
 };

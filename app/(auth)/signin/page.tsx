@@ -85,10 +85,10 @@ export default function SignInPage() {
         ROUTES.DASHBOARD.CREATOR.ROOT : 
         ROUTES.DASHBOARD.ENTERPRISE.ROOT;
       
-      // Ajouter un léger délai pour permettre aux cookies d'être définis
-      setTimeout(() => {
-        router.push(redirectTo);
-      }, 500);
+      console.log('Redirection vers:', redirectTo);
+      
+      // Force une redirection sans délai et contourne le cache de navigation
+      window.location.href = redirectTo;
       
     } catch (error: any) {
       console.error('Erreur de connexion:', error);
