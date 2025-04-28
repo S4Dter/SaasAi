@@ -71,7 +71,29 @@ export function useCreatorDashboard(userId: string | undefined): HookState<Creat
 
         console.log('Fetching creator dashboard data for user ID:', userId);
 
-        // Charger les données en parallèle pour optimiser les performances
+        // Vérifier si Supabase est disponible
+        if (!supabase) {
+          throw new Error('Client Supabase non disponible');
+        }
+
+        // Fonction pour gérer les erreurs de requête Supabase avec un type générique
+        const safeQuery = async <T = any>(query: any, tableName: string): Promise<{ data: T[]; error: null | any }> => {
+          try {
+            const response = await query;
+            if (response.error) {
+              console.error(`Erreur lors de la requête à la table ${tableName}:`, response.error);
+              // Retourner un objet avec data vide au lieu de provoquer une erreur
+              return { data: [], error: null };
+            }
+            return response;
+          } catch (err) {
+            console.error(`Exception lors de la requête à la table ${tableName}:`, err);
+            // Retourner un objet avec data vide au lieu de provoquer une erreur
+            return { data: [], error: null };
+          }
+        };
+
+        // Charger les données en parallèle pour optimiser les performances, avec gestion d'erreur par table
         const [
           agentsResponse,
           viewsResponse,
@@ -81,128 +103,203 @@ export function useCreatorDashboard(userId: string | undefined): HookState<Creat
           recommendationsResponse
         ] = await Promise.all([
           // 1. Récupérer les agents créés par l'utilisateur
-          supabase
-            .from('agents')
-            .select('*')
-            .eq('creator_id', userId)
-            .order('created_at', { ascending: false }),
+          safeQuery(
+            supabase
+              .from('agents')
+              .select('*')
+              .eq('creator_id', userId)
+              .order('created_at', { ascending: false }),
+            'agents'
+          ),
 
           // 2. Récupérer les statistiques de vues pour les agents de l'utilisateur
-          supabase
-            .from('agent_views')
-            .select('agent_id, count')
-            .eq('creator_id', userId),
+          safeQuery(
+            supabase
+              .from('agent_views')
+              .select('agent_id, count')
+              .eq('creator_id', userId),
+            'agent_views'
+          ),
 
           // 3. Récupérer les conversions pour les agents de l'utilisateur
-          supabase
-            .from('agent_conversions')
-            .select('agent_id, count')
-            .eq('creator_id', userId),
+          safeQuery(
+            supabase
+              .from('agent_conversions')
+              .select('agent_id, count')
+              .eq('creator_id', userId),
+            'agent_conversions'
+          ),
 
           // 4. Récupérer les revenus pour les agents de l'utilisateur
-          supabase
-            .from('agent_revenue')
-            .select('agent_id, amount')
-            .eq('creator_id', userId),
+          safeQuery(
+            supabase
+              .from('agent_revenue')
+              .select('agent_id, amount')
+              .eq('creator_id', userId),
+            'agent_revenue'
+          ),
 
           // 5. Récupérer les contacts pour les agents de l'utilisateur
-          supabase
-            .from('contacts')
-            .select(`
-              *,
-              enterprise:enterprise_id(name, location)
-            `)
-            .eq('creator_id', userId)
-            .order('created_at', { ascending: false }),
+          safeQuery(
+            supabase
+              .from('contacts')
+              .select(`
+                *,
+                enterprise:enterprise_id(name, location)
+              `)
+              .eq('creator_id', userId)
+              .order('created_at', { ascending: false }),
+            'contacts'
+          ),
 
           // 6. Récupérer les recommandations d'agents
-          supabase
-            .from('agent_recommendations')
-            .select(`
-              *,
-              enterprise:enterprise_id(name, location)
-            `)
-            .eq('creator_id', userId)
-            .order('created_at', { ascending: false })
+          safeQuery(
+            supabase
+              .from('agent_recommendations')
+              .select(`
+                *,
+                enterprise:enterprise_id(name, location)
+              `)
+              .eq('creator_id', userId)
+              .order('created_at', { ascending: false }),
+            'agent_recommendations'
+          )
         ]);
 
-        // Gérer les erreurs potentielles
-        if (agentsResponse.error) throw agentsResponse.error;
-        if (viewsResponse.error) throw viewsResponse.error;
-        if (conversionsResponse.error) throw conversionsResponse.error;
-        if (revenueResponse.error) throw revenueResponse.error;
-        if (contactsResponse.error) throw contactsResponse.error;
-        if (recommendationsResponse.error) throw recommendationsResponse.error;
+        // Nous n'avons plus besoin de gérer les erreurs ici car safeQuery s'en charge déjà
+        // et retourne des tableaux vides en cas d'erreur
 
-        // Formater les agents
-        const formattedAgents = agentsResponse.data.map(agent => ({
-          ...agent,
-          id: agent.id,
-          name: agent.name,
-          slug: agent.slug || '',
-          description: agent.description || '',
-          shortDescription: agent.short_description || '',
-          category: agent.category,
-          creatorId: agent.creator_id,
-          pricing: agent.pricing,
-          featured: agent.featured || false,
-          logoUrl: agent.logo_url || '',
-          integrations: agent.integrations || [],
-          demoUrl: agent.demo_url,
-          demoVideoUrl: agent.demo_video_url,
-          screenshots: agent.screenshots,
-          createdAt: new Date(agent.created_at),
-          updatedAt: new Date(agent.updated_at)
-        })) as Agent[];
+        // Formater les agents avec vérification de l'existence des données
+        const formattedAgents = (agentsResponse.data || []).map((agent: any) => {
+          if (!agent) return null; // Ignorer les agents nuls
+          
+          try {
+            return {
+              ...agent,
+              id: agent.id,
+              name: agent.name || 'Sans nom',
+              slug: agent.slug || '',
+              description: agent.description || '',
+              shortDescription: agent.short_description || '',
+              category: agent.category || 'other',
+              creatorId: agent.creator_id,
+              pricing: agent.pricing || { model: 'subscription', startingPrice: 0, currency: 'EUR' },
+              featured: agent.featured || false,
+              logoUrl: agent.logo_url || '',
+              integrations: agent.integrations || [],
+              demoUrl: agent.demo_url,
+              demoVideoUrl: agent.demo_video_url,
+              screenshots: agent.screenshots || [],
+              createdAt: new Date(agent.created_at || Date.now()),
+              updatedAt: new Date(agent.updated_at || Date.now())
+            };
+          } catch (err) {
+            console.error('Erreur lors du formatage d\'un agent:', err, agent);
+            return null;
+          }
+        }).filter(Boolean) as Agent[]; // Filtrer les agents nuls
 
-        // Compiler les statistiques de vues
+        // Compiler les statistiques de vues avec gestion des erreurs
         const agentViews: Record<string, number> = {};
         let totalViews = 0;
-        viewsResponse.data.forEach(view => {
-          agentViews[view.agent_id] = view.count;
-          totalViews += view.count;
+        
+        (viewsResponse.data || []).forEach((view: any) => {
+          if (view && view.agent_id && typeof view.count === 'number') {
+            agentViews[view.agent_id] = view.count;
+            totalViews += view.count;
+          }
         });
 
-        // Compiler les statistiques de conversions
+        // Compiler les statistiques de conversions avec gestion des erreurs
         const agentConversions: Record<string, number> = {};
         let totalConversions = 0;
-        conversionsResponse.data.forEach(conversion => {
-          agentConversions[conversion.agent_id] = conversion.count;
-          totalConversions += conversion.count;
+        
+        (conversionsResponse.data || []).forEach((conversion: any) => {
+          if (conversion && conversion.agent_id && typeof conversion.count === 'number') {
+            agentConversions[conversion.agent_id] = conversion.count;
+            totalConversions += conversion.count;
+          }
         });
 
-        // Compiler les statistiques de revenus
+        // Compiler les statistiques de revenus avec gestion des erreurs
         const agentRevenue: Record<string, number> = {};
-        revenueResponse.data.forEach(revenue => {
-          agentRevenue[revenue.agent_id] = revenue.amount;
+        
+        (revenueResponse.data || []).forEach((revenue: any) => {
+          if (revenue && revenue.agent_id && typeof revenue.amount === 'number') {
+            agentRevenue[revenue.agent_id] = revenue.amount;
+          }
         });
 
-        // Formater les contacts
-        const formattedContacts = contactsResponse.data.map(contact => ({
-          id: contact.id,
-          agentId: contact.agent_id,
-          enterpriseId: contact.enterprise_id,
-          message: contact.message || '',
-          status: contact.status,
-          createdAt: new Date(contact.created_at),
-          enterprise: contact.enterprise ? {
-            name: contact.enterprise.name,
-            location: contact.enterprise.location
-          } : undefined
-        }));
+        // Définir les types pour les contacts et recommandations
+        type ContactType = {
+          id: string;
+          agentId: string;
+          enterpriseId: string;
+          message: string;
+          status: string;
+          createdAt: Date;
+          enterprise?: {
+            name: string;
+            location?: string;
+          };
+        };
 
-        // Formater les recommandations
-        const formattedRecommendations = recommendationsResponse.data.map(recommendation => ({
-          id: recommendation.id,
-          agentId: recommendation.agent_id,
-          enterpriseId: recommendation.enterprise_id,
-          reason: recommendation.reason || '',
-          createdAt: new Date(recommendation.created_at),
-          enterprise: recommendation.enterprise ? {
-            name: recommendation.enterprise.name,
-            location: recommendation.enterprise.location
-          } : undefined
-        }));
+        type RecommendationType = {
+          id: string;
+          agentId: string;
+          enterpriseId: string;
+          reason: string;
+          createdAt: Date;
+          enterprise?: {
+            name: string;
+            location?: string;
+          };
+        };
+
+        // Formater les contacts avec gestion des erreurs
+        const formattedContacts = (contactsResponse.data || []).map((contact: any) => {
+          if (!contact) return null; // Ignorer les contacts nuls
+          
+          try {
+            return {
+              id: contact.id,
+              agentId: contact.agent_id,
+              enterpriseId: contact.enterprise_id,
+              message: contact.message || '',
+              status: contact.status || 'pending',
+              createdAt: new Date(contact.created_at || Date.now()),
+              enterprise: contact.enterprise ? {
+                name: contact.enterprise.name || 'Entreprise',
+                location: contact.enterprise.location
+              } : undefined
+            };
+          } catch (err) {
+            console.error('Erreur lors du formatage d\'un contact:', err, contact);
+            return null;
+          }
+        }).filter(Boolean) as ContactType[];
+
+        // Formater les recommandations avec gestion des erreurs
+        const formattedRecommendations = (recommendationsResponse.data || []).map((recommendation: any) => {
+          if (!recommendation) return null; // Ignorer les recommandations nulles
+          
+          try {
+            return {
+              id: recommendation.id,
+              agentId: recommendation.agent_id,
+              enterpriseId: recommendation.enterprise_id,
+              reason: recommendation.reason || '',
+              createdAt: new Date(recommendation.created_at || Date.now()),
+              enterprise: recommendation.enterprise ? {
+                name: recommendation.enterprise.name || 'Entreprise',
+                location: recommendation.enterprise.location
+              } : undefined
+            };
+          } catch (err) {
+            console.error('Erreur lors du formatage d\'une recommandation:', err, recommendation);
+            return null;
+          }
+        }).filter(Boolean) as RecommendationType[];
 
         // Calculer les statistiques totales
         // Pour les clics, nous allons utiliser une estimation basée sur les vues
