@@ -13,21 +13,54 @@ import { ROUTES } from '@/constants';
  * @returns Les données utilisateur si l'authentification et le rôle sont valides
  */
 export async function withRoleProtection(expectedRole: 'creator' | 'enterprise') {
-  // Création d'un client Supabase côté serveur
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  // Détecter si nous sommes en mode génération statique (build)
+  const isStaticGeneration = process.env.NEXT_PHASE === 'phase-production-build';
   
-  // Nous n'avons pas besoin de récupérer manuellement les cookies,
-  // car Supabase le fait automatiquement côté client et serveur
+  // Si nous sommes en génération statique, retourner des données factices pour éviter les erreurs
+  if (isStaticGeneration) {
+    console.log('Mode génération statique détecté. Retour de données placeholder.');
+    return {
+      user: { id: 'static-generation-user-id' },
+      role: expectedRole,
+      email: `placeholder@example.com`,
+      name: `Placeholder ${expectedRole.charAt(0).toUpperCase() + expectedRole.slice(1)}`,
+    };
+  }
+  
+  // Créer les variables en dehors du bloc try pour les rendre accessibles plus tard
+  let supabase;
+  let user;
 
-  // Vérifier si l'utilisateur est connecté
-  const { data: { user }, error: userError } = await supabase.auth.getUser();
+  try {
+    // Création d'un client Supabase côté serveur
+    supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+    
+    // Vérifier si l'utilisateur est connecté, avec gestion d'erreur renforcée
+    const { data: userData, error: userError } = await supabase.auth.getUser()
+      .catch(error => {
+        console.error('Erreur Supabase lors de getUser:', error);
+        return { data: { user: null }, error };
+      });
 
-  // Si l'utilisateur n'est pas connecté ou en cas d'erreur, rediriger vers la page de connexion
-  if (userError || !user) {
-    console.error('Authentification échouée:', userError);
+    // Assigner l'utilisateur à la variable déclarée plus haut
+    user = userData.user;
+
+    // Si l'utilisateur n'est pas connecté ou en cas d'erreur, rediriger vers la page de connexion
+    if (userError || !user) {
+      console.error('Authentification échouée:', userError);
+      redirect(ROUTES.AUTH.SIGNIN);
+    }
+  } catch (error) {
+    console.error('Exception lors de la vérification d\'authentification:', error);
+    redirect(ROUTES.AUTH.SIGNIN);
+  }
+
+  // S'assurer que supabase et user sont définis
+  if (!supabase || !user) {
+    console.error('Variables supabase ou user non définies après la vérification');
     redirect(ROUTES.AUTH.SIGNIN);
   }
 
