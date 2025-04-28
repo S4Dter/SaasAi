@@ -30,6 +30,9 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
   const [isLoading, setIsLoading] = useState(true);
   const [isClientSideAuthChecked, setIsClientSideAuthChecked] = useState(false);
   
+  // État pour stocker l'ID utilisateur réel à utiliser
+  const [validUserId, setValidUserId] = useState<string | undefined>(undefined);
+  
   // Vérification d'authentification côté client après hydratation
   useEffect(() => {
     // Fonction pour vérifier l'authentification côté client
@@ -37,43 +40,64 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
       try {
         // S'assurer que localStorage est disponible (hydratation complète)
         if (typeof window !== 'undefined') {
-          // Vérifier la session utilisateur dans localStorage
-          const storedUser = localStorage.getItem('user');
+          console.log('CreatorDashboardClient: Vérification d\'authentification côté client');
           
-          // Si pas d'utilisateur dans localStorage et pas d'ID utilisateur dans les props
-          if (!storedUser && !userData?.id) {
-            console.log('CreatorDashboardClient: Aucun utilisateur trouvé, redirection vers login');
-            router.replace(ROUTES.AUTH.SIGNIN);
+          // Si l'ID utilisateur est déjà fourni dans les props et non vide
+          if (userData?.id) {
+            console.log('CreatorDashboardClient: ID utilisateur fourni dans les props:', userData.id);
+            setValidUserId(userData.id);
+            setIsClientSideAuthChecked(true);
             return;
           }
           
-          // Si Supabase est disponible, vérifier également la session côté client
+          // Vérifier la session utilisateur dans localStorage
+          const storedUser = localStorage.getItem('user');
+          let userIdFromStorage = '';
+          
+          if (storedUser) {
+            try {
+              const parsedUser = JSON.parse(storedUser);
+              userIdFromStorage = parsedUser.id;
+              console.log('CreatorDashboardClient: ID trouvé dans localStorage:', userIdFromStorage);
+            } catch (e) {
+              console.error('Erreur lors du parsing de l\'utilisateur dans localStorage:', e);
+            }
+          }
+          
+          // Si un ID est trouvé dans localStorage
+          if (userIdFromStorage) {
+            setValidUserId(userIdFromStorage);
+            setIsClientSideAuthChecked(true);
+            return;
+          }
+          
+          // Si Supabase est disponible, vérifier la session côté client
           if (supabase) {
             const { data: { session } } = await supabase.auth.getSession();
-            if (!session) {
-              console.log('CreatorDashboardClient: Aucune session Supabase, redirection vers login');
-              router.replace(ROUTES.AUTH.SIGNIN);
+            if (session?.user?.id) {
+              console.log('CreatorDashboardClient: ID trouvé dans la session Supabase:', session.user.id);
+              setValidUserId(session.user.id);
+              setIsClientSideAuthChecked(true);
               return;
             }
           }
           
-          console.log('CreatorDashboardClient: Authentification validée côté client');
-          setIsClientSideAuthChecked(true);
+          // Aucune source d'ID utilisateur trouvée, rediriger vers login
+          console.log('CreatorDashboardClient: Aucun ID utilisateur trouvé, redirection vers login');
+          router.replace(ROUTES.AUTH.SIGNIN);
         }
       } catch (error) {
         console.error('Erreur lors de la vérification d\'authentification côté client:', error);
-        // En cas d'erreur, on considère que la vérification est faite pour éviter les boucles
-        setIsClientSideAuthChecked(true);
+        // En cas d'erreur grave, rediriger vers login
+        router.replace(ROUTES.AUTH.SIGNIN);
       }
     };
     
     checkClientSideAuth();
   }, [router, userData?.id]);
   
-  // Utiliser le hook pour récupérer les données seulement après vérification d'authentification
-  const { data: dashboardData, loading, error } = useCreatorDashboard(
-    isClientSideAuthChecked ? userData?.id : undefined
-  );
+  // Utiliser le hook pour récupérer les données seulement lorsqu'un ID utilisateur valide est disponible
+  const { data: dashboardData, loading, error } = useCreatorDashboard(validUserId);
   
   // Mettre à jour l'état de chargement global
   useEffect(() => {
@@ -87,8 +111,34 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
     console.error('Erreur lors du chargement des données du dashboard:', error);
   }
   
-  // Si une erreur est survenue, afficher un message d'erreur et un bouton pour réessayer
+  // Afficher un message d'erreur approprié selon le contexte
   if (error && !loading) {
+    // Erreur spécifique : ID utilisateur non fourni
+    if (error.message === 'ID utilisateur non fourni') {
+      return (
+        <div className="p-8 text-center">
+          <div className="mb-4 text-red-500">
+            <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h2 className="text-xl font-bold mb-2">Session expirée ou introuvable</h2>
+          <p className="text-gray-600 mb-4">
+            Nous n'avons pas pu identifier votre session. Veuillez vous reconnecter pour accéder à votre tableau de bord.
+          </p>
+          <div className="flex justify-center">
+            <Button 
+              onClick={() => router.push(ROUTES.AUTH.SIGNIN)}
+              variant="primary"
+            >
+              Se connecter
+            </Button>
+          </div>
+        </div>
+      );
+    }
+    
+    // Autres erreurs génériques
     return (
       <div className="p-8 text-center">
         <div className="mb-4 text-red-500">
