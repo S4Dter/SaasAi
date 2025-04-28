@@ -1,17 +1,19 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ROUTES, STATS_METRICS, AGENT_CATEGORIES } from '@/constants';
 import Card, { CardBody, CardHeader } from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
-import { getAllAgents } from '@/mock/agents';
 import ProspectionTool from '@/components/dashboard/creator/ProspectionTool';
+import { useCreatorDashboard } from '@/lib/hooks/useCreatorDashboard';
+import { supabase } from '@/lib/supabaseClient';
 
 type CreatorDashboardClientProps = {
   userData: {
     email: string;
     name?: string;
+    id?: string;
   };
 };
 
@@ -19,18 +21,52 @@ type CreatorDashboardClientProps = {
  * Composant client du tableau de bord créateur
  */
 export default function CreatorDashboardClient({ userData }: CreatorDashboardClientProps) {
-  // Simulation d'agents créés par l'utilisateur (les 3 premiers de la liste)
-  const userAgents = getAllAgents().slice(0, 3);
+  console.log("userData:", userData, typeof userData);
   
-  // Génération de statistiques aléatoires pour la démo
-  const getRandomStat = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
+  // État pour suivre le chargement
+  const [isLoading, setIsLoading] = useState(true);
+  
+  // Utiliser le hook pour récupérer les données
+  const { data: dashboardData, loading, error } = useCreatorDashboard(userData?.id);
+  
+  // Mettre à jour l'état de chargement global
+  useEffect(() => {
+    setIsLoading(loading);
+  }, [loading]);
+  
+  // Gérer les erreurs
+  if (error) {
+    console.error('Erreur lors du chargement des données du dashboard:', error);
+  }
+  
+  // Extraire les données du dashboard
+  const userAgents = dashboardData?.userAgents || [];
+  const stats = dashboardData?.stats || { views: 0, clicks: 0, contacts: 0, conversions: 0 };
+  const agentViews = dashboardData?.agentViews || {};
+  const agentConversions = dashboardData?.agentConversions || {};
+  const agentRevenue = dashboardData?.agentRevenue || {};
+  const contacts = dashboardData?.contacts || [];
+  const recommendations = dashboardData?.recommendations || [];
+  
+// Fonction utilitaire pour les calculs et formatages
+const formatNumber = (num: number) => new Intl.NumberFormat('fr-FR').format(num);
 
+  // Afficher un indicateur de chargement
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
+        <p className="ml-4 text-lg text-gray-600">Chargement des données...</p>
+      </div>
+    );
+  }
+  
   return (
     <div>
       <div className="mb-6 flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">
-            Bienvenue {userData?.name} dans votre espace créateur
+            Bienvenue {userData?.name || userData?.email || 'Créateur'} dans votre espace créateur
           </h1>
           <p className="text-gray-600 mt-1">
             Gérez vos agents IA, suivez vos performances et développez votre activité
@@ -71,11 +107,11 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
                     {metric.label}
                   </p>
                   <p className="text-2xl font-bold text-gray-900">
-                    {/* Générer des statistiques aléatoires pour la démo */}
-                    {metric.id === 'views' && getRandomStat(500, 1500)}
-                    {metric.id === 'clicks' && getRandomStat(100, 300)}
-                    {metric.id === 'contacts' && getRandomStat(20, 50)}
-                    {metric.id === 'conversions' && getRandomStat(5, 15)}
+                    {/* Afficher les statistiques réelles */}
+                    {metric.id === 'views' && stats.views}
+                    {metric.id === 'clicks' && stats.clicks}
+                    {metric.id === 'contacts' && stats.contacts}
+                    {metric.id === 'conversions' && stats.conversions}
                   </p>
                 </div>
               </div>
@@ -116,7 +152,7 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-500">Prospects contactés</p>
-                  <p className="text-2xl font-bold text-gray-900">{getRandomStat(15, 50)}</p>
+                  <p className="text-2xl font-bold text-gray-900">{contacts.length}</p>
                 </div>
               </div>
             </div>
@@ -136,8 +172,29 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
             agents={userAgents}
             onContactEnterprise={async (enterpriseId, agentId, message) => {
               console.log('Contact entreprise', {enterpriseId, agentId, message});
-              // Simulation d'un appel API
-              return new Promise(resolve => setTimeout(resolve, 1000));
+              
+              // Appel Supabase pour enregistrer le contact
+              try {
+                if (!supabase) {
+                  throw new Error("Client Supabase non disponible");
+                }
+                
+                const { error } = await supabase
+                  .from('contacts')
+                  .insert({
+                    enterprise_id: enterpriseId,
+                    agent_id: agentId,
+                    creator_id: userData?.id,
+                    message: message,
+                    status: 'pending'
+                  });
+                
+                if (error) throw error;
+                // Retourne void au lieu de data pour être compatible avec le type attendu
+              } catch (error) {
+                console.error('Erreur lors de l\'enregistrement du contact:', error);
+                throw error;
+              }
             }}
           />
         </CardBody>
@@ -158,64 +215,92 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
         <CardBody>
           <div className="flex flex-col-reverse md:flex-row gap-6">
             <div className="md:w-2/3">
-              {/* Graphique simplifié pour la démo */}
+              {/* Graphique basé sur les revenus réels par agent */}
               <div className="bg-gray-50 p-4 rounded-lg h-64 flex items-end space-x-2">
-                {Array.from({ length: 30 }).map((_, i) => {
-                  const height = Math.floor(Math.random() * 70) + 10;
-                  return (
-                    <div 
-                      key={i} 
-                      className="bg-blue-500 rounded-t w-full"
-                      style={{ height: `${height}%` }}
-                      title={`Jour ${i + 1}: ${height * 10}€`}
-                    ></div>
-                  );
-                })}
+                {Object.entries(agentRevenue).length > 0 ? (
+                  Object.entries(agentRevenue).map(([agentId, amount], i) => {
+                    const agent = userAgents.find(a => a.id === agentId);
+                    const maxRevenue = Math.max(...Object.values(agentRevenue));
+                    const height = maxRevenue > 0 ? (amount / maxRevenue) * 100 : 10;
+                    
+                    return (
+                      <div 
+                        key={agentId} 
+                        className="bg-blue-500 rounded-t w-full"
+                        style={{ height: `${height}%` }}
+                        title={`${agent?.name}: ${amount}€`}
+                      ></div>
+                    );
+                  })
+                ) : (
+                  // Si aucun revenu enregistré, afficher des données de démo
+                  Array.from({ length: 5 }).map((_, i) => {
+                    const height = Math.floor(Math.random() * 70) + 10;
+                    return (
+                      <div 
+                        key={i} 
+                        className="bg-gray-300 rounded-t w-full"
+                        style={{ height: `${height}%` }}
+                        title="Pas encore de données"
+                      ></div>
+                    );
+                  })
+                )}
               </div>
               <div className="flex justify-between mt-2 text-xs text-gray-500">
-                <span>1 Avril</span>
-                <span>15 Avril</span>
-                <span>30 Avril</span>
+                <span>Revenus par agent</span>
               </div>
             </div>
             <div className="md:w-1/3 flex flex-col justify-between">
-              <div>
-                <h3 className="text-sm font-medium text-gray-500">Total du mois</h3>
-                <p className="text-3xl font-bold text-gray-900">4 320 €</p>
-                <p className="text-sm text-green-600">+12% par rapport au mois dernier</p>
-              </div>
-              
-              <div className="space-y-3 mt-4">
-                <div className="bg-gray-50 p-3 rounded-lg">
-                  <div className="flex justify-between items-center">
-                    <h4 className="text-sm font-medium">Abonnements</h4>
-                    <span className="text-sm font-bold">3 240 €</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-1.5 mt-2">
-                    <div className="bg-blue-600 h-1.5 rounded-full" style={{ width: '75%' }}></div>
-                  </div>
-                </div>
+              {/* Calcul du total des revenus */}
+              {(() => {
+                const totalRevenue = Object.values(agentRevenue).reduce((sum, amount) => sum + amount, 0);
+                const subscriptionRevenue = Math.round(totalRevenue * 0.75); // Estimation
+                const usageRevenue = Math.round(totalRevenue * 0.20); // Estimation
+                const onetimeRevenue = Math.round(totalRevenue * 0.05); // Estimation
                 
-                <div className="bg-gray-50 p-3 rounded-lg">
-                  <div className="flex justify-between items-center">
-                    <h4 className="text-sm font-medium">Usage</h4>
-                    <span className="text-sm font-bold">980 €</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-1.5 mt-2">
-                    <div className="bg-green-500 h-1.5 rounded-full" style={{ width: '25%' }}></div>
-                  </div>
-                </div>
-                
-                <div className="bg-gray-50 p-3 rounded-lg">
-                  <div className="flex justify-between items-center">
-                    <h4 className="text-sm font-medium">Achats uniques</h4>
-                    <span className="text-sm font-bold">100 €</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-1.5 mt-2">
-                    <div className="bg-purple-500 h-1.5 rounded-full" style={{ width: '5%' }}></div>
-                  </div>
-                </div>
-              </div>
+                return (
+                  <>
+                    <div>
+                      <h3 className="text-sm font-medium text-gray-500">Total du mois</h3>
+                      <p className="text-3xl font-bold text-gray-900">{totalRevenue} €</p>
+                      <p className="text-sm text-green-600">Basé sur les données Supabase</p>
+                    </div>
+                    
+                    <div className="space-y-3 mt-4">
+                      <div className="bg-gray-50 p-3 rounded-lg">
+                        <div className="flex justify-between items-center">
+                          <h4 className="text-sm font-medium">Abonnements</h4>
+                          <span className="text-sm font-bold">{subscriptionRevenue} €</span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-1.5 mt-2">
+                          <div className="bg-blue-600 h-1.5 rounded-full" style={{ width: '75%' }}></div>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-gray-50 p-3 rounded-lg">
+                        <div className="flex justify-between items-center">
+                          <h4 className="text-sm font-medium">Usage</h4>
+                          <span className="text-sm font-bold">{usageRevenue} €</span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-1.5 mt-2">
+                          <div className="bg-green-500 h-1.5 rounded-full" style={{ width: '20%' }}></div>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-gray-50 p-3 rounded-lg">
+                        <div className="flex justify-between items-center">
+                          <h4 className="text-sm font-medium">Achats uniques</h4>
+                          <span className="text-sm font-bold">{onetimeRevenue} €</span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-1.5 mt-2">
+                          <div className="bg-purple-500 h-1.5 rounded-full" style={{ width: '5%' }}></div>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                );
+              })()}
             </div>
           </div>
         </CardBody>
@@ -268,10 +353,10 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
                     ? AGENT_CATEGORIES.find(c => c.value === agent.category)?.label
                     : 'Non catégorisé';
                     
-                  // Statistiques simulées
-                  const views = getRandomStat(150, 500);
-                  const conversions = getRandomStat(5, 20);
-                  const conversionRate = ((conversions / views) * 100).toFixed(1);
+                  // Statistiques réelles
+                  const views = agentViews[agent.id] || 0;
+                  const conversions = agentConversions[agent.id] || 0;
+                  const conversionRate = views > 0 ? ((conversions / views) * 100).toFixed(1) : '0.0';
                   
                   return (
                     <tr key={agent.id} className="hover:bg-gray-50">
@@ -377,7 +462,7 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
       <Card>
         <CardHeader className="flex justify-between items-center">
           <h2 className="text-lg font-medium text-gray-900">
-            Prospects récents
+            Contacts récents
           </h2>
           <Link href={ROUTES.DASHBOARD.CREATOR.PROSPECTION}>
             <Button variant="outline" size="sm">
@@ -387,45 +472,112 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
         </CardHeader>
         <CardBody>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {Array.from({ length: 3 }).map((_, index) => (
-              <div key={index} className="border border-gray-200 rounded-lg p-4">
-                <div className="flex justify-between items-start">
-                  <div className="flex items-center">
-                    <div className="h-10 w-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-700 font-bold mr-3">
-                      {['E', 'J', 'C'][index]}
+            {contacts.length > 0 ? (
+              // Afficher les contacts réels
+              contacts.slice(0, 3).map((contact, index) => (
+                <div key={contact.id} className="border border-gray-200 rounded-lg p-4">
+                  <div className="flex justify-between items-start">
+                    <div className="flex items-center">
+                      <div className="h-10 w-10 bg-gray-100 rounded-full flex items-center justify-center text-blue-600 font-bold mr-3">
+                        {contact.enterprise?.name?.charAt(0) || 'E'}
+                      </div>
+                      <div>
+                        <h3 className="text-sm font-medium text-gray-900">
+                          {contact.enterprise?.name || 'Entreprise'}
+                        </h3>
+                        <p className="text-xs text-gray-500">
+                          {contact.enterprise?.location || 'Localisation inconnue'}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-sm font-medium text-gray-900">
-                        {['Entreprise Tech', 'Jardin Connecté', 'Cabinet Conseil'][index]}
-                      </h3>
-                      <p className="text-xs text-gray-500">
-                        {['Paris, France', 'Lyon, France', 'Bordeaux, France'][index]}
-                      </p>
-                    </div>
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                      ${contact.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 
+                        contact.status === 'contacted' ? 'bg-blue-100 text-blue-800' : 
+                        contact.status === 'meeting-scheduled' ? 'bg-green-100 text-green-800' : 
+                        'bg-gray-100 text-gray-800'}`}>
+                      {contact.status === 'pending' ? 'En attente' : 
+                       contact.status === 'contacted' ? 'Contacté' : 
+                       contact.status === 'meeting-scheduled' ? 'RDV programmé' : 
+                       'Fermé'}
+                    </span>
                   </div>
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                    Nouveau
-                  </span>
+                  <div className="mt-4">
+                    <p className="text-sm text-gray-600 line-clamp-3">
+                      {contact.message}
+                    </p>
+                  </div>
+                  <div className="mt-4 flex justify-between">
+                    <span className="text-xs text-gray-500">
+                      {new Date(contact.createdAt).toLocaleDateString('fr-FR')}
+                    </span>
+                    <button className="text-sm text-gray-600 hover:text-gray-800">
+                      Voir détails
+                    </button>
+                  </div>
                 </div>
-                <div className="mt-4">
-                  <p className="text-sm text-gray-600">
-                    {[
-                      'Entreprise en croissance recherchant des solutions d\'automatisation marketing.',
-                      'Startup spécialisée dans les objets connectés pour jardins, intéressée par des agents IA.',
-                      'Cabinet de conseil cherchant à intégrer l\'IA dans ses services clients.'
-                    ][index]}
-                  </p>
-                </div>
-                <div className="mt-4 flex justify-between">
-                  <button className="text-sm text-blue-600 hover:text-blue-800">
-                    Voir le profil
-                  </button>
-                  <button className="text-sm text-gray-600 hover:text-gray-800">
-                    Contacter
-                  </button>
-                </div>
+              ))
+            ) : (
+              // Message si aucun contact
+              <div className="col-span-3 py-8 text-center">
+                <p className="text-gray-500">Aucun contact récent. Utilisez l'outil de prospection pour contacter des entreprises.</p>
               </div>
-            ))}
+            )}
+          </div>
+        </CardBody>
+      </Card>
+      
+      {/* Recommandations */}
+      <Card className="mt-8">
+        <CardHeader className="flex justify-between items-center">
+          <h2 className="text-lg font-medium text-gray-900">
+            Recommandations pour entreprises
+          </h2>
+        </CardHeader>
+        <CardBody>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {recommendations.length > 0 ? (
+              // Afficher les recommandations réelles
+              recommendations.slice(0, 3).map((recommendation) => (
+                <div key={recommendation.id} className="border border-gray-200 rounded-lg p-4">
+                  <div className="flex justify-between items-start">
+                    <div className="flex items-center">
+                      <div className="h-10 w-10 bg-gray-100 rounded-full flex items-center justify-center text-green-600 font-bold mr-3">
+                        {recommendation.enterprise?.name?.charAt(0) || 'E'}
+                      </div>
+                      <div>
+                        <h3 className="text-sm font-medium text-gray-900">
+                          {recommendation.enterprise?.name || 'Entreprise'}
+                        </h3>
+                        <p className="text-xs text-gray-500">
+                          Agent recommandé: {userAgents.find(a => a.id === recommendation.agentId)?.name || 'Agent'}
+                        </p>
+                      </div>
+                    </div>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      Recommandation
+                    </span>
+                  </div>
+                  <div className="mt-4">
+                    <p className="text-sm text-gray-600 line-clamp-3">
+                      {recommendation.reason || "Recommandation basée sur les besoins de l'entreprise."}
+                    </p>
+                  </div>
+                  <div className="mt-4 flex justify-between">
+                    <span className="text-xs text-gray-500">
+                      {new Date(recommendation.createdAt).toLocaleDateString('fr-FR')}
+                    </span>
+                    <button className="text-sm text-blue-600 hover:text-blue-800">
+                      Contacter
+                    </button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              // Message si aucune recommandation
+              <div className="col-span-3 py-8 text-center">
+                <p className="text-gray-500">Aucune recommandation récente. Les recommandations apparaîtront ici quand vous en aurez fait aux entreprises.</p>
+              </div>
+            )}
           </div>
         </CardBody>
       </Card>

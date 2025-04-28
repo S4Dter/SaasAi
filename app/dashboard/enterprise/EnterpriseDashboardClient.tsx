@@ -19,6 +19,8 @@ type EnterpriseDashboardClientProps = {
  * Composant client du tableau de bord entreprise
  */
 export default function EnterpriseDashboardClient({ userData }: EnterpriseDashboardClientProps) {
+  console.log("userData:", userData, typeof userData);
+  
   // Utiliser les agents en vedette comme suggestions pour la démo
   const suggestedAgents = getFeaturedAgents().slice(0, 2);
 
@@ -26,7 +28,7 @@ export default function EnterpriseDashboardClient({ userData }: EnterpriseDashbo
     <div>
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">
-          Bienvenue {userData?.name || ''} dans votre espace entreprise
+          Bienvenue {userData?.name || userData?.email || 'Entreprise'} dans votre espace entreprise
         </h1>
         <p className="text-gray-600 mt-1">
           Retrouvez vos agents favoris, contactez des créateurs et découvrez de nouvelles solutions.

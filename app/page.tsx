@@ -4,7 +4,6 @@ import React, { Suspense } from 'react';
 import Link from 'next/link';
 import { APP_NAME, APP_DESCRIPTION } from '@/constants';
 import ThreeDScene from '@/app/components/ThreeDScene';
-import Footer from '@/components/layout/Footer';
 
 // Link card component for navigation grid
 interface LinkCardProps {
@@ -145,8 +144,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <Footer />
     </div>
   );
 }

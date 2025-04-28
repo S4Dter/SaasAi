@@ -59,13 +59,16 @@ export async function withRoleProtection(expectedRole: 'creator' | 'enterprise')
     }
     
     // Si le rôle est correct, on continue avec les métadonnées comme informations utilisateur
-    return {
+    // Garantir que toutes les valeurs retournées sont bien définies
+    const safeData = {
       user,
-      role: userMetadataRole,
-      // Autres informations des métadonnées qui pourraient être utiles
-      email: user.email,
-      name: user.user_metadata?.name || user.email,
+      role: userMetadataRole || 'unknown',
+      email: user?.email || '',
+      name: user?.user_metadata?.name || user?.email || '',
     };
+    
+    console.log('withRoleProtection (metadata path):', JSON.stringify(safeData));
+    return safeData;
   }
 
   // Vérifier si le rôle correspond à celui attendu
@@ -82,10 +85,14 @@ export async function withRoleProtection(expectedRole: 'creator' | 'enterprise')
   }
 
   // Si le rôle est correct, retourner les informations utilisateur
-  return {
+  // Garantir que toutes les valeurs retournées sont bien définies
+  const safeData = {
     user,
-    role: userData.role,
-    email: user.email,
-    name: user.user_metadata?.name || user.email,
+    role: userData?.role || 'unknown',
+    email: user?.email || '',
+    name: user?.user_metadata?.name || user?.email || '',
   };
+  
+  console.log('withRoleProtection (users DB path):', JSON.stringify(safeData));
+  return safeData;
 }

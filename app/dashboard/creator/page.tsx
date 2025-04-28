@@ -15,11 +15,17 @@ export default async function CreatorDashboardPage() {
   // Vérifier l'authentification et le rôle côté serveur
   const userData = await withRoleProtection('creator');
   
+  console.log('Creator page server component userData:', JSON.stringify(userData));
+  
   // Adapter le format des données utilisateur pour le composant client
+  // en s'assurant que les valeurs sont bien définies
   const clientUserData = {
-    email: userData.email || '',
-    name: userData.name
+    id: userData?.user?.id || '',
+    email: userData?.email || '',
+    name: userData?.name || ''
   };
+  
+  console.log('Creator page passing to client:', JSON.stringify(clientUserData));
   
   return (
     <CreatorDashboardClient userData={clientUserData} />
