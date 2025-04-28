@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import AuthForm, { AuthFormData } from '@/components/auth/AuthForm';
 import { APP_NAME, ROUTES } from '@/constants';
 import { signInWithEmail } from '@/lib/api/auth';
@@ -18,6 +19,7 @@ type FormErrors = {
  * Page de connexion optimisée pour éviter les boucles de redirection
  */
 export default function SignInPage() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
 
@@ -74,11 +76,19 @@ export default function SignInPage() {
       localStorage.setItem('user-email', user.email || data.email);
       localStorage.setItem('user-name', userName);
       
-      // Redirection - le middleware s'occupera de rediriger selon le rôle
-      // car le rôle est maintenant inclus dans le cookie
-      window.location.href = userRole === 'creator' ? 
+      // Redirection - forcer la redirection immédiatement plutôt que de se fier au middleware
+      // pour résoudre le problème de redirection
+      console.log('Redirection vers le tableau de bord...');
+      
+      // Utiliser une approche plus directe pour la redirection
+      const redirectTo = userRole === 'creator' ? 
         ROUTES.DASHBOARD.CREATOR.ROOT : 
         ROUTES.DASHBOARD.ENTERPRISE.ROOT;
+      
+      // Ajouter un léger délai pour permettre aux cookies d'être définis
+      setTimeout(() => {
+        router.push(redirectTo);
+      }, 500);
       
     } catch (error: any) {
       console.error('Erreur de connexion:', error);

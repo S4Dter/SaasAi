@@ -67,21 +67,21 @@ export async function createCommunityPost(postData: CreatePostPayload): Promise<
       return { data: null, error: new Error('Client Supabase non disponible') };
     }
 
-    // Vérifier si l'utilisateur est connecté
-    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    // Vérifier si l'utilisateur est connecté en utilisant localStorage pour éviter les conflits
+    const userId = typeof window !== 'undefined' ? localStorage.getItem('user-id') : null;
     
-    if (userError || !user) {
-      console.error('Utilisateur non connecté:', userError);
+    if (!userId) {
+      console.error('Utilisateur non connecté: pas d\'ID utilisateur dans localStorage');
       return { data: null, error: new Error('Vous devez être connecté pour publier un message') };
     }
 
-    // Créer le post avec l'ID de l'utilisateur connecté
+    // Créer le post avec l'ID de l'utilisateur connecté à partir de localStorage
     const { data, error } = await supabase
       .from('community_posts')
       .insert({
         title: postData.title,
         content: postData.content,
-        user_id: user.id
+        user_id: userId
       })
       .select()
       .single();
@@ -95,7 +95,7 @@ export async function createCommunityPost(postData: CreatePostPayload): Promise<
     const { data: userData } = await supabase
       .from('users')
       .select('name, email')
-      .eq('id', user.id)
+      .eq('id', userId)
       .single();
 
     const formattedPost = {
@@ -123,11 +123,11 @@ export async function togglePostLike(postId: string, action: 'add' | 'remove'): 
       return { success: false, error: new Error('Client Supabase non disponible') };
     }
 
-    // Vérifier si l'utilisateur est connecté
-    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    // Vérifier si l'utilisateur est connecté en utilisant localStorage pour éviter les conflits
+    const userId = typeof window !== 'undefined' ? localStorage.getItem('user-id') : null;
     
-    if (userError || !user) {
-      console.error('Utilisateur non connecté:', userError);
+    if (!userId) {
+      console.error('Utilisateur non connecté: pas d\'ID utilisateur dans localStorage');
       return { success: false, error: new Error('Vous devez être connecté pour aimer un message') };
     }
 
@@ -137,7 +137,7 @@ export async function togglePostLike(postId: string, action: 'add' | 'remove'): 
         .from('community_post_likes')
         .insert({
           post_id: postId,
-          user_id: user.id
+          user_id: userId
         });
 
       if (error) {
@@ -150,7 +150,7 @@ export async function togglePostLike(postId: string, action: 'add' | 'remove'): 
         .from('community_post_likes')
         .delete()
         .eq('post_id', postId)
-        .eq('user_id', user.id);
+        .eq('user_id', userId);
 
       if (error) {
         console.error('Erreur lors de la suppression du like:', error);
@@ -181,8 +181,9 @@ export async function getPostLikeInfo(postId: string): Promise<{
       return { likes_count: 0, user_has_liked: false, error: new Error('Client Supabase non disponible') };
     }
 
-    // Vérifier si l'utilisateur est connecté
-    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    // Vérifier si l'utilisateur est connecté en utilisant localStorage pour éviter les conflits
+    const userId = typeof window !== 'undefined' ? localStorage.getItem('user-id') : null;
+    const userError = !userId ? new Error('Utilisateur non connecté') : null;
     
     // Récupérer le nombre total de likes
     const { count, error: countError } = await supabase
@@ -196,7 +197,7 @@ export async function getPostLikeInfo(postId: string): Promise<{
     }
 
     // Si l'utilisateur n'est pas connecté, retourner uniquement le nombre de likes
-    if (userError || !user) {
+    if (userError || !userId) {
       return { likes_count: count || 0, user_has_liked: false, error: null };
     }
 
@@ -205,7 +206,7 @@ export async function getPostLikeInfo(postId: string): Promise<{
       .from('community_post_likes')
       .select('*')
       .eq('post_id', postId)
-      .eq('user_id', user.id)
+      .eq('user_id', userId)
       .maybeSingle();
 
     if (likeError) {

@@ -22,24 +22,24 @@ export function useCommunity() {
 
   // Vérifier si l'utilisateur est connecté
   useEffect(() => {
-    const checkAuth = async () => {
-      if (!supabase) return;
-      
-      const { data } = await supabase.auth.getUser();
-      setIsAuthenticated(!!data.user);
+    // Utiliser localStorage pour détecter l'authentification afin d'éviter
+    // les conflits potentiels avec les autres hooks d'authentification
+    const checkAuth = () => {
+      const userId = localStorage.getItem('user-id');
+      setIsAuthenticated(!!userId);
     };
     
     checkAuth();
     
-    // S'abonner aux changements d'état d'authentification
-    const { data: { subscription } } = supabase?.auth.onAuthStateChange(
-      (_event, session) => {
-        setIsAuthenticated(!!session?.user);
-      }
-    ) || { data: { subscription: null } };
+    // Écouter les changements de localStorage
+    const handleStorageChange = () => {
+      checkAuth();
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
     
     return () => {
-      subscription?.unsubscribe();
+      window.removeEventListener('storage', handleStorageChange);
     };
   }, []);
 
