@@ -149,7 +149,7 @@ export async function signInWithEmail(email: string, password: string): Promise<
 
 /**
  * Se déconnecter
- * Fonction client uniquement
+ * Fonction client uniquement qui nettoie localStorage et déconnecte Supabase
  * @returns Une promesse indiquant le succès ou l'échec de la déconnexion
  */
 export async function signOut(): Promise<{ error: AuthError | null }> {
@@ -157,9 +157,36 @@ export async function signOut(): Promise<{ error: AuthError | null }> {
     throw new Error('La fonction signOut ne peut être utilisée que côté client');
   }
 
-  if (!supabase) {
-    throw new Error('Client Supabase non disponible');
+  try {
+    // Nettoyer localStorage pour éviter les résidus de session
+    localStorage.removeItem('user');
+    localStorage.removeItem('supabase.auth.token');
+    
+    // Supprimer les cookies de session
+    document.cookie = 'user-session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = 'supabase-auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    
+    if (!supabase) {
+      console.warn('Client Supabase non disponible, nettoyage manuel uniquement');
+      return { error: null };
+    }
+    
+    // Déconnexion côté Supabase
+    const { error } = await supabase.auth.signOut();
+    
+    if (error) {
+      console.error('Erreur lors de la déconnexion Supabase:', error);
+      throw error;
+    }
+    
+    console.log('Déconnexion réussie');
+    
+    // Force une actualisation complète pour effacer tout état en mémoire
+    window.location.href = '/';
+    
+    return { error: null };
+  } catch (error) {
+    console.error('Erreur lors de la déconnexion:', error);
+    return { error: error as AuthError };
   }
-
-  return await supabase.auth.signOut();
 }

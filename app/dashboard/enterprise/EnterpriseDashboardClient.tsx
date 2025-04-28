@@ -1,28 +1,120 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { ROUTES, STATS_METRICS } from '@/constants';
 import Card, { CardBody, CardHeader } from '@/components/ui/Card';
 import AgentCard from '@/components/agents/AgentCard';
 import Link from 'next/link';
 import Button from '@/components/ui/Button';
-import { getFeaturedAgents } from '@/mock/agents';
+import { useEnterpriseDashboard } from '@/lib/hooks/useEnterpriseDashboard';
+import { supabase } from '@/lib/supabaseClient';
 
 type EnterpriseDashboardClientProps = {
   userData: {
     email: string;
     name?: string;
+    id?: string;
   };
 };
 
 /**
  * Composant client du tableau de bord entreprise
+ * Utilise les vraies données Supabase
  */
 export default function EnterpriseDashboardClient({ userData }: EnterpriseDashboardClientProps) {
   console.log("userData:", userData, typeof userData);
   
-  // Utiliser les agents en vedette comme suggestions pour la démo
-  const suggestedAgents = getFeaturedAgents().slice(0, 2);
+  const router = useRouter();
+  // État pour suivre le chargement
+  const [isLoading, setIsLoading] = useState(true);
+  const [isClientSideAuthChecked, setIsClientSideAuthChecked] = useState(false);
+  
+  // État pour stocker l'ID utilisateur réel à utiliser
+  const [validUserId, setValidUserId] = useState<string | undefined>(undefined);
+  
+  // Vérification d'authentification côté client après hydratation
+  useEffect(() => {
+    // Fonction pour vérifier l'authentification côté client
+    const checkClientSideAuth = async () => {
+      try {
+        // S'assurer que localStorage est disponible (hydratation complète)
+        if (typeof window !== 'undefined') {
+          console.log('EnterpriseDashboardClient: Vérification d\'authentification côté client');
+          
+          // Si l'ID utilisateur est déjà fourni dans les props et non vide
+          if (userData?.id) {
+            console.log('EnterpriseDashboardClient: ID utilisateur fourni dans les props:', userData.id);
+            setValidUserId(userData.id);
+            setIsClientSideAuthChecked(true);
+            return;
+          }
+          
+          // Vérifier la session utilisateur dans localStorage
+          const storedUser = localStorage.getItem('user');
+          let userIdFromStorage = '';
+          
+          if (storedUser) {
+            try {
+              const parsedUser = JSON.parse(storedUser);
+              userIdFromStorage = parsedUser.id;
+              console.log('EnterpriseDashboardClient: ID trouvé dans localStorage:', userIdFromStorage);
+            } catch (e) {
+              console.error('Erreur lors du parsing de l\'utilisateur dans localStorage:', e);
+            }
+          }
+          
+          // Si un ID est trouvé dans localStorage
+          if (userIdFromStorage) {
+            setValidUserId(userIdFromStorage);
+            setIsClientSideAuthChecked(true);
+            return;
+          }
+          
+          // Si Supabase est disponible, vérifier la session côté client
+          if (supabase) {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session?.user?.id) {
+              console.log('EnterpriseDashboardClient: ID trouvé dans la session Supabase:', session.user.id);
+              setValidUserId(session.user.id);
+              setIsClientSideAuthChecked(true);
+              return;
+            }
+          }
+          
+          // Aucune source d'ID utilisateur trouvée, rediriger vers login
+          console.log('EnterpriseDashboardClient: Aucun ID utilisateur trouvé, redirection vers login');
+          router.replace(ROUTES.AUTH.SIGNIN);
+        }
+      } catch (error) {
+        console.error('Erreur lors de la vérification d\'authentification côté client:', error);
+        // En cas d'erreur grave, rediriger vers login
+        router.replace(ROUTES.AUTH.SIGNIN);
+      }
+    };
+    
+    checkClientSideAuth();
+  }, [router, userData?.id]);
+  
+  // Utiliser le hook pour récupérer les données du tableau de bord
+  const { data: dashboardData, loading, error } = useEnterpriseDashboard(validUserId);
+  
+  // Mettre à jour l'état de chargement global
+  useEffect(() => {
+    if (isClientSideAuthChecked) {
+      setIsLoading(loading);
+    }
+  }, [loading, isClientSideAuthChecked]);
+  
+  // Gérer les erreurs
+  if (error) {
+    console.error('Erreur lors du chargement des données du dashboard entreprise:', error);
+  }
+  
+  // Extraire les agents depuis les données du tableau de bord
+  const favoriteAgents = dashboardData?.favoriteAgents || [];
+  const suggestedAgents = dashboardData?.suggestedAgents || [];
+  const stats = dashboardData?.stats || { views: 0, clicks: 0, contacts: 0, conversions: 0 };
 
   return (
     <div>
@@ -62,7 +154,11 @@ export default function EnterpriseDashboardClient({ userData }: EnterpriseDashbo
                     {metric.label}
                   </p>
                   <p className="text-2xl font-bold text-gray-900">
-                    {Math.floor(Math.random() * 100) + 10}
+                    {/* Afficher les statistiques réelles */}
+                    {metric.id === 'views' && stats.views}
+                    {metric.id === 'clicks' && stats.clicks}
+                    {metric.id === 'contacts' && stats.contacts}
+                    {metric.id === 'conversions' && stats.conversions}
                   </p>
                 </div>
               </div>
@@ -85,10 +181,27 @@ export default function EnterpriseDashboardClient({ userData }: EnterpriseDashbo
         </CardHeader>
         <CardBody>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {suggestedAgents.map((agent) => (
-              <AgentCard key={agent.id} agent={agent} compact />
-            ))}
-            {suggestedAgents.length === 0 && (
+            {/* Affichage conditionnel selon l'état de chargement */}
+            {isLoading ? (
+              // Indicateur de chargement
+              Array.from({ length: 2 }).map((_, i) => (
+                <div key={i} className="animate-pulse">
+                  <div className="flex">
+                    <div className="w-12 h-12 bg-gray-200 rounded-md mr-3 flex-shrink-0"></div>
+                    <div className="flex-1">
+                      <div className="h-4 bg-gray-200 rounded mb-2 w-3/4"></div>
+                      <div className="h-3 bg-gray-200 rounded mb-1 w-full"></div>
+                      <div className="h-3 bg-gray-200 rounded w-4/5"></div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : favoriteAgents.length > 0 ? (
+              // Afficher les favoris réels
+              favoriteAgents.map((agent) => (
+                <AgentCard key={agent.id} agent={agent} compact />
+              ))
+            ) : (
               <p className="text-gray-500 col-span-2 text-center py-4">
                 Vous n&apos;avez pas encore d&apos;agents favoris. 
                 <Link href="/agents" className="text-blue-600 ml-1 hover:underline">
@@ -114,27 +227,57 @@ export default function EnterpriseDashboardClient({ userData }: EnterpriseDashbo
         </CardHeader>
         <CardBody>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {suggestedAgents.map((agent) => (
-              <div key={agent.id} className="flex">
-                <div className="w-12 h-12 bg-blue-100 rounded-md flex items-center justify-center mr-3 flex-shrink-0">
-                  <span className="text-blue-600 font-bold">{agent.name.charAt(0)}</span>
+            {/* Affichage conditionnel selon l'état de chargement */}
+            {isLoading ? (
+              // Indicateur de chargement
+              Array.from({ length: 2 }).map((_, i) => (
+                <div key={i} className="animate-pulse">
+                  <div className="flex">
+                    <div className="w-12 h-12 bg-gray-200 rounded-md mr-3 flex-shrink-0"></div>
+                    <div className="flex-1">
+                      <div className="h-4 bg-gray-200 rounded mb-2 w-3/4"></div>
+                      <div className="h-3 bg-gray-200 rounded mb-1 w-full"></div>
+                      <div className="h-3 bg-gray-200 rounded w-4/5"></div>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <Link 
-                    href={`/agents/${agent.id}`}
-                    className="text-gray-900 font-medium hover:text-blue-600"
-                  >
-                    {agent.name}
+              ))
+            ) : suggestedAgents.length > 0 ? (
+              // Afficher les suggestions réelles
+              suggestedAgents.map((agent) => (
+                <div key={agent.id} className="flex">
+                  <div className="w-12 h-12 bg-blue-100 rounded-md flex items-center justify-center mr-3 flex-shrink-0">
+                    <span className="text-blue-600 font-bold">{agent.name.charAt(0)}</span>
+                  </div>
+                  <div>
+                    <Link 
+                      href={`/agents/${agent.id}`}
+                      className="text-gray-900 font-medium hover:text-blue-600"
+                    >
+                      {agent.name}
+                    </Link>
+                    <p className="text-sm text-gray-500 line-clamp-2 mt-1">
+                      {agent.shortDescription}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      <span className="text-blue-600">Recommandé</span> car il correspond à votre secteur d&apos;activité
+                    </p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              // Message si aucune suggestion
+              <div className="col-span-2 py-6 text-center">
+                <p className="text-gray-500">
+                  Aucune suggestion pour le moment. Explorez notre catalogue pour découvrir des agents.
+                </p>
+                <div className="mt-4">
+                  <Link href="/agents">
+                    <Button>Voir le catalogue</Button>
                   </Link>
-                  <p className="text-sm text-gray-500 line-clamp-2 mt-1">
-                    {agent.shortDescription}
-                  </p>
-                  <p className="text-xs text-gray-500 mt-1">
-                    <span className="text-blue-600">Recommandé</span> car il correspond à votre secteur d&apos;activité
-                  </p>
                 </div>
               </div>
-            ))}
+            )}
           </div>
         </CardBody>
       </Card>

@@ -3,23 +3,39 @@ import { ROUTES } from './constants';
 
 /**
  * Middleware amélioré pour éviter les boucles de redirection
+ * et gérer correctement la déconnexion
  */
 export function middleware(request: NextRequest) {
-  // Récupération de la session utilisateur
+  // Récupération des cookies de session
   const userSession = request.cookies.get('user-session')?.value;
+  const supabaseAuthSession = request.cookies.get('supabase-auth-token')?.value;
   
-  // Décodage de la session
+  // Validation renforcée de la session
+  let isValidSession = false;
   let userId = undefined;
   let userRole = undefined;
   
-  if (userSession) {
+  // Une session est valide seulement si nous avons à la fois le cookie user-session et supabase-auth-token
+  if (userSession && supabaseAuthSession) {
     try {
+      // Vérifier que le cookie de session est bien formé
       const sessionData = JSON.parse(decodeURIComponent(userSession));
-      userId = sessionData.id;
-      // Récupérer le rôle si disponible dans le cookie (ajouté dans la version améliorée)
-      userRole = sessionData.role;
+      
+      // Vérifier que les données essentielles sont présentes
+      if (sessionData && sessionData.id) {
+        userId = sessionData.id;
+        userRole = sessionData.role;
+        isValidSession = true;
+        
+        // Vérifier également que le token Supabase est valide (format de base)
+        // Note: une validation complète nécessiterait de vérifier via l'API Supabase
+        if (!supabaseAuthSession.includes('.')) {
+          isValidSession = false;
+        }
+      }
     } catch (error) {
-      console.error('Erreur de parsing du cookie de session');
+      console.error('Erreur de validation du cookie de session:', error);
+      isValidSession = false;
     }
   }
   
@@ -27,8 +43,8 @@ export function middleware(request: NextRequest) {
   
   // Protection des routes du dashboard
   if (pathname.startsWith('/dashboard')) {
-    // Utilisateur non authentifié
-    if (!userId) {
+    // Utilisateur non authentifié ou session invalide
+    if (!isValidSession || !userId) {
       return NextResponse.redirect(new URL(ROUTES.AUTH.SIGNIN, request.url));
     }
     
