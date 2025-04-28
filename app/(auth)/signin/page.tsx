@@ -80,15 +80,11 @@ export default function SignInPage() {
       // pour résoudre le problème de redirection
       console.log('Redirection vers le tableau de bord...');
       
-      // Utiliser une approche plus directe pour la redirection
-      const redirectTo = userRole === 'creator' ? 
-        ROUTES.DASHBOARD.CREATOR.ROOT : 
-        ROUTES.DASHBOARD.ENTERPRISE.ROOT;
+      // Utiliser la page intermédiaire de redirection pour éviter les problèmes de navigation 
+      console.log('Redirection vers la page intermédiaire');
       
-      console.log('Redirection vers:', redirectTo);
-      
-      // Force une redirection sans délai et contourne le cache de navigation
-      window.location.href = redirectTo;
+      // Force une redirection vers notre page intermédiaire de redirection
+      window.location.href = '/redirect';
       
     } catch (error: any) {
       console.error('Erreur de connexion:', error);
