@@ -1,11 +1,12 @@
 "use client";
 
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Button from '../ui/Button';
 import { APP_NAME, ROUTES } from '@/constants';
+import { useAuth } from '@/lib/hooks/useAuth';
+import { signOut } from '@/lib/api/auth';
 
 /**
  * Composant Header pour la navigation principale
@@ -15,11 +16,59 @@ import { APP_NAME, ROUTES } from '@/constants';
  */
 const Header: React.FC = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   
-  // Mock - À remplacer par un vrai système d'auth
-  const isLoggedIn = false; 
-  const userRole = null; // 'enterprise' ou 'creator'
+  // Utilisation du hook d'authentification pour récupérer l'état de connexion
+  const { data: user, loading } = useAuth();
+  
+  // Détermine si l'utilisateur est connecté et son rôle
+  const isLoggedIn = !!user;
+  const userRole = user?.role;
+  const userName = user?.name;
+  
+  // Effet pour s'assurer que le composant est monté côté client
+  useEffect(() => {
+    setIsClient(true);
+    
+    // Pour debugging uniquement
+    if (typeof window !== 'undefined') {
+      console.log('localStorage user:', localStorage.getItem('user'));
+      console.log('Session cookie:', document.cookie.includes('user-session'));
+    }
+  }, []);
+  
+  // Fonction pour la déconnexion
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      // Forcer le rafraîchissement de la page après déconnexion
+      router.push(ROUTES.HOME);
+      router.refresh();
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion:', error);
+    }
+  };
+  
+  // Ne rien afficher côté serveur pour éviter l'hydratation incorrecte
+  // Cela évite les erreurs de mismatch entre serveur et client
+  if (!isClient) {
+    return (
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-4">
+          <nav className="flex items-center justify-between">
+            {/* Logo uniquement au chargement initial */}
+            <div className="flex items-center">
+              <Link href={ROUTES.HOME} className="flex items-center">
+                <span className="text-blue-600 text-2xl font-bold">{APP_NAME}</span>
+              </Link>
+            </div>
+          </nav>
+        </div>
+      </header>
+    );
+  }
   
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -50,34 +99,47 @@ const Header: React.FC = () => {
               Catalogue
             </Link>
             
-            {/* Liens pour visiteurs non connectés */}
-            {!isLoggedIn && (
-              <>
-                <Link href={ROUTES.AUTH.SIGNIN}>
-                  <Button variant="outline" size="sm">Connexion</Button>
-                </Link>
-                <Link href={ROUTES.AUTH.SIGNUP}>
-                  <Button size="sm">Inscription</Button>
-                </Link>
-              </>
+            {/* Affichage d'un indicateur de chargement pendant la vérification d'authentification */}
+            {loading ? (
+              <div className="animate-pulse w-20 h-8 bg-gray-200 rounded"></div>
+            ) : (
+              /* Liens pour visiteurs non connectés */
+              !isLoggedIn && (
+                <>
+                  <Link href={ROUTES.AUTH.SIGNIN}>
+                    <Button variant="outline" size="sm">Connexion</Button>
+                  </Link>
+                  <Link href={ROUTES.AUTH.SIGNUP}>
+                    <Button size="sm">Inscription</Button>
+                  </Link>
+                </>
+              )
             )}
 
             {/* Liens pour entreprises connectées */}
             {isLoggedIn && userRole === 'enterprise' && (
               <>
+                <span className="text-gray-700">
+                  Bonjour, {userName || 'Utilisateur'}
+                </span>
                 <Link 
                   href={ROUTES.DASHBOARD.ENTERPRISE.ROOT}
                   className={`text-gray-700 hover:text-blue-600 ${isActive(ROUTES.DASHBOARD.ENTERPRISE.ROOT) ? 'font-medium text-blue-600' : ''}`}
                 >
                   Mon espace
                 </Link>
-                <Button variant="outline" size="sm">Déconnexion</Button>
+                <Button variant="outline" size="sm" onClick={handleSignOut}>
+                  Déconnexion
+                </Button>
               </>
             )}
 
             {/* Liens pour créateurs connectés */}
             {isLoggedIn && userRole === 'creator' && (
               <>
+                <span className="text-gray-700">
+                  Bonjour, {userName || 'Créateur'}
+                </span>
                 <Link 
                   href={ROUTES.DASHBOARD.CREATOR.ROOT}
                   className={`text-gray-700 hover:text-blue-600 ${isActive(ROUTES.DASHBOARD.CREATOR.ROOT) ? 'font-medium text-blue-600' : ''}`}
@@ -87,7 +149,9 @@ const Header: React.FC = () => {
                 <Link href={ROUTES.DASHBOARD.CREATOR.ADD_AGENT}>
                   <Button size="sm">Ajouter un agent</Button>
                 </Link>
-                <Button variant="outline" size="sm">Déconnexion</Button>
+                <Button variant="outline" size="sm" onClick={handleSignOut}>
+                  Déconnexion
+                </Button>
               </>
             )}
           </div>
@@ -125,21 +189,29 @@ const Header: React.FC = () => {
               Catalogue
             </Link>
             
-            {/* Liens pour visiteurs non connectés */}
-            {!isLoggedIn && (
-              <div className="flex flex-col space-y-2">
-                <Link href={ROUTES.AUTH.SIGNIN} className="w-full" onClick={() => setIsMenuOpen(false)}>
-                  <Button variant="outline" fullWidth>Connexion</Button>
-                </Link>
-                <Link href={ROUTES.AUTH.SIGNUP} className="w-full" onClick={() => setIsMenuOpen(false)}>
-                  <Button fullWidth>Inscription</Button>
-                </Link>
-              </div>
+            {/* Affichage d'un indicateur de chargement pendant la vérification d'authentification */}
+            {loading ? (
+              <div className="animate-pulse w-full h-10 bg-gray-200 rounded mb-2"></div>
+            ) : (
+              /* Liens pour visiteurs non connectés */
+              !isLoggedIn && (
+                <div className="flex flex-col space-y-2">
+                  <Link href={ROUTES.AUTH.SIGNIN} className="w-full" onClick={() => setIsMenuOpen(false)}>
+                    <Button variant="outline" fullWidth>Connexion</Button>
+                  </Link>
+                  <Link href={ROUTES.AUTH.SIGNUP} className="w-full" onClick={() => setIsMenuOpen(false)}>
+                    <Button fullWidth>Inscription</Button>
+                  </Link>
+                </div>
+              )
             )}
 
             {/* Liens pour entreprises connectées */}
             {isLoggedIn && userRole === 'enterprise' && (
               <div className="flex flex-col space-y-2">
+                <span className="block py-2 text-gray-700">
+                  Bonjour, {userName || 'Utilisateur'}
+                </span>
                 <Link 
                   href={ROUTES.DASHBOARD.ENTERPRISE.ROOT}
                   className={`block py-2 text-gray-700 hover:text-blue-600 ${isActive(ROUTES.DASHBOARD.ENTERPRISE.ROOT) ? 'font-medium text-blue-600' : ''}`}
@@ -147,13 +219,18 @@ const Header: React.FC = () => {
                 >
                   Mon espace
                 </Link>
-                <Button variant="outline" fullWidth>Déconnexion</Button>
+                <Button variant="outline" fullWidth onClick={handleSignOut}>
+                  Déconnexion
+                </Button>
               </div>
             )}
 
             {/* Liens pour créateurs connectés */}
             {isLoggedIn && userRole === 'creator' && (
               <div className="flex flex-col space-y-2">
+                <span className="block py-2 text-gray-700">
+                  Bonjour, {userName || 'Créateur'}
+                </span>
                 <Link 
                   href={ROUTES.DASHBOARD.CREATOR.ROOT}
                   className={`block py-2 text-gray-700 hover:text-blue-600 ${isActive(ROUTES.DASHBOARD.CREATOR.ROOT) ? 'font-medium text-blue-600' : ''}`}
@@ -164,7 +241,9 @@ const Header: React.FC = () => {
                 <Link href={ROUTES.DASHBOARD.CREATOR.ADD_AGENT} className="w-full" onClick={() => setIsMenuOpen(false)}>
                   <Button fullWidth>Ajouter un agent</Button>
                 </Link>
-                <Button variant="outline" fullWidth>Déconnexion</Button>
+                <Button variant="outline" fullWidth onClick={handleSignOut}>
+                  Déconnexion
+                </Button>
               </div>
             )}
           </div>

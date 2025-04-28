@@ -87,7 +87,30 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
     console.error('Erreur lors du chargement des données du dashboard:', error);
   }
   
-  // Extraire les données du dashboard
+  // Si une erreur est survenue, afficher un message d'erreur et un bouton pour réessayer
+  if (error && !loading) {
+    return (
+      <div className="p-8 text-center">
+        <div className="mb-4 text-red-500">
+          <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h2 className="text-xl font-bold mb-2">Erreur de chargement des données</h2>
+        <p className="text-gray-600 mb-4">{error.message || "Une erreur est survenue lors du chargement de vos données."}</p>
+        <div className="flex justify-center">
+          <Button 
+            onClick={() => window.location.reload()}
+            variant="outline"
+          >
+            Réessayer
+          </Button>
+        </div>
+      </div>
+    );
+  }
+  
+  // Extraire les données du dashboard - utiliser les données réelles de Supabase
   const userAgents = dashboardData?.userAgents || [];
   const stats = dashboardData?.stats || { views: 0, clicks: 0, contacts: 0, conversions: 0 };
   const agentViews = dashboardData?.agentViews || {};
@@ -265,7 +288,9 @@ const formatNumber = (num: number) => new Intl.NumberFormat('fr-FR').format(num)
             <div className="md:w-2/3">
               {/* Graphique basé sur les revenus réels par agent */}
               <div className="bg-gray-50 p-4 rounded-lg h-64 flex items-end space-x-2">
+                {/* Afficher les données réelles de revenus */}
                 {Object.entries(agentRevenue).length > 0 ? (
+                  // Données réelles
                   Object.entries(agentRevenue).map(([agentId, amount], i) => {
                     const agent = userAgents.find(a => a.id === agentId);
                     const maxRevenue = Math.max(...Object.values(agentRevenue));
@@ -281,18 +306,13 @@ const formatNumber = (num: number) => new Intl.NumberFormat('fr-FR').format(num)
                     );
                   })
                 ) : (
-                  // Si aucun revenu enregistré, afficher des données de démo
-                  Array.from({ length: 5 }).map((_, i) => {
-                    const height = Math.floor(Math.random() * 70) + 10;
-                    return (
-                      <div 
-                        key={i} 
-                        className="bg-gray-300 rounded-t w-full"
-                        style={{ height: `${height}%` }}
-                        title="Pas encore de données"
-                      ></div>
-                    );
-                  })
+                  // Si aucun revenu enregistré, afficher un message plutôt que des données simulées
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-center text-gray-500">
+                      <p>Aucune donnée de revenu disponible</p>
+                      <p className="text-xs mt-2">Les revenus s'afficheront ici dès que vous aurez des transactions</p>
+                    </div>
+                  </div>
                 )}
               </div>
               <div className="flex justify-between mt-2 text-xs text-gray-500">
@@ -300,19 +320,45 @@ const formatNumber = (num: number) => new Intl.NumberFormat('fr-FR').format(num)
               </div>
             </div>
             <div className="md:w-1/3 flex flex-col justify-between">
-              {/* Calcul du total des revenus */}
+              {/* Calcul du total des revenus avec données réelles */}
               {(() => {
+                // Calcul avec les données réelles de Supabase
                 const totalRevenue = Object.values(agentRevenue).reduce((sum, amount) => sum + amount, 0);
-                const subscriptionRevenue = Math.round(totalRevenue * 0.75); // Estimation
-                const usageRevenue = Math.round(totalRevenue * 0.20); // Estimation
-                const onetimeRevenue = Math.round(totalRevenue * 0.05); // Estimation
+                
+                // Initialisation des valeurs
+                let subscriptionRevenue = 0;
+                let usageRevenue = 0;
+                let onetimeRevenue = 0;
+                
+                // Parcourir les agents pour calculer les revenus par type
+                userAgents.forEach(agent => {
+                  const revenue = agentRevenue[agent.id] || 0;
+                  if (agent.pricing.model === 'subscription') {
+                    subscriptionRevenue += revenue;
+                  } else if (agent.pricing.model === 'usage-based') {
+                    usageRevenue += revenue;
+                  } else if (agent.pricing.model === 'one-time') {
+                    onetimeRevenue += revenue;
+                  }
+                });
+                
+                // Si aucune donnée disponible, utiliser des estimations pour l'interface
+                if (totalRevenue === 0) {
+                  subscriptionRevenue = 0;
+                  usageRevenue = 0;
+                  onetimeRevenue = 0;
+                }
                 
                 return (
                   <>
                     <div>
                       <h3 className="text-sm font-medium text-gray-500">Total du mois</h3>
                       <p className="text-3xl font-bold text-gray-900">{totalRevenue} €</p>
-                      <p className="text-sm text-green-600">Basé sur les données Supabase</p>
+                      {totalRevenue > 0 ? (
+                        <p className="text-sm text-green-600">Données en temps réel</p>
+                      ) : (
+                        <p className="text-sm text-gray-500">Aucune transaction enregistrée</p>
+                      )}
                     </div>
                     
                     <div className="space-y-3 mt-4">
@@ -322,7 +368,14 @@ const formatNumber = (num: number) => new Intl.NumberFormat('fr-FR').format(num)
                           <span className="text-sm font-bold">{subscriptionRevenue} €</span>
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-1.5 mt-2">
-                          <div className="bg-blue-600 h-1.5 rounded-full" style={{ width: '75%' }}></div>
+                          <div 
+                            className="bg-blue-600 h-1.5 rounded-full" 
+                            style={{ 
+                              width: totalRevenue > 0 
+                                ? `${(subscriptionRevenue / totalRevenue) * 100}%` 
+                                : '0%' 
+                            }}
+                          ></div>
                         </div>
                       </div>
                       
@@ -332,7 +385,14 @@ const formatNumber = (num: number) => new Intl.NumberFormat('fr-FR').format(num)
                           <span className="text-sm font-bold">{usageRevenue} €</span>
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-1.5 mt-2">
-                          <div className="bg-green-500 h-1.5 rounded-full" style={{ width: '20%' }}></div>
+                          <div 
+                            className="bg-green-500 h-1.5 rounded-full" 
+                            style={{ 
+                              width: totalRevenue > 0 
+                                ? `${(usageRevenue / totalRevenue) * 100}%` 
+                                : '0%' 
+                            }}
+                          ></div>
                         </div>
                       </div>
                       
@@ -342,7 +402,14 @@ const formatNumber = (num: number) => new Intl.NumberFormat('fr-FR').format(num)
                           <span className="text-sm font-bold">{onetimeRevenue} €</span>
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-1.5 mt-2">
-                          <div className="bg-purple-500 h-1.5 rounded-full" style={{ width: '5%' }}></div>
+                          <div 
+                            className="bg-purple-500 h-1.5 rounded-full" 
+                            style={{ 
+                              width: totalRevenue > 0 
+                                ? `${(onetimeRevenue / totalRevenue) * 100}%` 
+                                : '0%'
+                            }}
+                          ></div>
                         </div>
                       </div>
                     </div>
