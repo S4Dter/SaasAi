@@ -21,7 +21,7 @@ export default [
     },
     plugins: {
       '@typescript-eslint': ts,
-      'next': next,
+      next,
     },
     rules: {
       'no-unused-vars': 'off',

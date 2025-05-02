@@ -2,6 +2,7 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 import { ROUTES } from "../constants";
 import { supabase } from "../lib/api/supabase/client";
 
@@ -59,37 +60,40 @@ export async function signInAction(formData: FormData) {
       timestamp: Date.now()
     };
     
-    // Configuration du cookie de session (accessible côté client pour le middleware)
-    // Utilisation de l'API compatible avec Next.js 15
-    const cookieJar = cookies();
+    // Dans Next.js 15, on utilise la méthode set de NextResponse.cookies
+    // au lieu d'utiliser cookies() directement pour les Server Actions
+    const dashboardPath = userRole === 'creator' 
+      ? ROUTES.DASHBOARD.CREATOR.ROOT 
+      : ROUTES.DASHBOARD.ENTERPRISE.ROOT;
     
-    cookieJar.set('user-session', encodeURIComponent(JSON.stringify(sessionData)), {
+    const response = NextResponse.redirect(new URL(dashboardPath, "http://localhost:3000"));
+    
+    // Configurer les cookies sur la réponse
+    response.cookies.set({
+      name: 'user-session',
+      value: encodeURIComponent(JSON.stringify(sessionData)),
       httpOnly: false, // Nécessaire pour que le middleware y accède
       maxAge: 60 * 60 * 24 * 7, // 7 jours
       path: '/',
-      sameSite: 'strict',
+      sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
     });
     
-    // Cookie Supabase (stocké par Supabase, mais nous assurons qu'il est correctement configuré)
-    // C'est optionnel car Supabase gère déjà ce cookie, mais cela garantit qu'il est configuré correctement
-    const supaSessionToken = data.session?.access_token;
-    if (supaSessionToken) {
-      cookieJar.set('supabase-auth-token', supaSessionToken, {
+    // Stocker le token Supabase
+    if (data.session?.access_token) {
+      response.cookies.set({
+        name: 'sb-auth-token',
+        value: data.session.access_token,
         httpOnly: true,
         maxAge: 60 * 60 * 24 * 7, // 7 jours
         path: '/',
-        sameSite: 'strict',
+        sameSite: 'lax',
         secure: process.env.NODE_ENV === 'production',
       });
     }
     
-    // Redirection basée sur le rôle
-    if (userRole === 'creator') {
-      redirect(ROUTES.DASHBOARD.CREATOR.ROOT);
-    } else {
-      redirect(ROUTES.DASHBOARD.ENTERPRISE.ROOT);
-    }
+    // Retourner la réponse avec les cookies et la redirection
+    return response;
     
   } catch (error: any) {
     // Gestion des erreurs
