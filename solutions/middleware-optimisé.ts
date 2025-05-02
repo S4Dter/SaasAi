@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ROUTES } from './constants';
+import { ROUTES } from '../constants';
 
 /**
  * Middleware optimisé pour Next.js 15 avec App Router

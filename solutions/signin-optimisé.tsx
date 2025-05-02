@@ -5,11 +5,7 @@ import { useRouter } from 'next/navigation';
 import AuthForm, { AuthFormData } from '@/components/auth/AuthForm';
 import { APP_NAME, ROUTES } from '@/constants';
 import { signInWithEmail } from '@/lib/api/auth';
-import { useAuthOptimized } from '@/lib/hooks/useAuthOptimized';
-import { signInAction } from '@/app/actions/auth';
-
-// Force le rendu dynamique pour garantir l'état frais à chaque requête
-export const dynamic = 'force-dynamic';
+import { useAuthOptimized } from '@/solutions/useAuth-optimisé';
 
 type FormErrors = {
   email?: string;
@@ -18,12 +14,13 @@ type FormErrors = {
 };
 
 /**
- * Page de connexion optimisée avec triple approche de redirection
- * 1. Server Action (redirect côté serveur)
- * 2. Hook d'authentification optimisé
- * 3. Fallbacks client progressifs
+ * Page de connexion optimisée avec redirection robuste
+ * Combines les 3 approches :
+ * 1. Utilisation de useEffect pour vérifier l'état d'authentification
+ * 2. Mécanisme de redirection après connexion réussie
+ * 3. Synchronisation des cookies et localStorage
  */
-export default function SignInPage() {
+export default function SignInOptimisedPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
@@ -38,36 +35,12 @@ export default function SignInPage() {
     }
   }, [user, authLoading, redirectToDashboard]);
 
-  /**
-   * Gestion de la soumission : approche hybride
-   * 1. Essaie d'abord Server Action
-   * 2. Si erreur ou désactivé, fallback à l'approche client
-   */
   const handleSubmit = async (data: AuthFormData) => {
     try {
       setIsLoading(true);
       setErrors({});
       
-      // Tentative 1: Server Action (si activé et disponible)
-      try {
-        const formData = new FormData();
-        formData.append('email', data.email);
-        formData.append('password', data.password);
-        
-        const result = await signInAction(formData);
-        
-        // Si on arrive ici, c'est que la redirection n'a pas eu lieu
-        // On passe au fallback
-        if (result && !result.success) {
-          throw new Error(result.error);
-        }
-      } catch (serverActionError: any) {
-        console.log('Server Action non disponible ou erreur:', serverActionError);
-        // Passer au fallback client
-      }
-      
-      // Fallback : Authentification client
-      console.log('Fallback: Authentification client');
+      // Connexion à Supabase via l'API auth
       const { data: authData, error: authError } = await signInWithEmail(data.email, data.password);
       
       if (authError) throw authError;
@@ -78,10 +51,9 @@ export default function SignInPage() {
       
       const user = authData.user;
       
-      // Détermination du rôle à partir des métadonnées utilisateur
+      // Stockage des informations de session dans les cookies et localStorage
+      // pour que le middleware puisse détecter l'authentification
       const userRole = user.user_metadata?.role || 'enterprise';
-      
-      // Synchronisation des cookies et localStorage
       const sessionData = {
         id: user.id,
         email: user.email || data.email,
@@ -89,30 +61,38 @@ export default function SignInPage() {
         timestamp: Date.now()
       };
       
+      // Configuration d'un cookie accessible côté client pour le middleware
       document.cookie = `user-session=${encodeURIComponent(JSON.stringify(sessionData))}; path=/; max-age=604800; SameSite=Strict`;
+      
+      // Stockage des informations dans localStorage
       localStorage.setItem('user-id', user.id);
       localStorage.setItem('user-role', userRole);
       localStorage.setItem('user-email', user.email || data.email);
+      localStorage.setItem('user-name', user.user_metadata?.name || data.email);
       
-      // STRATÉGIE DE REDIRECTION PROGRESSIVE
-
-      // 1. D'abord utiliser notre hook optimisé
+      // TRIPLE APPROCHE DE REDIRECTION
+      
+      // 1. Utiliser la fonction du hook d'authentification
       redirectToDashboard();
       
-      // 2. Fallback avec router.push avec délai court
+      // 2. FALLBACK: Redirection router avec un délai pour s'assurer que
+      // les cookies ont eu le temps d'être pris en compte par le middleware
       setTimeout(() => {
-        const dashboardPath = userRole === 'creator' 
-          ? ROUTES.DASHBOARD.CREATOR.ROOT
-          : ROUTES.DASHBOARD.ENTERPRISE.ROOT;
-        router.push(dashboardPath);
+        if (userRole === 'creator') {
+          router.push(ROUTES.DASHBOARD.CREATOR.ROOT);
+        } else {
+          router.push(ROUTES.DASHBOARD.ENTERPRISE.ROOT);
+        }
       }, 100);
       
-      // 3. Fallback ultime avec window.location.href
+      // 3. FALLBACK ULTIME: Forcer une redirection avec window.location
+      // si les 2 premières approches échouent
       setTimeout(() => {
-        const dashboardPath = userRole === 'creator' 
-          ? ROUTES.DASHBOARD.CREATOR.ROOT
-          : ROUTES.DASHBOARD.ENTERPRISE.ROOT;
-        window.location.href = dashboardPath;
+        if (userRole === 'creator') {
+          window.location.href = ROUTES.DASHBOARD.CREATOR.ROOT;
+        } else {
+          window.location.href = ROUTES.DASHBOARD.ENTERPRISE.ROOT;
+        }
       }, 300);
       
     } catch (error: any) {
