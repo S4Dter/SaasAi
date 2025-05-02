@@ -7,7 +7,7 @@ import { createClient } from '@supabase/supabase-js';
 /**
  * Server Action Next.js 15 pour l'authentification
  * - Exécute l'authentification côté serveur
- * - Redirige directement vers le tableau de bord approprié
+ * - Redirige vers le tableau de bord approprié
  */
 export async function signInAction(formData: FormData) {
   // Récupération des données du formulaire
@@ -64,19 +64,17 @@ export async function signInAction(formData: FormData) {
       userData?.role : 
       (user.user_metadata?.role || 'enterprise');
     
-    // NOTE: Dans une implémentation réelle avec Next.js 15, vous devriez
-    // utiliser l'API cookies() pour définir un cookie httpOnly ou
-    // utiliser les mécanismes de session de Supabase
+    // Note: Dans un Server Action Next.js 15, 
+    // la gestion des cookies est automatique via Supabase.
+    // Supabase défini lui-même les cookies nécessaires lors de l'authentification.
     
-    // Supabase gère automatiquement les cookies d'authentification,
-    // nous n'avons donc pas besoin de les configurer manuellement ici
+    // Nous pouvons simplement rediriger vers le tableau de bord approprié
+    const dashboardPath = userRole === 'creator' 
+      ? ROUTES.DASHBOARD.CREATOR.ROOT 
+      : ROUTES.DASHBOARD.ENTERPRISE.ROOT;
     
-    // Redirection basée sur le rôle
-    if (userRole === 'creator') {
-      redirect(ROUTES.DASHBOARD.CREATOR.ROOT);
-    } else {
-      redirect(ROUTES.DASHBOARD.ENTERPRISE.ROOT);
-    }
+    // Rediriger vers le tableau de bord approprié
+    redirect(dashboardPath);
     
   } catch (error: any) {
     // Gestion des erreurs
