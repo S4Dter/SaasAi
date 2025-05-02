@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 import { User } from '@/types';
 import { ROUTES } from '@/constants';
+import { AuthChangeEvent } from '@/types/auth';
+import { Session } from '@supabase/supabase-js';
 
 // Types pour le contexte d'authentification
 interface AuthState {
@@ -222,7 +224,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // S'abonner aux changements d'état d'authentification
     const { data: authListener } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      async (event: AuthChangeEvent, session: Session | null) => {
         if (event === 'SIGNED_IN' || event === 'USER_UPDATED') {
           checkAuth();
         } else if (event === 'SIGNED_OUT') {
