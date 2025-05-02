@@ -1,44 +1,44 @@
+import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import './globals.css';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
-import { APP_NAME, APP_DESCRIPTION } from '@/constants';
-import RoleBasedRedirect from '@/components/auth/RoleBasedRedirect';
+import { Toaster } from 'react-hot-toast';
 
-// Définition de la police Inter avec les sous-ensembles latin
-const inter = Inter({ 
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter',
-});
+const inter = Inter({ subsets: ['latin'] });
 
-// Métadonnées pour le SEO
 export const metadata: Metadata = {
-  title: {
-    template: `%s | ${APP_NAME}`,
-    default: APP_NAME,
-  },
-  description: APP_DESCRIPTION,
-  keywords: ['agents IA', 'intelligence artificielle', 'marketplace', 'IA entreprise', 'automatisation'],
-  authors: [{ name: APP_NAME }],
+  title: 'SaasAI - Marketplace d\'agents IA',
+  description: 'Connectez créateurs et entreprises via des agents IA spécialisés',
 };
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" className={inter.variable}>
-      <body className="flex flex-col min-h-screen bg-gray-50">
-        <RoleBasedRedirect>
-          <Header />
-          <main className="flex-grow">
-            {children}
-          </main>
-          <Footer />
-        </RoleBasedRedirect>
+    <html lang="fr">
+      <body className={inter.className}>
+        {children}
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 5000,
+            style: {
+              background: '#363636',
+              color: '#fff',
+            },
+            success: {
+              style: {
+                background: '#22c55e',
+              },
+            },
+            error: {
+              style: {
+                background: '#ef4444',
+              },
+            },
+          }}
+        />
       </body>
     </html>
   );

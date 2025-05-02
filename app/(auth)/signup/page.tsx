@@ -6,6 +6,8 @@ import AuthForm, { AuthFormData } from '@/components/auth/AuthForm';
 import { APP_NAME, ROUTES } from '@/constants';
 import Button from '@/components/ui/Button';
 import { signUpWithEmail } from '@/lib/api/auth';
+import { validateSignUp } from '@/lib/validators/auth';
+import { toast } from 'react-hot-toast';
 
 // Indique à Next.js de ne pas prérender cette page
 export const dynamic = 'force-dynamic';
@@ -13,6 +15,8 @@ export const dynamic = 'force-dynamic';
 type FormErrors = {
   email?: string;
   password?: string;
+  name?: string;
+  userType?: string;
   general?: string;
 };
 
@@ -93,33 +97,51 @@ export default function SignUpPage() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [registeredEmail, setRegisteredEmail] = useState<string | null>(null);
 
-  const handleSubmit = async (data: { email: string; password: string; userType?: string }) => {
+  const handleSubmit = async (data: { email: string; password: string; name?: string; userType?: string }) => {
     setIsLoading(true);
     setErrors({});
 
-    if (!data.userType) {
-      setErrors({
-        general: "Veuillez sélectionner votre type d'utilisateur"
-      });
+    // Valider les données avec Zod
+    const validation = validateSignUp(data);
+    
+    if (!validation.success || !validation.data) {
+      setErrors(validation.errors || {});
       setIsLoading(false);
       return;
     }
+    
+    // Les données validées (avec transformation automatique, ex: name=Anonymous si vide)
+    const validatedData = validation.data;
 
     try {
+      // Utilisons les données validées par Zod qui contient le name par défaut si non fourni
       const response = await signUpWithEmail(
-        data.email, 
-        data.password, 
-        { role: data.userType },
+        validatedData.email, 
+        validatedData.password, 
+        { 
+          role: validatedData.userType,
+          name: validatedData.name, // Nom validé (sera "Anonymous" si vide)
+        },
       );
 
-      if (response.data.user) {
-        setRegisteredEmail(data.email);
+      if (response.data?.user) {
+        toast.success("Votre compte a été créé avec succès");
+        setRegisteredEmail(validatedData.email);
       }
     } catch (error: any) {
       console.error('SignUp error:', error);
+      
+      // Afficher l'erreur avec toast
+      toast.error(error.message || "Une erreur est survenue lors de l'inscription");
+      
       if (error.message?.includes('User already registered')) {
         setErrors({
           email: "Un compte existe déjà avec cette adresse email."
+        });
+      } else if (error.message?.includes('null value in column "name"')) {
+        // Cas spécifique de l'erreur de contrainte NOT NULL
+        setErrors({
+          name: "Le nom est obligatoire"
         });
       } else {
         setErrors({
