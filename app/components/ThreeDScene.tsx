@@ -86,8 +86,8 @@ function Model({ scale = 1.5 }) {
     
     // Only apply the default rotation animation if no Scene animation is available/playing
     if (gltfRef.current && (!mixer || !actions["Scene"] || !actions["Scene"].isRunning())) {
-      gltfRef.current.rotation.y = state.clock.getElapsedTime() * 1;
-      gltfRef.current.position.y = Math.sin(state.clock.getElapsedTime() * 0.5) * 0.1;
+      gltfRef.current.rotation.y = state.clock.getElapsedTime() * 0.2;
+      gltfRef.current.position.y = Math.sin(state.clock.getElapsedTime() * 0.5) * 1;
     }
   });
 

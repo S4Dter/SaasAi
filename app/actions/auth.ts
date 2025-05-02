@@ -1,12 +1,15 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 import { ROUTES } from "../../constants";
-import { createClient } from '@supabase/supabase-js';
+import { createServerSupabaseClient } from "../../lib/api/auth-server";
 
 /**
  * Server Action Next.js 15 pour l'authentification
  * - Exécute l'authentification côté serveur
+ * - Gère les cookies de session
  * - Redirige vers le tableau de bord approprié
  */
 export async function signInAction(formData: FormData) {
@@ -23,20 +26,8 @@ export async function signInAction(formData: FormData) {
   }
   
   try {
-    // Création d'un client Supabase spécifique pour Server Action
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-    
-    if (!supabaseUrl || !supabaseAnonKey) {
-      throw new Error("Les variables d'environnement Supabase ne sont pas définies");
-    }
-    
-    const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-      },
-    });
+    // Utilisation du client Supabase spécifique pour Server Action
+    const supabase = createServerSupabaseClient();
     
     // Authentification
     const { data, error } = await supabase.auth.signInWithPassword({
