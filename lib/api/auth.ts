@@ -32,11 +32,11 @@ export async function signUpWithEmail(
       metadata = { ...metadata, role: 'enterprise' };
     }
     
-    // S'assurer que les métadonnées comprennent les champs requis par la table users
-    if (!metadata.name && typeof email === 'string') {
-      // Extraire un nom d'utilisateur de l'email si aucun nom n'est fourni
-      const username = email.split('@')[0];
-      metadata = { ...metadata, name: username };
+    // S'assurer que les métadonnées comprennent un nom (obligatoire en base de données)
+    if (!metadata.name || (typeof metadata.name === 'string' && metadata.name.trim() === '')) {
+      // Utiliser "Anonymous" comme valeur par défaut pour éviter les violations de contrainte NOT NULL
+      metadata = { ...metadata, name: 'Anonymous' };
+      console.log('Nom manquant, utilisation de "Anonymous" par défaut');
     }
     
     // Use global domain for redirects - important for email confirmation to work correctly
