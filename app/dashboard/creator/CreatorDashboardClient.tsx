@@ -98,9 +98,10 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
             console.warn('Client Supabase non disponible');
           }
           
-          // Aucune source d'ID utilisateur trouvée, rediriger vers login
-          console.log('CreatorDashboardClient: Aucun ID utilisateur trouvé, redirection vers login');
-          router.replace(ROUTES.AUTH.SIGNIN);
+          // Aucune source d'ID utilisateur trouvée, mais NE PAS rediriger pour éviter les boucles
+          console.error('CreatorDashboardClient: PROBLÈME CRITIQUE - Aucun ID utilisateur trouvé');
+          // Désactivation temporaire de la redirection pour débogage
+          // router.replace(ROUTES.AUTH.SIGNIN);
         }
       } catch (error) {
         console.error('Erreur lors de la vérification d\'authentification côté client:', error);

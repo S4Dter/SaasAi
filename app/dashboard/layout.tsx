@@ -40,15 +40,39 @@ export default async function DashboardLayout({
   // Navigation adaptée au rôle
   return (
     <AuthProvider>
-      {/* Script pour injecter les données utilisateur dans le localStorage */}
-      <script
+      {/* Script pour injecter les données utilisateur dans le localStorage avec plus de debugging */}
+      <script id="user-data-script"
         dangerouslySetInnerHTML={{
           __html: `
+            console.log('Script d\'injection des données utilisateur exécuté');
             try {
               if (typeof window !== 'undefined') {
                 // Stocker les données utilisateur dans localStorage
-                localStorage.setItem('user', JSON.stringify(${JSON.stringify(userDataForClient)}));
-                console.log('Données utilisateur injectées dans localStorage:', '${userDataForClient.id}');
+                const userData = ${JSON.stringify(userDataForClient)};
+                console.log('Données utilisateur à injecter:', userData);
+                
+                if (!userData || !userData.id) {
+                  console.error('⚠️ ATTENTION: Données utilisateur invalides ou sans ID');
+                }
+                
+                localStorage.setItem('user', JSON.stringify(userData));
+                console.log('✅ Données utilisateur injectées dans localStorage avec ID:', userData.id);
+                
+                // Vérification que les données ont bien été stockées
+                const storedData = localStorage.getItem('user');
+                if (storedData) {
+                  try {
+                    const parsedData = JSON.parse(storedData);
+                    console.log('Vérification des données stockées:', parsedData);
+                    if (parsedData.id !== userData.id) {
+                      console.error('⚠️ Incohérence dans l\'ID stocké');
+                    }
+                  } catch (e) {
+                    console.error('Erreur lors de la vérification des données:', e);
+                  }
+                } else {
+                  console.error('⚠️ Aucune donnée n\'a été stockée dans localStorage');
+                }
               }
             } catch (e) {
               console.error('Erreur lors de l\'injection des données utilisateur:', e);

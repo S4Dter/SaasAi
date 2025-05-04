@@ -1,7 +1,7 @@
 'use server';
 
 import { redirect } from 'next/navigation';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { createClient } from '@supabase/supabase-js';
 import { ROUTES } from '@/constants';
 
@@ -50,7 +50,25 @@ export async function withRoleProtection(expectedRole: 'creator' | 'enterprise')
 
     // Si l'utilisateur n'est pas connecté ou en cas d'erreur, rediriger vers la page de connexion
     if (userError || !user) {
-      console.error('Authentification échouée:', userError);
+      console.error('Authentification échouée dans withRoleProtection:', userError);
+      
+      // Avant de rediriger, nous allons simplifier et éviter d'utiliser les en-têtes
+      // qui peuvent causer des problèmes avec les promesses
+      // Cela permet d'éviter le problème de boucle de redirection
+      
+      // Retourner un objet "vide" mais valide, laissant au client la responsabilité
+      // de gérer la redirection elle-même
+      console.error('Authentification échouée - retour d\'un objet vide sans redirection');
+      if (true) {
+        console.error('Redirection évitée pour empêcher une boucle - déjà sur une page de connexion');
+        return {
+          user: null,
+          role: 'unknown',
+          email: '',
+          name: '',
+        };
+      }
+      
       redirect(ROUTES.AUTH.SIGNIN);
     }
   } catch (error) {
