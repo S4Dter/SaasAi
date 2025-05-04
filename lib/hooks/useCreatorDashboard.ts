@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../api/supabase/client';
 import { Agent } from '../../types';
 import { HookState } from '../../types/supabase';
+import { SupabaseClient } from '@supabase/supabase-js';
+
+// Importer directement depuis supabaseClient
+import { supabase } from '../supabaseClient';
 
 /**
  * Type pour les données du tableau de bord créateur
@@ -403,41 +406,51 @@ export function useCreatorDashboard(userId: string | undefined): HookState<Creat
     fetchDashboardData();
 
     // S'abonner aux modifications en temps réel des données liées au tableau de bord
-    const agentsChannel = supabase
-      .channel(`creator-agents-${userId}`)
-      .on('postgres_changes', { 
-        event: '*', 
-        schema: 'public', 
-        table: 'agents',
-        filter: `creator_id=eq.${userId}`
-      }, () => fetchDashboardData())
-      .subscribe();
+    // RealtimeChannel est un type générique pour éviter les erreurs TypeScript
+    type RealtimeChannel = { unsubscribe: () => void };
+    
+    let agentsChannel: RealtimeChannel | undefined;
+    let viewsChannel: RealtimeChannel | undefined;
+    let contactsChannel: RealtimeChannel | undefined;
+    
+    // Vérification que Supabase est disponible avant de créer les channels
+    if (supabase) {
+      agentsChannel = supabase
+        .channel(`creator-agents-${userId}`)
+        .on('postgres_changes', { 
+          event: '*', 
+          schema: 'public', 
+          table: 'agents',
+          filter: `creator_id=eq.${userId}`
+        }, () => fetchDashboardData())
+        .subscribe();
 
-    const viewsChannel = supabase
-      .channel(`creator-views-${userId}`)
-      .on('postgres_changes', { 
-        event: '*', 
-        schema: 'public', 
-        table: 'agent_views',
-        filter: `creator_id=eq.${userId}`
-      }, () => fetchDashboardData())
-      .subscribe();
+      viewsChannel = supabase
+        .channel(`creator-views-${userId}`)
+        .on('postgres_changes', { 
+          event: '*', 
+          schema: 'public', 
+          table: 'agent_views',
+          filter: `creator_id=eq.${userId}`
+        }, () => fetchDashboardData())
+        .subscribe();
 
-    const contactsChannel = supabase
-      .channel(`creator-contacts-${userId}`)
-      .on('postgres_changes', { 
-        event: '*', 
-        schema: 'public', 
-        table: 'contacts',
-        filter: `creator_id=eq.${userId}`
-      }, () => fetchDashboardData())
-      .subscribe();
+      contactsChannel = supabase
+        .channel(`creator-contacts-${userId}`)
+        .on('postgres_changes', { 
+          event: '*', 
+          schema: 'public', 
+          table: 'contacts',
+          filter: `creator_id=eq.${userId}`
+        }, () => fetchDashboardData())
+        .subscribe();
+    }
 
     // Nettoyage des souscriptions
     return () => {
-      agentsChannel.unsubscribe();
-      viewsChannel.unsubscribe();
-      contactsChannel.unsubscribe();
+      if (agentsChannel) agentsChannel.unsubscribe();
+      if (viewsChannel) viewsChannel.unsubscribe();
+      if (contactsChannel) contactsChannel.unsubscribe();
     };
   }, [userId]);
 
