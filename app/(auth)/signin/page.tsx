@@ -90,9 +90,19 @@ export default function SignInPage() {
       };
       
       document.cookie = `user-session=${encodeURIComponent(JSON.stringify(sessionData))}; path=/; max-age=604800; SameSite=Strict`;
+      
+      // Stocker à la fois les champs individuels pour la compatibilité avec le code existant
       localStorage.setItem('user-id', user.id);
       localStorage.setItem('user-role', userRole);
       localStorage.setItem('user-email', user.email || data.email);
+      
+      // Stocker également l'objet user complet pour le redirect/page.tsx
+      localStorage.setItem('user', JSON.stringify({
+        id: user.id,
+        email: user.email || data.email,
+        role: userRole,
+        timestamp: Date.now()
+      }));
       
       // STRATÉGIE DE REDIRECTION PROGRESSIVE
 

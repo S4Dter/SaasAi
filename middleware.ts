@@ -5,6 +5,7 @@ const PUBLIC_ROUTES = [
   '/', '/signin', '/signup', '/forgot-password', '/reset-password',
   '/agents', '/agents/[id]', '/community', '/pricing',
   '/legal/terms', '/legal/privacy', '/about', '/contact',
+  '/auth/callback',
 ];
 
 const PROTECTED_ROUTE_PREFIXES = ['/dashboard', '/api/protected'];

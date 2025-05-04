@@ -64,6 +64,18 @@ export async function signUpWithEmail(
       .select()
       .single();
 
+    // Store user data in localStorage for the redirect page
+    if (typeof window !== 'undefined' && authData.user) {
+      const userDataForStorage = {
+        id: authData.user.id,
+        email: authData.user.email,
+        role: userData.role,
+        timestamp: Date.now()
+      };
+      
+      localStorage.setItem('user', JSON.stringify(userDataForStorage));
+    }
+    
     return {
       data: {
         user: authData.user,
