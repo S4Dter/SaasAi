@@ -72,8 +72,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Connexion de l'utilisateur
   const login = async (email: string, password: string) => {
+    // Sauvegarder la fonction debug originale
+    const originalDebug = console.debug;
+    
     try {
       dispatch({ type: 'LOADING' });
+      
+      // Désactiver temporairement console.debug pour éviter les erreurs debug_logs
+      console.debug = () => {};
 
       // Connexion à Supabase
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -81,9 +87,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         password,
       });
 
-      if (error) throw error;
+      if (error) {
+        console.debug = originalDebug; // Restaurer avant de lancer une erreur
+        throw error;
+      }
 
       if (!data?.user) {
+        console.debug = originalDebug; // Restaurer avant de lancer une erreur
         throw new Error("Échec d'authentification: aucun utilisateur retourné");
       }
 
@@ -95,6 +105,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .select('role, name')
         .eq('id', user.id)
         .single();
+      
+      // Restaurer console.debug
+      console.debug = originalDebug;
 
       // Construction de l'objet utilisateur
       const userObj: User = {
@@ -131,20 +144,44 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       return { success: true };
     } catch (error) {
+      // S'assurer que console.debug est restauré même en cas d'erreur
+      console.debug = originalDebug;
+      
       console.error('Erreur de connexion:', error);
-      const err = error instanceof Error ? error : new Error('Erreur de connexion inconnue');
+      
+      let errorMessage = 'Erreur de connexion inconnue';
+      if (error instanceof Error) {
+        // Filtrer les messages d'erreur spécifiques
+        if (error.message.includes('debug_logs')) {
+          errorMessage = 'Erreur de configuration de base de données. Veuillez contacter l\'administrateur.';
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
+      const err = error instanceof Error ? error : new Error(errorMessage);
       dispatch({ type: 'ERROR', payload: err });
+      
       return {
         success: false,
-        error: err.message,
+        error: errorMessage,
       };
     }
   };
 
   // Déconnexion
   const logout = async () => {
+    // Sauvegarder la fonction debug originale
+    const originalDebug = console.debug;
+    
     try {
+      // Désactiver temporairement console.debug pour éviter les erreurs debug_logs
+      console.debug = () => {};
+      
       await supabase.auth.signOut();
+      
+      // Restaurer console.debug
+      console.debug = originalDebug;
       
       // Nettoyer les cookies et localStorage
       document.cookie = 'user-session=; path=/; max-age=0; SameSite=Lax';
@@ -156,6 +193,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       dispatch({ type: 'LOGOUT' });
       router.push(ROUTES.HOME);
     } catch (error) {
+      // S'assurer que console.debug est restauré même en cas d'erreur
+      console.debug = originalDebug;
+      
       console.error('Erreur lors de la déconnexion:', error);
     }
   };
@@ -163,13 +203,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Vérifier l'authentification au chargement
   useEffect(() => {
     const checkAuth = async () => {
+      // Sauvegarder la fonction debug originale
+      const originalDebug = console.debug;
+      
       try {
+        // Désactiver temporairement console.debug pour éviter les erreurs debug_logs
+        console.debug = () => {};
+        
         // Récupération de la session Supabase
         const { data: { session }, error } = await supabase.auth.getSession();
         
-        if (error) throw error;
+        if (error) {
+          console.debug = originalDebug; // Restaurer avant de lancer une erreur
+          throw error;
+        }
 
         if (!session) {
+          console.debug = originalDebug; // Restaurer avant de retourner
           dispatch({ type: 'LOGOUT' });
           return;
         }
@@ -177,7 +227,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // Récupérer les données utilisateur à partir de la session
         const { data: userData, error: userError } = await supabase.auth.getUser();
         
-        if (userError) throw userError;
+        if (userError) {
+          console.debug = originalDebug; // Restaurer avant de lancer une erreur
+          throw userError;
+        }
         
         const user = userData.user;
 
@@ -187,6 +240,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           .select('*')
           .eq('id', user.id)
           .single();
+          
+        // Restaurer console.debug
+        console.debug = originalDebug;
 
         // Construction de l'objet utilisateur
         const userObj: User = {
@@ -215,6 +271,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         )}; path=/; max-age=604800; SameSite=Lax; secure=${location.protocol === 'https:'}`;
 
       } catch (error) {
+        // S'assurer que console.debug est restauré même en cas d'erreur
+        console.debug = originalDebug;
+        
         console.error('Erreur lors de la vérification de l\'authentification:', error);
         dispatch({ type: 'LOGOUT' });
       }

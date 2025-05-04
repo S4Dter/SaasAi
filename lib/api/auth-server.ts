@@ -41,11 +41,19 @@ export function createServerSupabaseClient() {
  * @returns L'utilisateur authentifié ou null
  */
 export async function getServerSession() {
+  // Sauvegarder la fonction debug originale
+  const originalDebug = console.debug;
+  
   try {
+    // Désactiver temporairement console.debug pour éviter les erreurs debug_logs
+    console.debug = () => {};
+    
     const supabase = createServerSupabaseClient();
     const { data, error } = await supabase.auth.getSession();
     
     if (error || !data.session) {
+      // Restaurer console.debug avant de retourner
+      console.debug = originalDebug;
       return null;
     }
     
@@ -53,6 +61,8 @@ export async function getServerSession() {
     const { data: userData, error: userError } = await supabase.auth.getUser();
     
     if (userError || !userData.user) {
+      // Restaurer console.debug avant de retourner
+      console.debug = originalDebug;
       return null;
     }
     
@@ -63,12 +73,18 @@ export async function getServerSession() {
       .eq('id', userData.user.id)
       .single();
     
+    // Restaurer console.debug avant de retourner le résultat
+    console.debug = originalDebug;
+    
     return {
       user: userData.user,
       dbData: dbError ? null : dbUser,
       session: data.session,
     };
   } catch (err) {
+    // Restaurer console.debug en cas d'erreur
+    console.debug = originalDebug;
+    
     console.error('Erreur lors de la récupération de la session serveur:', err);
     return null;
   }
@@ -80,6 +96,7 @@ export async function getServerSession() {
  * @param redirectTo - La route vers laquelle rediriger si non authentifié
  */
 export async function requireAuthentication(redirectTo = '/signin') {
+  // Appel sécurisé à getServerSession qui gère déjà le console.debug
   const session = await getServerSession();
   
   if (!session) {
@@ -106,6 +123,7 @@ export async function requireAuthentication(redirectTo = '/signin') {
  * @param redirectTo - La route vers laquelle rediriger si le rôle n'est pas autorisé
  */
 export async function requireRole(allowedRoles: string[], redirectTo = '/dashboard') {
+  // Appel sécurisé à getServerSession qui gère déjà le console.debug
   const session = await getServerSession();
   
   if (!session) {
