@@ -16,87 +16,117 @@ import { createClient } from '@supabase/supabase-js';
 export async function signUpWithEmail(
   email: string, 
   password: string, 
-  metadata?: Record<string, any>,
+  userData?: Record<string, any>,
   options?: { emailRedirectTo?: string }
-): Promise<AuthResponse> {
+): Promise<{ data: any; error: any }> {
   if (typeof window === 'undefined') {
     throw new Error('La fonction signUpWithEmail ne peut être utilisée que côté client');
   }
 
+  // Valider les métadonnées essentielles pour correspondre à la structure de la base de données
+  if (!userData?.role) {
+    console.warn('Aucun rôle spécifié dans les métadonnées, utilisation de "enterprise" par défaut');
+    userData = { ...userData, role: 'enterprise' };
+  }
+  
+  // S'assurer que les métadonnées comprennent un nom (obligatoire en base de données)
+  if (!userData.name || (typeof userData.name === 'string' && userData.name.trim() === '')) {
+    userData = { ...userData, name: email.split('@')[0] || 'Anonymous' };
+    console.log('Nom manquant, utilisation du nom extrait de l\'email par défaut');
+  }
+  
+  // Use global domain for redirects - important for email confirmation to work correctly
+  const redirectUrl = options?.emailRedirectTo || 
+    (typeof window !== 'undefined' ? `${window.location.origin}/auth/callback` : `https://marketplaceagentai.vercel.app/auth/callback`);
+
+  // Si supabase n'est pas disponible, créer un client temporaire
+  const client = supabase || (() => {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+      throw new Error('Variables d\'environnement Supabase manquantes');
+    }
+
+    return createClient(supabaseUrl, supabaseKey);
+  })();
+
+  // Commencer une transaction explicite
+  const { error: beginError } = await client.rpc('begin_transaction');
+  if (beginError) {
+    console.error('Erreur début transaction:', beginError);
+    return { data: null, error: beginError };
+  }
+  
   try {
-    console.log('Inscription avec les métadonnées:', metadata);
-    
-    // Valider les métadonnées essentielles pour correspondre à la structure de la base de données
-    if (!metadata?.role) {
-      console.warn('Aucun rôle spécifié dans les métadonnées, utilisation de "enterprise" par défaut');
-      metadata = { ...metadata, role: 'enterprise' };
-    }
-    
-    // S'assurer que les métadonnées comprennent un nom (obligatoire en base de données)
-    if (!metadata.name || (typeof metadata.name === 'string' && metadata.name.trim() === '')) {
-      // Utiliser "Anonymous" comme valeur par défaut pour éviter les violations de contrainte NOT NULL
-      metadata = { ...metadata, name: 'Anonymous' };
-      console.log('Nom manquant, utilisation de "Anonymous" par défaut');
-    }
-    
-    // Use global domain for redirects - important for email confirmation to work correctly
-    const redirectUrl = options?.emailRedirectTo || `https://marketplaceagentai.vercel.app/auth/callback`;
-
-    if (!supabase) {
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-      const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-      if (!supabaseUrl || !supabaseKey) {
-        throw new Error('Variables d\'environnement Supabase manquantes');
+    // 1. Créer l'auth user
+    const { data: authData, error: authError } = await client.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          role: userData.role,
+          name: userData.name || email.split('@')[0],
+        },
+        emailRedirectTo: redirectUrl
       }
+    });
 
-      const tempClient = createClient(supabaseUrl, supabaseKey);
-
-      // S'inscrire avec Supabase Auth
-      const response = await tempClient.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: redirectUrl,
-          data: metadata,
-        }
-      });
-
-      // Note: Nous n'insérons plus l'utilisateur dans la table users ici
-      // L'insertion sera effectuée seulement après confirmation de l'email
-      // via la page de confirmation (/confirm)
-
-      if (response.error) {
-        console.error("Erreur d'inscription:", response.error.message);
-        throw response.error;
-      }
-
-      return response;
+    if (authError) {
+      // Annuler la transaction en cas d'erreur
+      await client.rpc('rollback_transaction');
+      throw authError;
+    }
+    
+    if (!authData?.user) {
+      await client.rpc('rollback_transaction');
+      throw new Error("Échec de création du compte");
     }
 
-      // S'inscrire avec Supabase Auth
-      const response = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: redirectUrl,
-          data: metadata,
-        }
-      });
+    // 2. Insérer dans users
+    const { data: profileData, error: profileError } = await client
+      .from('users')
+      .insert({
+        id: authData.user.id,
+        email: authData.user.email,
+        role: userData.role,
+        name: userData.name || email.split('@')[0] || 'Anonymous',
+        created_at: new Date().toISOString()
+      })
+      .select()
+      .single();
 
-      // Note: Nous n'insérons plus l'utilisateur dans la table users ici
-      // L'insertion sera effectuée seulement après confirmation de l'email
-      // via la page de confirmation (/confirm)
-
-    if (response.error) {
-      console.error("Erreur d'inscription:", response.error.message);
-      throw response.error;
+    if (profileError) {
+      await client.rpc('rollback_transaction');
+      throw profileError;
     }
 
-    return response;
+    // 3. Valider la transaction
+    const { error: commitError } = await client.rpc('commit_transaction');
+    if (commitError) {
+      await client.rpc('rollback_transaction');
+      throw commitError;
+    }
+
+    return { 
+      data: { 
+        user: authData.user, 
+        profile: profileData,
+        session: authData.session
+      }, 
+      error: null 
+    };
+    
   } catch (error) {
-    console.error("Erreur lors de l'inscription:", error);
-    throw error;
+    // S'assurer que la transaction est annulée en cas d'erreur
+    try {
+      await client.rpc('rollback_transaction');
+    } catch (rollbackError) {
+      console.error('Erreur rollback:', rollbackError);
+    }
+    
+    console.error('Erreur signUpWithEmail:', error);
+    return { data: null, error };
   }
 }
 

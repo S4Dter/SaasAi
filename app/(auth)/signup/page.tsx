@@ -115,7 +115,7 @@ export default function SignUpPage() {
 
     try {
       // Utilisons les données validées par Zod qui contient le name par défaut si non fourni
-      const response = await signUpWithEmail(
+      const { data, error } = await signUpWithEmail(
         validatedData.email, 
         validatedData.password, 
         { 
@@ -124,7 +124,11 @@ export default function SignUpPage() {
         },
       );
 
-      if (response.data?.user) {
+      if (error) {
+        throw error;
+      }
+
+      if (data?.user) {
         toast.success("Votre compte a été créé avec succès");
         setRegisteredEmail(validatedData.email);
       }
