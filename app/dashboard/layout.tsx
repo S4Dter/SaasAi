@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers';
 import { AuthProvider } from '@/lib/context/AuthContext';
 import { getServerSession } from '@/lib/api/auth-server';
 import { ROUTES } from '@/constants';
@@ -15,10 +16,23 @@ export default async function DashboardLayout({
   // Vérification de l'authentification côté serveur
   const session = await getServerSession();
   
+  console.log('Dashboard Layout - User Session:', session ? `Session trouvée pour ${session.user.email}` : 'Aucune session');
+  
   // Si l'utilisateur n'est pas authentifié, rediriger vers la page de connexion
   if (!session) {
+    console.error('Aucune session trouvée dans le layout Dashboard, redirection vers signin');
     redirect(ROUTES.AUTH.SIGNIN);
   }
+  
+  // Au lieu d'utiliser un cookie, nous stockerons les données utilisateur dans un script côté client
+  // qui initialise le localStorage au chargement de la page
+  const userDataForClient = {
+    id: session.user?.id || '',
+    email: session.user?.email || '',
+    name: session.user?.user_metadata?.name || ''
+  };
+  
+  console.log('Dashboard données utilisateur pour localStorage:', JSON.stringify(userDataForClient));
   
   // Obtenir le rôle de l'utilisateur
   const userRole = session.dbData?.role || session.user.user_metadata?.role;
@@ -26,6 +40,22 @@ export default async function DashboardLayout({
   // Navigation adaptée au rôle
   return (
     <AuthProvider>
+      {/* Script pour injecter les données utilisateur dans le localStorage */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            try {
+              if (typeof window !== 'undefined') {
+                // Stocker les données utilisateur dans localStorage
+                localStorage.setItem('user', JSON.stringify(${JSON.stringify(userDataForClient)}));
+                console.log('Données utilisateur injectées dans localStorage:', '${userDataForClient.id}');
+              }
+            } catch (e) {
+              console.error('Erreur lors de l\'injection des données utilisateur:', e);
+            }
+          `
+        }}
+      />
       <div className="min-h-screen bg-gray-50">
         <div className="flex">
           {/* Sidebar - à ajuster selon vos besoins */}

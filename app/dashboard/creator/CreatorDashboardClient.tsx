@@ -23,7 +23,7 @@ type CreatorDashboardClientProps = {
  * Inclut une vérification d'authentification côté client pour éviter les redirections en boucle
  */
 export default function CreatorDashboardClient({ userData }: CreatorDashboardClientProps) {
-  console.log("userData:", userData, typeof userData);
+  console.log("CreatorDashboardClient initialisation - userData:", userData, typeof userData);
   
   const router = useRouter();
   // État pour suivre le chargement
@@ -41,6 +41,7 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
         // S'assurer que localStorage est disponible (hydratation complète)
         if (typeof window !== 'undefined') {
           console.log('CreatorDashboardClient: Vérification d\'authentification côté client');
+          console.log('Props userData:', JSON.stringify(userData));
           
           // Si l'ID utilisateur est déjà fourni dans les props et non vide
           if (userData?.id) {
@@ -48,38 +49,53 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
             setValidUserId(userData.id);
             setIsClientSideAuthChecked(true);
             return;
+          } else {
+            console.warn('CreatorDashboardClient: ID utilisateur NON fourni dans les props');
           }
           
           // Vérifier la session utilisateur dans localStorage
           const storedUser = localStorage.getItem('user');
           let userIdFromStorage = '';
           
+          console.log('Recherche dans localStorage - user existe:', !!storedUser);
+          
           if (storedUser) {
             try {
               const parsedUser = JSON.parse(storedUser);
+              console.log('Contenu du localStorage user:', JSON.stringify(parsedUser));
               userIdFromStorage = parsedUser.id;
               console.log('CreatorDashboardClient: ID trouvé dans localStorage:', userIdFromStorage);
             } catch (e) {
-              console.error('Erreur lors du parsing de l\'utilisateur dans localStorage:', e);
+              console.error('Erreur lors du parsing de l\'utilisateur dans localStorage:', e, storedUser);
             }
           }
           
           // Si un ID est trouvé dans localStorage
           if (userIdFromStorage) {
+            console.log('Utilisation de l\'ID du localStorage:', userIdFromStorage);
             setValidUserId(userIdFromStorage);
             setIsClientSideAuthChecked(true);
             return;
+          } else {
+            console.warn('Aucun ID utilisateur dans localStorage');
           }
           
           // Si Supabase est disponible, vérifier la session côté client
           if (supabase) {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (session?.user?.id) {
-              console.log('CreatorDashboardClient: ID trouvé dans la session Supabase:', session.user.id);
-              setValidUserId(session.user.id);
+            console.log('Tentative de récupération de session via Supabase');
+            const { data, error } = await supabase.auth.getSession();
+            console.log('Résultat Supabase session:', data.session ? 'Session trouvée' : 'Pas de session', 'Erreur:', error);
+            
+            if (data.session?.user?.id) {
+              console.log('CreatorDashboardClient: ID trouvé dans la session Supabase:', data.session.user.id);
+              setValidUserId(data.session.user.id);
               setIsClientSideAuthChecked(true);
               return;
+            } else {
+              console.warn('Aucun ID utilisateur dans la session Supabase');
             }
+          } else {
+            console.warn('Client Supabase non disponible');
           }
           
           // Aucune source d'ID utilisateur trouvée, rediriger vers login
