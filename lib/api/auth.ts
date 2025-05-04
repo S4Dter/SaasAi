@@ -25,14 +25,12 @@ export async function signUpWithEmail(
 
   // Valider les métadonnées essentielles pour correspondre à la structure de la base de données
   if (!userData?.role) {
-    console.warn('Aucun rôle spécifié dans les métadonnées, utilisation de "enterprise" par défaut');
     userData = { ...userData, role: 'enterprise' };
   }
   
   // S'assurer que les métadonnées comprennent un nom (obligatoire en base de données)
   if (!userData.name || (typeof userData.name === 'string' && userData.name.trim() === '')) {
     userData = { ...userData, name: email.split('@')[0] || 'Anonymous' };
-    console.log('Nom manquant, utilisation du nom extrait de l\'email par défaut');
   }
   
   // Use global domain for redirects - important for email confirmation to work correctly
@@ -54,7 +52,6 @@ export async function signUpWithEmail(
   // Commencer une transaction explicite
   const { error: beginError } = await client.rpc('begin_transaction');
   if (beginError) {
-    console.error('Erreur début transaction:', beginError);
     return { data: null, error: beginError };
   }
   
@@ -122,10 +119,9 @@ export async function signUpWithEmail(
     try {
       await client.rpc('rollback_transaction');
     } catch (rollbackError) {
-      console.error('Erreur rollback:', rollbackError);
+      // Erreur silencieuse pour éviter de briser le flux
     }
     
-    console.error('Erreur signUpWithEmail:', error);
     return { data: null, error };
   }
 }
@@ -156,7 +152,6 @@ export async function signInWithEmail(email: string, password: string): Promise<
       const response = await tempClient.auth.signInWithPassword({ email, password });
 
       if (response.error) {
-        console.error("Erreur de connexion:", response.error.message);
         throw response.error;
       }
 
@@ -166,13 +161,11 @@ export async function signInWithEmail(email: string, password: string): Promise<
     const response = await supabase.auth.signInWithPassword({ email, password });
 
     if (response.error) {
-      console.error("Erreur de connexion:", response.error.message);
       throw response.error;
     }
 
     return response;
   } catch (error) {
-    console.error("Erreur lors de la connexion:", error);
     throw error;
   }
 }
@@ -197,7 +190,6 @@ export async function signOut(): Promise<{ error: AuthError | null }> {
     document.cookie = 'supabase-auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     
     if (!supabase) {
-      console.warn('Client Supabase non disponible, nettoyage manuel uniquement');
       return { error: null };
     }
     
@@ -205,18 +197,14 @@ export async function signOut(): Promise<{ error: AuthError | null }> {
     const { error } = await supabase.auth.signOut();
     
     if (error) {
-      console.error('Erreur lors de la déconnexion Supabase:', error);
       throw error;
     }
-    
-    console.log('Déconnexion réussie');
     
     // Force une actualisation complète pour effacer tout état en mémoire
     window.location.href = '/';
     
     return { error: null };
   } catch (error) {
-    console.error('Erreur lors de la déconnexion:', error);
     return { error: error as AuthError };
   }
 }
