@@ -80,19 +80,14 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
               console.error('Erreur lors du parsing de l\'utilisateur dans localStorage:', e, storedUser);
             }
           }
-          
-          // Si un ID est trouvé dans localStorage
+          // Nous ne voulons plus utiliser l'ID du localStorage comme source principale
           if (userIdFromStorage) {
-            console.log('Utilisation de l\'ID du localStorage:', userIdFromStorage);
-            setValidUserId(userIdFromStorage);
-            setIsClientSideAuthChecked(true);
-            clearTimeout(authTimeoutId);
-            return;
+            console.log('ID trouvé dans localStorage mais nous allons vérifier Supabase en priorité:', userIdFromStorage);
           } else {
             console.warn('Aucun ID utilisateur dans localStorage');
           }
           
-          // Si Supabase est disponible, vérifier la session côté client
+          // Supabase est la source principale et unique d'authentification
           if (supabase) {
             console.log('Tentative de récupération de session via Supabase');
             const { data, error } = await supabase.auth.getSession();
@@ -103,18 +98,28 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
               setValidUserId(data.session.user.id);
               setIsClientSideAuthChecked(true);
               clearTimeout(authTimeoutId);
+              
+              // Si localStorage a un ID différent, nous pouvons le corriger ici
+              if (userIdFromStorage && userIdFromStorage !== data.session.user.id) {
+                console.log('ID localStorage différent de Supabase, nous allons utiliser Supabase');
+                
+                // Nettoyer l'ancien localStorage si nécessaire (mais ne pas le faire maintenant pour éviter les effets secondaires)
+                // localStorage.removeItem('user');
+              }
+              
               return;
             } else {
-              console.warn('Aucun ID utilisateur dans la session Supabase');
+              console.warn('Aucun ID utilisateur dans la session Supabase, redirection vers login');
+              
+              // Si aucune session Supabase n'est trouvée, nous ignorons complètement localStorage
+              // et redirigeons vers la page de connexion
+              console.error('CreatorDashboardClient: PROBLÈME CRITIQUE - Session Supabase introuvable');
+              setAuthError(new Error("Session Supabase introuvable"));
             }
           } else {
-            console.warn('Client Supabase non disponible');
+            console.error('Client Supabase non disponible, redirection vers login');
+            setAuthError(new Error("Client Supabase non disponible"));
           }
-          
-          // Aucune source d'ID utilisateur trouvée, rediriger vers login
-          console.error('CreatorDashboardClient: PROBLÈME CRITIQUE - Aucun ID utilisateur trouvé');
-          setAuthError(new Error("Aucun ID utilisateur trouvé"));
-          // Ne pas rediriger immédiatement pour éviter les boucles
         }
       } catch (error) {
         console.error('Erreur lors de la vérification d\'authentification côté client:', error);

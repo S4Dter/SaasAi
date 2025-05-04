@@ -143,11 +143,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         JSON.stringify(sessionData)
       )}; path=/; max-age=604800; SameSite=Lax; secure=${location.protocol === 'https:'}`;
 
-      // Stockage localStorage pour persistance client
-      localStorage.setItem('user-id', userObj.id);
-      localStorage.setItem('user-role', userObj.role);
-      localStorage.setItem('user-email', userObj.email);
-      localStorage.setItem('user-name', userObj.name);
+      // Nous utilisons uniquement les cookies et Supabase pour la persistance de session
+      // et ne stockons plus dans localStorage pour éviter les conflits
+      console.log('Session utilisateur authentifiée via Supabase, ID:', userObj.id);
 
       return { success: true };
     } catch (error) {
@@ -192,12 +190,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Restaurer console.debug
       console.debug = originalDebug;
       
-      // Nettoyer les cookies et localStorage
+      // Nettoyer les cookies et localStorage entièrement pour éviter les conflits
       document.cookie = 'user-session=; path=/; max-age=0; SameSite=Lax';
+      
+      // Suppression complète de toutes les données liées à l'utilisateur dans localStorage
       localStorage.removeItem('user-id');
       localStorage.removeItem('user-role');
       localStorage.removeItem('user-email');
       localStorage.removeItem('user-name');
+      localStorage.removeItem('user'); // Suppression de l'objet utilisateur complet
+      
+      // Nettoyage des clés spécifiques à Supabase
+      localStorage.removeItem('sb-auth-token');
+      
+      console.log('Toutes les données de session ont été nettoyées');
       
       dispatch({ type: 'LOGOUT' });
       router.push(ROUTES.HOME);
