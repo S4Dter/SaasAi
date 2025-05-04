@@ -15,11 +15,16 @@ export async function signUpUser(
   const isClient = typeof window !== 'undefined';
   
   try {
-    // Utiliser le client approprié selon le contexte
-    const client = isClient ? supabase : createServerSupabaseClient();
-    
-    // 1. Inscription via auth
-    const { data, error: authError } = await client.auth.signUp({
+  // Utiliser le client approprié selon le contexte
+  const client = isClient ? supabase : createServerSupabaseClient();
+  
+  // Vérifier que le client est disponible
+  if (!client) {
+    throw new Error("Client Supabase non disponible");
+  }
+  
+  // 1. Inscription via auth
+  const { data, error: authError } = await client.auth.signUp({
       email,
       password,
       options: {
@@ -94,6 +99,12 @@ export async function getUserData(userId: string) {
   const isClient = typeof window !== 'undefined';
   const client = isClient ? supabase : createServerSupabaseClient();
   
+  // Vérifier que le client est disponible
+  if (!client) {
+    console.error("Client Supabase non disponible");
+    return null;
+  }
+  
   const { data, error } = await client
     .from('users')
     .select('*')
@@ -116,6 +127,11 @@ export async function getUserData(userId: string) {
 export async function updateUserData(userId: string, userData: Partial<User>) {
   const isClient = typeof window !== 'undefined';
   const client = isClient ? supabase : createServerSupabaseClient();
+  
+  // Vérifier que le client est disponible
+  if (!client) {
+    throw new Error("Client Supabase non disponible");
+  }
   
   // Mise à jour des metadata de l'utilisateur pour garder la cohérence
   await client.auth.updateUser({
