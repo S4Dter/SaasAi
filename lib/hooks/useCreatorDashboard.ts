@@ -97,11 +97,11 @@ export function useCreatorDashboard(userId: string | undefined): HookState<Creat
         const controller = new AbortController();
         const { signal } = controller;
         
-        // Timeout pour toutes les requêtes
+        // Timeout pour toutes les requêtes - augmenté à 10 secondes
         const timeoutId = setTimeout(() => {
-          console.log('Timeout des requêtes Supabase atteint (5s), annulation...');
+          console.log('Timeout des requêtes Supabase atteint (10s), annulation...');
           controller.abort();
-        }, 5000); // 5 secondes
+        }, 10000); // 10 secondes pour laisser plus de temps aux requêtes
         
         // Variables pour stocker les résultats
         let agentsResponse, viewsResponse, conversionsResponse; 

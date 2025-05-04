@@ -4,7 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 const isBrowser = typeof window !== 'undefined';
 
 // Configuration Supabase
-const SUPABASE_TIMEOUT = 5000; // 5 secondes de timeout
+const SUPABASE_TIMEOUT = 15000; // 15 secondes de timeout pour améliorer la fiabilité
 
 // Fonction pour créer le client Supabase
 function createSupabaseClient() {
