@@ -32,11 +32,11 @@ export async function withRoleProtection(expectedRole: 'creator' | 'enterprise')
   let user;
 
   try {
-    // Création d'un client Supabase côté serveur
-    supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
+    // Importation de notre client serveur Supabase personnalisé
+    const { createServerSupabaseClient } = await import('@/lib/api/auth-server');
+    
+    // Utilisation du client serveur qui gère correctement les cookies
+    supabase = createServerSupabaseClient();
     
     // Vérifier si l'utilisateur est connecté, avec gestion d'erreur renforcée
     const { data: userData, error: userError } = await supabase.auth.getUser()

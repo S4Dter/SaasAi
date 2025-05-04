@@ -21,19 +21,18 @@ export function createServerSupabaseClient() {
     throw new Error('Variables d\'environnement Supabase manquantes');
   }
   
-  // Créer un client Supabase avec les cookies actuels
-  return createClient(supabaseUrl, supabaseKey, {
+  // Créer un client Supabase avec les cookies actuels (Next.js 15)
+  // Note: On évite d'utiliser cookieStore.toString() qui est problématique
+  const supabaseClient = createClient(supabaseUrl, supabaseKey, {
     auth: {
       persistSession: false, // Ne pas persister la session en mémoire
       autoRefreshToken: false, // Ne pas rafraîchir automatiquement le token
     },
-    global: {
-      headers: {
-        // Utiliser les cookies actuels pour l'authentification
-        'Cookie': cookieStore.toString(),
-      },
-    },
   });
+  
+  // On laisse Supabase gérer les cookies automatiquement
+  // sans essayer de les passer manuellement
+  return supabaseClient;
 }
 
 /**

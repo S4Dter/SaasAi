@@ -99,11 +99,33 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
   // Utiliser le hook pour récupérer les données seulement lorsqu'un ID utilisateur valide est disponible
   const { data: dashboardData, loading, error } = useCreatorDashboard(validUserId);
   
-  // Mettre à jour l'état de chargement global
+  // Mettre à jour l'état de chargement global avec détection de timeout
+  const [hasTimedOut, setHasTimedOut] = useState(false);
+  
   useEffect(() => {
+    // Mettre à jour l'état de chargement global
     if (isClientSideAuthChecked) {
       setIsLoading(loading);
     }
+    
+    // Réinitialiser le timeout si le chargement commence ou s'arrête
+    setHasTimedOut(false);
+    
+    // Si le chargement est actif, configurer un timeout après lequel nous
+    // considérons qu'il y a un problème de chargement infini
+    let timeoutId: NodeJS.Timeout;
+    if (loading && isClientSideAuthChecked) {
+      timeoutId = setTimeout(() => {
+        console.log('Dashboard loading timeout triggered');
+        setHasTimedOut(true);
+        // Ne pas arrêter le chargement - permettre aux données de charger
+        // même après l'affichage du message de timeout
+      }, 8000); // 8 secondes de timeout
+    }
+    
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, [loading, isClientSideAuthChecked]);
   
   // Gérer les erreurs
