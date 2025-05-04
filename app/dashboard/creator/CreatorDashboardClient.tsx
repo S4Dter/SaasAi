@@ -257,7 +257,7 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
           <p className="text-gray-500 mb-4">
             Si le problème persiste, essayez de vider le cache de votre navigateur ou de vous déconnecter puis reconnecter.
           </p>
-          <Link href={ROUTES.AUTH.SIGNIN}>
+                  <Link href={ROUTES.AUTH.SIGNOUT}>
             <Button variant="outline">
               Se déconnecter
             </Button>

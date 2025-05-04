@@ -88,6 +88,9 @@ export function middleware(request: NextRequest) {
     - Authentifié: ${isAuthenticated}
     - Rôle: ${userRole || 'non défini'}
     - ID utilisateur: ${userId || 'non défini'}
+    - Cookie session: ${!!userSessionCookie}
+    - Cookie Supabase: ${!!supabaseAuthCookie}
+    - Referer: ${request.headers.get('referer') || 'non défini'}
   `);
   
   // 1. Vérifier si la route est publique
@@ -106,6 +109,16 @@ export function middleware(request: NextRequest) {
   const isProtectedRoute = PROTECTED_ROUTE_PREFIXES.some(prefix => 
     pathname.startsWith(prefix)
   );
+  
+  // Détection de boucle de redirection
+  const referer = request.headers.get('referer') || '';
+  const redirectLoopDetected = referer.includes(pathname) && isProtectedRoute;
+  
+  if (redirectLoopDetected) {
+    console.warn('Boucle de redirection détectée, annulation de la redirection');
+    // Si nous détectons une boucle potentielle, laissons passer la requête
+    return NextResponse.next();
+  }
   
   // 3. Redirection en fonction de l'état d'authentification
   

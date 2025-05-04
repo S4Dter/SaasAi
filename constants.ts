@@ -27,6 +27,7 @@ export const ROUTES = {
     SIGNUP: '/signup',
     FORGOT_PASSWORD: '/forgot-password',
     RESET_PASSWORD: '/reset-password',
+    SIGNOUT: '/signout',
   },
   PRICING: '/pricing',
   CONTACT: '/contact',
