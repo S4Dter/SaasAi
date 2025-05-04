@@ -1,3 +1,64 @@
+export type Database = {
+  public: {
+    Tables: {
+      users: {
+        Row: {
+          id: string;
+          email: string;
+          name: string;
+          role: 'creator' | 'enterprise';
+          created_at: string;
+          updated_at?: string | null;
+        };
+        Insert: {
+          id: string;
+          email: string;
+          name: string;
+          role: 'creator' | 'enterprise';
+          created_at?: string;
+          updated_at?: string | null;
+        };
+        Update: Partial<Database['public']['Tables']['users']['Insert']>;
+      };
+      agents: {
+        Row: {
+          id: string;
+          name: string;
+          description: string;
+          creator_id: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          description: string;
+          creator_id: string;
+          created_at?: string;
+        };
+        Update: Partial<Database['public']['Tables']['agents']['Insert']>;
+      };
+      favorites: {
+        Row: {
+          id: string;
+          user_id: string;
+          agent_id: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          agent_id: string;
+          created_at?: string;
+        };
+        Update: Partial<Database['public']['Tables']['favorites']['Insert']>;
+      };
+      // Tu peux ajouter ici les autres tables comme contacts, agent_views, etc.
+    };
+    Views: {};
+    Functions: {};
+  };
+};
+
 import { User, Agent } from '../types';
 
 /**

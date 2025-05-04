@@ -1,105 +1,45 @@
-/**
- * Fonctions d'authentification côté serveur pour Next.js 15
- * Compatible avec les Server Components et les Server Actions
- */
-
-import { createClient } from '@supabase/supabase-js';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
+import type { Database } from '@/types/supabase'; // Remplace ceci si tu n'as pas de typage personnalisé
 
 /**
  * Crée un client Supabase côté serveur pour les fonctions d'authentification
  * À utiliser dans les Server Components ou Server Actions
  */
 export function createServerSupabaseClient() {
-  const cookieStore = cookies();
-  
-  // Récupérer les variables d'environnement
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  
-  if (!supabaseUrl || !supabaseKey) {
-    throw new Error('Variables d\'environnement Supabase manquantes');
-  }
-  
-  // Créer un client Supabase avec les cookies actuels (Next.js 15)
-  // Note: On évite d'utiliser cookieStore.toString() qui est problématique
-  const supabaseClient = createClient(supabaseUrl, supabaseKey, {
-    auth: {
-      persistSession: false, // Ne pas persister la session en mémoire
-      autoRefreshToken: false, // Ne pas rafraîchir automatiquement le token
-    },
-  });
-  
-  // On laisse Supabase gérer les cookies automatiquement
-  // sans essayer de les passer manuellement
-  return supabaseClient;
+  return createServerComponentClient<Database>({ cookies });
 }
 
 /**
- * Vérifie si l'utilisateur est authentifié côté serveur
- * @returns L'utilisateur authentifié ou null
+ * Récupère la session Supabase côté serveur
  */
 export async function getServerSession() {
-  // Sauvegarder la fonction debug originale
-  const originalDebug = console.debug;
-  
-  try {
-    // Désactiver temporairement console.debug pour éviter les erreurs debug_logs
-    console.debug = () => {};
-    
-    const supabase = createServerSupabaseClient();
-    const { data, error } = await supabase.auth.getSession();
-    
-    if (error || !data.session) {
-      // Restaurer console.debug avant de retourner
-      console.debug = originalDebug;
-      return null;
-    }
-    
-    // Récupérer l'utilisateur avec ses données
-    const { data: userData, error: userError } = await supabase.auth.getUser();
-    
-    if (userError || !userData.user) {
-      // Restaurer console.debug avant de retourner
-      console.debug = originalDebug;
-      return null;
-    }
-    
-    // Récupérer les données utilisateur supplémentaires depuis la base
-    const { data: dbUser, error: dbError } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', userData.user.id)
-      .single();
-    
-    // Restaurer console.debug avant de retourner le résultat
-    console.debug = originalDebug;
-    
-    return {
-      user: userData.user,
-      dbData: dbError ? null : dbUser,
-      session: data.session,
-    };
-  } catch (err) {
-    // Restaurer console.debug en cas d'erreur
-    console.debug = originalDebug;
-    
-    console.error('Erreur lors de la récupération de la session serveur:', err);
-    return null;
-  }
+  const supabase = createServerSupabaseClient();
+  const { data, error } = await supabase.auth.getSession();
+  if (error || !data.session) return null;
+
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+  if (userError || !userData.user) return null;
+
+  const { data: dbUser, error: dbError } = await supabase
+    .from('users')
+    .select('*')
+    .eq('id', userData.user.id)
+    .single();
+
+  return {
+    user: userData.user,
+    dbData: dbError ? null : dbUser,
+    session: data.session,
+  };
 }
 
 /**
- * Protège les routes côté serveur
- * À utiliser dans les layouts ou pages pour rediriger si non authentifié
- * @param redirectTo - La route vers laquelle rediriger si non authentifié
+ * Redirige si l'utilisateur n'est pas authentifié
  */
 export async function requireAuthentication(redirectTo = '/signin') {
-  // Appel sécurisé à getServerSession qui gère déjà le console.debug
   const session = await getServerSession();
-  
   if (!session) {
-    // Dans un composant serveur, on peut utiliser redirection côté serveur
     return {
       redirect: {
         destination: redirectTo,
@@ -107,7 +47,6 @@ export async function requireAuthentication(redirectTo = '/signin') {
       },
     };
   }
-  
   return {
     props: {
       user: session.user,
@@ -117,14 +56,10 @@ export async function requireAuthentication(redirectTo = '/signin') {
 }
 
 /**
- * Vérifie le rôle de l'utilisateur côté serveur
- * @param allowedRoles - Les rôles autorisés
- * @param redirectTo - La route vers laquelle rediriger si le rôle n'est pas autorisé
+ * Redirige si le rôle de l'utilisateur ne correspond pas
  */
 export async function requireRole(allowedRoles: string[], redirectTo = '/dashboard') {
-  // Appel sécurisé à getServerSession qui gère déjà le console.debug
   const session = await getServerSession();
-  
   if (!session) {
     return {
       redirect: {
@@ -133,10 +68,8 @@ export async function requireRole(allowedRoles: string[], redirectTo = '/dashboa
       },
     };
   }
-  
-  // Vérifier si l'utilisateur a un rôle autorisé
+
   const userRole = session.dbData?.role || session.user.user_metadata?.role;
-  
   if (!userRole || !allowedRoles.includes(userRole)) {
     return {
       redirect: {
@@ -145,7 +78,7 @@ export async function requireRole(allowedRoles: string[], redirectTo = '/dashboa
       },
     };
   }
-  
+
   return {
     props: {
       user: session.user,
