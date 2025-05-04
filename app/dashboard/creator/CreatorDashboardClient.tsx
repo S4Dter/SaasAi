@@ -172,12 +172,55 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
 // Fonction utilitaire pour les calculs et formatages
 const formatNumber = (num: number) => new Intl.NumberFormat('fr-FR').format(num);
 
-  // Afficher un indicateur de chargement
+  // Afficher un indicateur de chargement optimisé avec un timeout
+  const [showTimeout, setShowTimeout] = useState(false);
+  
+  // Après 5 secondes de chargement, afficher un message timeout
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    
+    if (isLoading) {
+      timeoutId = setTimeout(() => {
+        setShowTimeout(true);
+      }, 5000);
+    } else {
+      setShowTimeout(false);
+    }
+    
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [isLoading]);
+  
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
-        <p className="ml-4 text-lg text-gray-600">Chargement des données...</p>
+      <div className="p-8">
+        <div className="flex justify-center items-center h-64">
+          <div className="flex flex-col items-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mb-4"></div>
+            <p className="text-lg text-gray-600">Chargement des données...</p>
+            
+            {showTimeout && (
+              <div className="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg max-w-lg">
+                <h3 className="text-amber-700 font-medium mb-2">Chargement plus long que prévu</h3>
+                <p className="text-sm text-amber-700 mb-4">
+                  Le chargement prend plus de temps que d'habitude. Si le problème persiste :
+                </p>
+                <ul className="text-sm list-disc list-inside text-amber-600 space-y-1 mb-3">
+                  <li>Vérifiez votre connexion internet</li>
+                  <li>Rafraîchissez la page</li>
+                  <li>Videz le cache du navigateur</li>
+                </ul>
+                <button 
+                  onClick={() => window.location.reload()} 
+                  className="text-sm bg-amber-100 hover:bg-amber-200 text-amber-800 py-2 px-4 rounded-md transition-colors"
+                >
+                  Rafraîchir la page
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     );
   }

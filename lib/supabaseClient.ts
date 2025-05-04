@@ -3,6 +3,9 @@ import { createClient } from '@supabase/supabase-js';
 // Vérifier si on est côté client
 const isBrowser = typeof window !== 'undefined';
 
+// Configuration Supabase
+const SUPABASE_TIMEOUT = 5000; // 5 secondes de timeout
+
 // Fonction pour créer le client Supabase
 function createSupabaseClient() {
   // En mode SSR/SSG, on retourne un mock du client
@@ -18,11 +21,23 @@ function createSupabaseClient() {
     return createMockClient();
   }
   
-  // Créer et retourner le vrai client Supabase
+  // Créer et retourner le vrai client Supabase avec timeout global
   return createClient(supabaseUrl, supabaseAnonKey, {
     auth: {
       persistSession: true,
       autoRefreshToken: true,
+    },
+    global: {
+      fetch: (url, options) => {
+        const controller = new AbortController();
+        const { signal } = controller;
+        
+        // Ajout du timeout
+        const timeoutId = setTimeout(() => controller.abort(), SUPABASE_TIMEOUT);
+        
+        return fetch(url, { ...options, signal })
+          .finally(() => clearTimeout(timeoutId));
+      }
     },
   });
 }
