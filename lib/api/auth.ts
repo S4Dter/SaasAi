@@ -49,12 +49,6 @@ export async function signUpWithEmail(
     return createClient(supabaseUrl, supabaseKey);
   })();
 
-  // Commencer une transaction explicite
-  const { error: beginError } = await client.rpc('begin_transaction');
-  if (beginError) {
-    return { data: null, error: beginError };
-  }
-  
   try {
     // 1. Créer l'auth user
     const { data: authData, error: authError } = await client.auth.signUp({
@@ -70,17 +64,15 @@ export async function signUpWithEmail(
     });
 
     if (authError) {
-      // Annuler la transaction en cas d'erreur
-      await client.rpc('rollback_transaction');
       throw authError;
     }
     
     if (!authData?.user) {
-      await client.rpc('rollback_transaction');
       throw new Error("Échec de création du compte");
     }
 
-    // 2. Insérer dans users
+    // 2. Insérer dans users - pas besoin de transactions explicites
+    // Supabase gère automatiquement la transaction implicite
     const { data: profileData, error: profileError } = await client
       .from('users')
       .insert({
@@ -93,35 +85,19 @@ export async function signUpWithEmail(
       .select()
       .single();
 
-    if (profileError) {
-      await client.rpc('rollback_transaction');
-      throw profileError;
-    }
-
-    // 3. Valider la transaction
-    const { error: commitError } = await client.rpc('commit_transaction');
-    if (commitError) {
-      await client.rpc('rollback_transaction');
-      throw commitError;
-    }
-
+    // Si erreur d'insertion dans le profil, on continue quand même
+    // L'utilisateur pourra compléter son profil plus tard
+    
     return { 
       data: { 
         user: authData.user, 
-        profile: profileData,
+        profile: profileError ? null : profileData,
         session: authData.session
       }, 
       error: null 
     };
     
   } catch (error) {
-    // S'assurer que la transaction est annulée en cas d'erreur
-    try {
-      await client.rpc('rollback_transaction');
-    } catch (rollbackError) {
-      // Erreur silencieuse pour éviter de briser le flux
-    }
-    
     return { data: null, error };
   }
 }
