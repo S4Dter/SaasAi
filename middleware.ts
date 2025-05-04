@@ -35,9 +35,17 @@ export function middleware(request: NextRequest) {
         isAuthenticated = true;
         userId = sessionData.id;
         userRole = sessionData.role;
+      } else {
+        console.warn('Cookie expiré, suppression et redirection vers login');
+        const response = NextResponse.redirect(new URL(ROUTES.AUTH.SIGNIN, request.url));
+        response.cookies.delete('user-session');
+        return response;
       }
     } catch (error) {
       console.error('Erreur de validation du cookie user-session:', error);
+      const response = NextResponse.redirect(new URL(ROUTES.AUTH.SIGNIN, request.url));
+      response.cookies.delete('user-session');
+      return response;
     }
   }
 
