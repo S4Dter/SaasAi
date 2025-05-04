@@ -54,6 +54,22 @@ export function useCreatorDashboard(userId: string | undefined): HookState<Creat
     error: null,
   });
 
+  // Structure vide par défaut pour les données du tableau de bord
+  const emptyDashboardData: CreatorDashboardData = {
+    userAgents: [],
+    stats: {
+      views: 0,
+      clicks: 0,
+      contacts: 0,
+      conversions: 0
+    },
+    agentViews: {},
+    agentConversions: {},
+    agentRevenue: {},
+    contacts: [],
+    recommendations: []
+  };
+
   useEffect(() => {
     // Ne pas exécuter la requête si aucun ID utilisateur n'est fourni
     if (!userId) {
@@ -64,6 +80,8 @@ export function useCreatorDashboard(userId: string | undefined): HookState<Creat
       });
       return;
     }
+    
+    console.log(`Démarrage de la récupération des données pour l'utilisateur ${userId}`);
 
     const fetchDashboardData = async () => {
       try {
@@ -73,7 +91,13 @@ export function useCreatorDashboard(userId: string | undefined): HookState<Creat
 
         // Vérifier si Supabase est disponible
         if (!supabase) {
-          throw new Error('Client Supabase non disponible');
+          console.error('Client Supabase non disponible, utilisation des données vides');
+          setState({
+            data: emptyDashboardData,
+            loading: false,
+            error: null,
+          });
+          return;
         }
 
         // Fonction pour gérer les erreurs de requête Supabase avec un type générique

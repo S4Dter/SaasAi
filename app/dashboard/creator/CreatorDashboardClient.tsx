@@ -211,7 +211,8 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
     );
   }
   
-  // Si un timeout s'est produit et que nous avons un ID utilisateur, afficher une interface minimale
+  // Si un timeout s'est produit et que nous avons un ID utilisateur
+  // afficher une interface minimale fonctionnelle
   if (hasTimedOut && validUserId) {
     return (
       <div className="p-8">
