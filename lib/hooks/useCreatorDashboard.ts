@@ -108,93 +108,93 @@ export function useCreatorDashboard(userId: string | undefined): HookState<Creat
         let revenueResponse, contactsResponse, recommendationsResponse;
         
         try {
-          // Charger les données en parallèle pour optimiser les performances
-          [
-            agentsResponse,
-            viewsResponse,
-            conversionsResponse,
-            revenueResponse,
-            contactsResponse,
-            recommendationsResponse
-          ] = await Promise.all([
-            // 1. Récupérer les agents créés par l'utilisateur (seulement les champs nécessaires)
-            safeQuery(
-              supabase
-                .from('agents')
-                .select(`
-                  id, name, slug, description, short_description, 
-                  category, creator_id, pricing, featured, logo_url, 
-                  integrations, demo_url, demo_video_url, screenshots, 
-                  created_at, updated_at
-                `)
-                .eq('creator_id', userId)
-                .order('created_at', { ascending: false })
-                .abortSignal(signal),
-              'agents'
-            ),
-
-            // 2. Récupérer les statistiques de vues pour les agents de l'utilisateur
-            safeQuery(
-              supabase
-                .from('agent_views')
-                .select('agent_id, count')
-                .eq('creator_id', userId)
-                .abortSignal(signal),
-              'agent_views'
-            ),
-
-            // 3. Récupérer les conversions pour les agents de l'utilisateur
-            safeQuery(
-              supabase
-                .from('agent_conversions')
-                .select('agent_id, count')
-                .eq('creator_id', userId)
-                .abortSignal(signal),
-              'agent_conversions'
-            ),
-
-            // 4. Récupérer les revenus pour les agents de l'utilisateur
-            safeQuery(
-              supabase
-                .from('agent_revenue')
-                .select('agent_id, amount')
-                .eq('creator_id', userId)
-                .abortSignal(signal),
-              'agent_revenue'
-            ),
-
-            // 5. Récupérer les contacts pour les agents de l'utilisateur (seulement les champs nécessaires)
-            safeQuery(
-              supabase
-                .from('contacts')
-                .select(`
-                  id, agent_id, enterprise_id, message, status, created_at,
-                  enterprise:enterprise_id(name, location)
-                `)
-                .eq('creator_id', userId)
-                .order('created_at', { ascending: false })
-                .limit(10) // Limiter pour améliorer les performances
-                .abortSignal(signal),
-              'contacts'
-            ),
-
-            // 6. Récupérer les recommandations d'agents (seulement les champs nécessaires)
-            safeQuery(
-              supabase
-                .from('agent_recommendations')
-                .select(`
-                  id, agent_id, enterprise_id, reason, created_at,
-                  enterprise:enterprise_id(name, location)
-                `)
-                .eq('creator_id', userId)
-                .order('created_at', { ascending: false })
-                .limit(10) // Limiter pour améliorer les performances
-                .abortSignal(signal),
-              'agent_recommendations'
-            )
-          ]);
+          console.log('Fetching dashboard data - starting sequential requests to éviter timeouts');
+          
+          // Utiliser des requêtes séquentielles au lieu de Promise.all pour éviter les timeouts
+          // et améliorer la fiabilité de chargement
+          
+          // 1. Récupérer les agents créés par l'utilisateur (données de base essentielles)
+          agentsResponse = await safeQuery(
+            supabase
+              .from('agents')
+              .select(`
+                id, name, slug, description, short_description, 
+                category, creator_id, pricing, featured, logo_url, 
+                integrations, demo_url, demo_video_url, screenshots, 
+                created_at, updated_at
+              `)
+              .eq('creator_id', userId)
+              .order('created_at', { ascending: false })
+              .abortSignal(signal),
+            'agents'
+          );
+          
+          console.log('Agents récupérés:', agentsResponse.data?.length || 0);
+          
+          // 2. Récupérer les statistiques de vues
+          viewsResponse = await safeQuery(
+            supabase
+              .from('agent_views')
+              .select('agent_id, count')
+              .eq('creator_id', userId)
+              .abortSignal(signal),
+            'agent_views'
+          );
+          
+          // 3. Récupérer les conversions
+          conversionsResponse = await safeQuery(
+            supabase
+              .from('agent_conversions')
+              .select('agent_id, count')
+              .eq('creator_id', userId)
+              .abortSignal(signal),
+            'agent_conversions'
+          );
+          
+          // 4. Récupérer les revenus
+          revenueResponse = await safeQuery(
+            supabase
+              .from('agent_revenue')
+              .select('agent_id, amount')
+              .eq('creator_id', userId)
+              .abortSignal(signal),
+            'agent_revenue'
+          );
+          
+          // 5. Récupérer les contacts
+          contactsResponse = await safeQuery(
+            supabase
+              .from('contacts')
+              .select(`
+                id, agent_id, enterprise_id, message, status, created_at,
+                enterprise:enterprise_id(name, location)
+              `)
+              .eq('creator_id', userId)
+              .order('created_at', { ascending: false })
+              .limit(10)
+              .abortSignal(signal),
+            'contacts'
+          );
+          
+          // 6. Récupérer les recommandations
+          recommendationsResponse = await safeQuery(
+            supabase
+              .from('agent_recommendations')
+              .select(`
+                id, agent_id, enterprise_id, reason, created_at,
+                enterprise:enterprise_id(name, location)
+              `)
+              .eq('creator_id', userId)
+              .order('created_at', { ascending: false })
+              .limit(10)
+              .abortSignal(signal),
+            'agent_recommendations'
+          );
+          
+          console.log('Toutes les données du dashboard récupérées avec succès');
+          
         } catch (err) {
-          console.error('Error in Promise.all dashboard data:', err);
+          console.error('Error in dashboard data requests:', err);
           // Initialiser avec des valeurs par défaut en cas d'erreur
           agentsResponse = { data: [], error: null };
           viewsResponse = { data: [], error: null };
@@ -205,9 +205,6 @@ export function useCreatorDashboard(userId: string | undefined): HookState<Creat
         } finally {
           clearTimeout(timeoutId);
         }
-
-        // Nous n'avons plus besoin de gérer les erreurs ici car safeQuery s'en charge déjà
-        // et retourne des tableaux vides en cas d'erreur
 
         // Formater les agents avec vérification de l'existence des données
         const formattedAgents = (agentsResponse.data || []).map((agent: any) => {

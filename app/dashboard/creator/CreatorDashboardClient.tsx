@@ -113,8 +113,58 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
     checkClientSideAuth();
   }, [router, userData?.id]);
   
+  console.log('Avant appel du hook - validUserId:', validUserId);
+  
   // Utiliser le hook pour récupérer les données seulement lorsqu'un ID utilisateur valide est disponible
   const { data: dashboardData, loading, error } = useCreatorDashboard(validUserId);
+  
+  console.log('Après appel du hook - loading:', loading, 'error:', error?.message);
+  
+  // Afficher un interface simplifié quand aucun userId n'est disponible
+  // Cela permet d'éviter les redirections en boucle tout en montrant ce qui se passe
+  if (!validUserId) {
+    return (
+      <div className="p-8 bg-amber-50 border border-amber-200 rounded-lg m-4">
+        <h2 className="text-xl font-bold text-amber-800 mb-4">⚠️ Problème d'identification utilisateur</h2>
+        <p className="mb-4 text-amber-700">
+          Le tableau de bord a besoin d'un ID utilisateur pour fonctionner, mais aucun n'a été trouvé.
+        </p>
+        
+        <div className="bg-white p-4 rounded shadow mb-4">
+          <h3 className="font-bold mb-2">Données utilisateur reçues des props:</h3>
+          <pre className="bg-gray-100 p-2 rounded text-xs overflow-x-auto">
+            {JSON.stringify(userData, null, 2)}
+          </pre>
+        </div>
+        
+        <div className="bg-white p-4 rounded shadow mb-4">
+          <h3 className="font-bold mb-2">Contenu du localStorage:</h3>
+          <pre className="bg-gray-100 p-2 rounded text-xs overflow-x-auto">
+            {typeof window !== 'undefined' 
+              ? JSON.stringify({
+                  user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') || '{}') : null,
+                }, null, 2) 
+              : "Non disponible (côté serveur)"}
+          </pre>
+        </div>
+        
+        <div className="flex gap-4 mt-6">
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700"
+          >
+            Rafraîchir la page
+          </button>
+          <button
+            onClick={() => router.push(ROUTES.AUTH.SIGNIN)}
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Se reconnecter
+          </button>
+        </div>
+      </div>
+    );
+  }
   
   // Mettre à jour l'état de chargement global avec une meilleure gestion du timeout
   const [hasTimedOut, setHasTimedOut] = useState(false);
