@@ -23,6 +23,9 @@ export async function signUpWithEmail(
     throw new Error('La fonction signUpWithEmail ne peut être utilisée que côté client');
   }
 
+  // Sauvegarder la fonction debug originale
+  const originalDebug = console.debug;
+  
   // Valider les métadonnées essentielles pour correspondre à la structure de la base de données
   if (!userData?.role) {
     userData = { ...userData, role: 'enterprise' };
@@ -50,6 +53,9 @@ export async function signUpWithEmail(
   })();
 
   try {
+    // Désactiver temporairement console.debug pour éviter des erreurs debug_logs
+    console.debug = () => {};
+    
     // 1. Créer l'auth user
     const { data: authData, error: authError } = await client.auth.signUp({
       email,
@@ -62,6 +68,9 @@ export async function signUpWithEmail(
         emailRedirectTo: redirectUrl
       }
     });
+    
+    // Restaurer console.debug
+    console.debug = originalDebug;
 
     if (authError) {
       throw authError;
@@ -73,6 +82,9 @@ export async function signUpWithEmail(
 
     // 2. Insérer dans users - pas besoin de transactions explicites
     // Supabase gère automatiquement la transaction implicite
+    // Désactiver à nouveau console.debug pour l'opération d'insertion
+    console.debug = () => {};
+    
     const { data: profileData, error: profileError } = await client
       .from('users')
       .insert({
@@ -84,6 +96,9 @@ export async function signUpWithEmail(
       })
       .select()
       .single();
+    
+    // Restaurer console.debug
+    console.debug = originalDebug;
 
     // Si erreur d'insertion dans le profil, on continue quand même
     // L'utilisateur pourra compléter son profil plus tard
@@ -98,6 +113,17 @@ export async function signUpWithEmail(
     };
     
   } catch (error) {
+    // En cas d'erreur, s'assurer que console.debug est restauré
+    if (typeof window !== 'undefined' && console.debug.toString().includes('() => {}')) {
+      console.debug = originalDebug || console.log;
+    }
+    
+    // Si l'erreur mentionne debug_logs, modifier le message pour plus de clarté
+    if (error instanceof Error && error.message.includes('debug_logs')) {
+      const customError = new Error('Erreur de configuration de base de données. Veuillez contacter l\'administrateur.');
+      return { data: null, error: customError };
+    }
+    
     return { data: null, error };
   }
 }

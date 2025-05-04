@@ -8,6 +8,9 @@ import { NextResponse } from 'next/server';
  * Applique une valeur par défaut pour le champ name si non fourni
  */
 export async function POST(request: Request) {
+  // Déclarer originalDebug en dehors du try/catch pour qu'il soit accessible partout
+  const originalDebug = console.debug;
+  
   try {
     // Extraire les données de la requête
     const body = await request.json();
@@ -32,6 +35,10 @@ export async function POST(request: Request) {
 
     // Créer un client Supabase côté serveur
     const supabase = createServerSupabaseClient();
+    
+    // Désactiver le debug logging pour cette requête
+    // Cela empêche les tentatives d'écriture dans la table debug_logs inexistante
+    console.debug = () => {}; // No-op pour éviter les logs de debug
 
     // Inscription via Supabase Auth
     const { data, error } = await supabase.auth.signUp({
@@ -63,6 +70,9 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+    
+    // Restaurer console.debug
+    console.debug = originalDebug;
 
     // Vérifier que l'utilisateur a bien été créé
     if (!data.user) {
@@ -124,6 +134,9 @@ export async function POST(request: Request) {
     }
     */
 
+    // Restaurer console.debug avant de retourner la réponse
+    console.debug = originalDebug;
+    
     // Succès - utilisateur créé
     return NextResponse.json(
       {
@@ -140,14 +153,23 @@ export async function POST(request: Request) {
     );
     
   } catch (error: any) {
+    // Restaurer console.debug
+    console.debug = originalDebug;
+    
     // Log détaillé côté serveur
     console.error('Erreur serveur lors de l\'inscription:', error);
+    
+    // Si l'erreur est liée à debug_logs, on peut donner plus de détails
+    const errorMessage = error.message || 'Une erreur est survenue lors de l\'inscription';
+    const isDebugLogsError = errorMessage.includes('debug_logs');
     
     // Réponse générique pour l'utilisateur, sans détails sensibles
     return NextResponse.json(
       {
         success: false,
-        message: 'Une erreur est survenue lors de l\'inscription',
+        message: isDebugLogsError 
+          ? 'Erreur de configuration de base de données. Veuillez contacter l\'administrateur.' 
+          : 'Une erreur est survenue lors de l\'inscription',
         // Informations utiles pour le debug sans exposer de détails sensibles
         errorCode: error.code || 'unknown'
       },

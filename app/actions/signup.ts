@@ -24,7 +24,13 @@ export async function signUpAction(formData: FormData) {
     };
   }
   
+  // Sauvegarder la fonction debug originale
+  const originalDebug = console.debug;
+  
   try {
+    // Désactiver console.debug pour éviter les erreurs liées à debug_logs
+    console.debug = () => {};
+    
     // Utilisation du client Supabase côté serveur
     const supabase = createServerSupabaseClient();
     
@@ -43,6 +49,9 @@ export async function signUpAction(formData: FormData) {
         emailRedirectTo: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/auth/callback`
       }
     });
+    
+    // Restaurer console.debug
+    console.debug = originalDebug;
     
     if (authError) throw authError;
     
@@ -81,12 +90,18 @@ export async function signUpAction(formData: FormData) {
     };
     
   } catch (error: any) {
+    // Restaurer console.debug en cas d'erreur
+    console.debug = originalDebug;
+    
     console.error('Erreur lors de l\'inscription:', error);
     
     let errorMessage = "Une erreur est survenue lors de l'inscription";
     
+    // Fournir un message plus spécifique pour certaines erreurs
     if (error.message?.includes('email')) {
       errorMessage = "Cette adresse email est déjà utilisée";
+    } else if (error.message?.includes('debug_logs')) {
+      errorMessage = "Erreur de configuration de base de données. Veuillez contacter l'administrateur.";
     }
     
     return {
