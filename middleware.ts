@@ -15,10 +15,44 @@ const ROLE_SPECIFIC_ROUTES = {
   enterprise: ['/dashboard/enterprise', '/enterprise'],
 };
 
+// Définir une liste des pages qui ont déjà leurs propres mécanismes de redirection
+// et donc que le middleware ne devrait pas rediriger
+const SELF_HANDLING_ROUTES = [
+  '/dashboard', 
+  '/dashboard/creator', 
+  '/dashboard/enterprise'
+];
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const url = request.nextUrl.clone();
 
+  // Vérifier si cette route gère elle-même la redirection
+  const isSelfHandlingRoute = SELF_HANDLING_ROUTES.some(route => 
+    pathname === route || pathname.startsWith(`${route}/`)
+  );
+  
+  // Si la route gère elle-même sa redirection, passer directement
+  if (isSelfHandlingRoute) {
+    console.log(`Route ${pathname} gère sa propre redirection - skip middleware`);
+    return NextResponse.next();
+  }
+
+  // Vérifier si cette URL fait partie d'une redirection récente pour éviter les boucles
+  const referer = request.headers.get('referer') || '';
+  const isRedirectLoop = referer.includes(pathname) || 
+                         (referer.includes('/signin') && pathname.includes('/dashboard')) || 
+                         (referer.includes('/dashboard') && pathname.includes('/signin'));
+
+  if (isRedirectLoop) {
+    console.warn(`🔄 Boucle de redirection détectée: ${referer} -> ${pathname}`);
+    console.warn('Interruption de la boucle: on laisse passer');
+    
+    // En cas de boucle, on laisse passer sans rediriger
+    return NextResponse.next();
+  }
+
+  // Extraction des infos d'authentification depuis le cookie
   const userSessionCookie = request.cookies.get('user-session')?.value;
 
   let isAuthenticated = false;
@@ -62,16 +96,9 @@ export function middleware(request: NextRequest) {
     pathname.startsWith(prefix)
   );
 
-  const referer = request.headers.get('referer') || '';
-  const redirectLoopDetected = referer.includes(pathname) && isProtectedRoute;
-
-  if (redirectLoopDetected) {
-    console.warn('Boucle de redirection détectée, on laisse passer');
-    return NextResponse.next();
-  }
-
   // 1. Utilisateur non authentifié sur route protégée
   if (isProtectedRoute && !isAuthenticated) {
+    console.log(`Redirection non-auth vers signin depuis ${pathname}`);
     url.pathname = ROUTES.AUTH.SIGNIN;
     url.searchParams.set('redirect', pathname);
     return NextResponse.redirect(url);
@@ -83,12 +110,13 @@ export function middleware(request: NextRequest) {
       ? ROUTES.DASHBOARD.CREATOR.ROOT
       : ROUTES.DASHBOARD.ENTERPRISE.ROOT;
 
+    console.log(`Redirection user auth depuis ${pathname} vers ${dashboardPath}`);
     url.pathname = dashboardPath;
     return NextResponse.redirect(url);
   }
 
-  // 3. Vérification de rôle
-  if (isAuthenticated && userRole) {
+  // 3. Vérification de rôle (uniquement si on est sur une route protégée)
+  if (isAuthenticated && userRole && isProtectedRoute) {
     const isCreatorRoute = ROLE_SPECIFIC_ROUTES.creator.some(route =>
       pathname.startsWith(route)
     );
@@ -97,11 +125,13 @@ export function middleware(request: NextRequest) {
     );
 
     if (isCreatorRoute && userRole !== 'creator') {
+      console.log(`Redirection role mismatch: ${userRole} tente d'accéder à ${pathname}`);
       url.pathname = ROUTES.DASHBOARD.ENTERPRISE.ROOT;
       return NextResponse.redirect(url);
     }
 
     if (isEnterpriseRoute && userRole !== 'enterprise') {
+      console.log(`Redirection role mismatch: ${userRole} tente d'accéder à ${pathname}`);
       url.pathname = ROUTES.DASHBOARD.CREATOR.ROOT;
       return NextResponse.redirect(url);
     }
@@ -109,9 +139,12 @@ export function middleware(request: NextRequest) {
 
   // 4. Page de redirection post-login
   if (pathname === '/redirect' && isAuthenticated) {
-    url.pathname = userRole === 'creator'
+    const dashboardPath = userRole === 'creator'
       ? ROUTES.DASHBOARD.CREATOR.ROOT
       : ROUTES.DASHBOARD.ENTERPRISE.ROOT;
+    
+    console.log(`Redirection via /redirect vers ${dashboardPath}`);
+    url.pathname = dashboardPath;
     return NextResponse.redirect(url);
   }
 

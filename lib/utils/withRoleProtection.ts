@@ -8,6 +8,7 @@ import { ROUTES } from '@/constants';
 /**
  * Fonction utilitaire pour vérifier l'authentification et le rôle de l'utilisateur côté serveur.
  * Utilisée pour protéger les routes du dashboard selon le rôle attendu.
+ * Version améliorée qui évite les boucles de redirection.
  * 
  * @param expectedRole - Le rôle attendu pour accéder à la page ('creator' ou 'enterprise')
  * @returns Les données utilisateur si l'authentification et le rôle sont valides
@@ -48,38 +49,43 @@ export async function withRoleProtection(expectedRole: 'creator' | 'enterprise')
     // Assigner l'utilisateur à la variable déclarée plus haut
     user = userData.user;
 
-    // Si l'utilisateur n'est pas connecté ou en cas d'erreur, rediriger vers la page de connexion
+    // Si l'utilisateur n'est pas connecté ou en cas d'erreur
     if (userError || !user) {
       console.error('Authentification échouée dans withRoleProtection:', userError);
       
-      // Avant de rediriger, nous allons simplifier et éviter d'utiliser les en-têtes
-      // qui peuvent causer des problèmes avec les promesses
-      // Cela permet d'éviter le problème de boucle de redirection
-      
-      // Retourner un objet "vide" mais valide, laissant au client la responsabilité
-      // de gérer la redirection elle-même
-      console.error('Authentification échouée - retour d\'un objet vide sans redirection');
-      if (true) {
-        console.error('Redirection évitée pour empêcher une boucle - déjà sur une page de connexion');
-        return {
-          user: null,
-          role: 'unknown',
-          email: '',
-          name: '',
-        };
-      }
-      
-      redirect(ROUTES.AUTH.SIGNIN);
+      // ⚠️ IMPORTANT: Ne pas rediriger côté serveur pour éviter les boucles de redirection
+      // Laisser la page client gérer l'état de non-authentification
+      console.log('Authentification échouée - retour d\'un objet vide sans redirection');
+      return {
+        user: null,
+        role: 'unknown',
+        email: '',
+        name: '',
+      };
     }
   } catch (error) {
     console.error('Exception lors de la vérification d\'authentification:', error);
-    redirect(ROUTES.AUTH.SIGNIN);
+    
+    // ⚠️ IMPORTANT: Ne pas rediriger côté serveur pour éviter les boucles 
+    return {
+      user: null,
+      role: 'unknown',
+      email: '',
+      name: '',
+    };
   }
 
   // S'assurer que supabase et user sont définis
   if (!supabase || !user) {
     console.error('Variables supabase ou user non définies après la vérification');
-    redirect(ROUTES.AUTH.SIGNIN);
+    
+    // ⚠️ IMPORTANT: Ne pas rediriger côté serveur
+    return {
+      user: null,
+      role: 'unknown',
+      email: '',
+      name: '',
+    };
   }
 
   // Récupérer le rôle de l'utilisateur depuis la table users
@@ -96,21 +102,23 @@ export async function withRoleProtection(expectedRole: 'creator' | 'enterprise')
     // Vérifier les métadonnées de l'utilisateur pour le rôle
     const userMetadataRole = user.user_metadata?.role;
     
-    // Si le rôle ne correspond pas à celui attendu, rediriger vers la page appropriée
+    // Gérer le cas où le rôle ne correspond pas sans redirection
     if (userMetadataRole !== expectedRole) {
-      // Rediriger vers le dashboard correspondant au rôle de l'utilisateur
-      if (userMetadataRole === 'creator') {
-        redirect(ROUTES.DASHBOARD.CREATOR.ROOT);
-      } else if (userMetadataRole === 'enterprise') {
-        redirect(ROUTES.DASHBOARD.ENTERPRISE.ROOT);
-      } else {
-        // Si le rôle n'est pas défini ou n'est pas reconnu, rediriger vers la page de connexion
-        redirect(ROUTES.AUTH.SIGNIN);
-      }
+      console.warn(`Rôle attendu '${expectedRole}' différent du rôle utilisateur '${userMetadataRole}'`);
+      
+      // Plutôt que de rediriger, retourner des données avec indicateur de mauvais rôle
+      // Le client pourra décider de la redirection
+      return {
+        user,
+        role: userMetadataRole || 'unknown',
+        email: user?.email || '',
+        name: user?.user_metadata?.name || user?.email || '',
+        wrongRole: true,
+        expectedRole,
+      };
     }
     
     // Si le rôle est correct, on continue avec les métadonnées comme informations utilisateur
-    // Garantir que toutes les valeurs retournées sont bien définies
     const safeData = {
       user,
       role: userMetadataRole || 'unknown',
@@ -124,19 +132,20 @@ export async function withRoleProtection(expectedRole: 'creator' | 'enterprise')
 
   // Vérifier si le rôle correspond à celui attendu
   if (userData.role !== expectedRole) {
-    // Rediriger vers le dashboard correspondant au rôle de l'utilisateur
-    if (userData.role === 'creator') {
-      redirect(ROUTES.DASHBOARD.CREATOR.ROOT);
-    } else if (userData.role === 'enterprise') {
-      redirect(ROUTES.DASHBOARD.ENTERPRISE.ROOT);
-    } else {
-      // Si le rôle n'est pas reconnu, rediriger vers la page de connexion
-      redirect(ROUTES.AUTH.SIGNIN);
-    }
+    console.warn(`Rôle attendu '${expectedRole}' différent du rôle utilisateur '${userData.role}'`);
+    
+    // Plutôt que de rediriger, retourner des données avec indicateur de mauvais rôle
+    return {
+      user,
+      role: userData.role || 'unknown',
+      email: user?.email || '',
+      name: user?.user_metadata?.name || user?.email || '',
+      wrongRole: true,
+      expectedRole,
+    };
   }
 
   // Si le rôle est correct, retourner les informations utilisateur
-  // Garantir que toutes les valeurs retournées sont bien définies
   const safeData = {
     user,
     role: userData?.role || 'unknown',
