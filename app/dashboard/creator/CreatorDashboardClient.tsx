@@ -18,212 +18,118 @@ type CreatorDashboardClientProps = {
   };
 };
 
-/**
- * Composant client du tableau de bord créateur
- * Inclut une vérification d'authentification côté client pour éviter les redirections en boucle
- */
 export default function CreatorDashboardClient({ userData }: CreatorDashboardClientProps) {
-  console.log("CreatorDashboardClient initialisation - userData:", userData, typeof userData);
+  console.log("CreatorDashboardClient initialisation - userData:", userData);
   
   const router = useRouter();
-  // État pour suivre le chargement
   const [isLoading, setIsLoading] = useState(true);
   const [isClientSideAuthChecked, setIsClientSideAuthChecked] = useState(false);
   const [authError, setAuthError] = useState<Error | null>(null);
-  
-  // État pour stocker l'ID utilisateur réel à utiliser
-  const [validUserId, setValidUserId] = useState<string | undefined>(undefined);
-  
-  // Vérification d'authentification côté client après hydratation avec un timeout
-  useEffect(() => {
-    let authTimeoutId: NodeJS.Timeout;
-    
-    // Fonction pour vérifier l'authentification côté client
-    const checkClientSideAuth = async () => {
-      try {
-        // Configurer un timeout pour éviter un blocage indéfini
-        authTimeoutId = setTimeout(() => {
-          console.error('Auth check timeout - forçage de la redirection');
-          setAuthError(new Error("Timeout lors de la vérification d'authentification"));
-          router.replace(ROUTES.AUTH.SIGNIN);
-        }, 5000); // 5 secondes max pour la vérification d'auth
-        
-        // S'assurer que localStorage est disponible (hydratation complète)
-        if (typeof window !== 'undefined') {
-          console.log('CreatorDashboardClient: Vérification d\'authentification côté client');
-          console.log('Props userData:', JSON.stringify(userData));
-          
-          // Si l'ID utilisateur est déjà fourni dans les props et non vide
-          if (userData?.id) {
-            console.log('CreatorDashboardClient: ID utilisateur fourni dans les props:', userData.id);
-            setValidUserId(userData.id);
-            setIsClientSideAuthChecked(true);
-            clearTimeout(authTimeoutId);
-            return;
-          } else {
-            console.warn('CreatorDashboardClient: ID utilisateur NON fourni dans les props');
-          }
-          
-          // Vérifier la session utilisateur dans localStorage
-          const storedUser = localStorage.getItem('user');
-          let userIdFromStorage = '';
-          
-          console.log('Recherche dans localStorage - user existe:', !!storedUser);
-          
-          if (storedUser) {
-            try {
-              const parsedUser = JSON.parse(storedUser);
-              console.log('Contenu du localStorage user:', JSON.stringify(parsedUser));
-              userIdFromStorage = parsedUser.id;
-              console.log('CreatorDashboardClient: ID trouvé dans localStorage:', userIdFromStorage);
-            } catch (e) {
-              console.error('Erreur lors du parsing de l\'utilisateur dans localStorage:', e, storedUser);
-            }
-          }
-          // Nous ne voulons plus utiliser l'ID du localStorage comme source principale
-          if (userIdFromStorage) {
-            console.log('ID trouvé dans localStorage mais nous allons vérifier Supabase en priorité:', userIdFromStorage);
-          } else {
-            console.warn('Aucun ID utilisateur dans localStorage');
-          }
-          
-          // Supabase est la source principale et unique d'authentification
-          if (supabase) {
-            console.log('Tentative de récupération de session via Supabase');
-            const { data, error } = await supabase.auth.getSession();
-            console.log('Résultat Supabase session:', data.session ? 'Session trouvée' : 'Pas de session', 'Erreur:', error);
-            
-            if (data.session?.user?.id) {
-              console.log('CreatorDashboardClient: ID trouvé dans la session Supabase:', data.session.user.id);
-              setValidUserId(data.session.user.id);
-              setIsClientSideAuthChecked(true);
-              clearTimeout(authTimeoutId);
-              
-              // Si localStorage a un ID différent, nous pouvons le corriger ici
-              if (userIdFromStorage && userIdFromStorage !== data.session.user.id) {
-                console.log('ID localStorage différent de Supabase, nous allons utiliser Supabase');
-                
-                // Nettoyer l'ancien localStorage si nécessaire (mais ne pas le faire maintenant pour éviter les effets secondaires)
-                // localStorage.removeItem('user');
-              }
-              
-              return;
-            } else {
-              console.warn('Aucun ID utilisateur dans la session Supabase, redirection vers login');
-              
-              // Si aucune session Supabase n'est trouvée, nous ignorons complètement localStorage
-              // et redirigeons vers la page de connexion
-              console.error('CreatorDashboardClient: PROBLÈME CRITIQUE - Session Supabase introuvable');
-              setAuthError(new Error("Session Supabase introuvable"));
-            }
-          } else {
-            console.error('Client Supabase non disponible, redirection vers login');
-            setAuthError(new Error("Client Supabase non disponible"));
-          }
-        }
-      } catch (error) {
-        console.error('Erreur lors de la vérification d\'authentification côté client:', error);
-        setAuthError(error instanceof Error ? error : new Error("Erreur d'authentification inconnue"));
-      } finally {
-        clearTimeout(authTimeoutId);
-      }
-    };
-    
-    checkClientSideAuth();
-    
-    return () => {
-      if (authTimeoutId) clearTimeout(authTimeoutId);
-    };
-  }, [router, userData?.id]);
-  
-  console.log('Avant appel du hook - validUserId:', validUserId);
-  
-  // Utiliser le hook pour récupérer les données seulement lorsqu'un ID utilisateur valide est disponible
-  const { data: dashboardData, loading: dataLoading, error: dataError } = useCreatorDashboard(validUserId);
-  
-  console.log('Après appel du hook - loading:', dataLoading, 'error:', dataError?.message);
-  
-  // Mettre à jour l'état de chargement global
-  useEffect(() => {
-    // Si l'authentification est vérifiée et les données ne sont plus en chargement
-    if (isClientSideAuthChecked && !dataLoading) {
-      setIsLoading(false);
-    } else {
-      setIsLoading(true);
-    }
-  }, [isClientSideAuthChecked, dataLoading]);
-  
-  // Ajouter un timeout global pour éviter le chargement infini
+  const [validUserId, setValidUserId] = useState<string | undefined>(userData?.id || undefined);
   const [hasTimedOut, setHasTimedOut] = useState(false);
   
+  // Timeout global pour éviter le chargement infini
   useEffect(() => {
-    // Timeout global après lequel on affiche une interface minimale même si le chargement n'est pas terminé
     const globalTimeoutId = setTimeout(() => {
       if (isLoading) {
         console.log('Dashboard global timeout triggered');
         setHasTimedOut(true);
+        setIsLoading(false);
       }
-    }, 8000); // 8 secondes de timeout
+    }, 10000); // 10 secondes de timeout
     
-    return () => {
-      clearTimeout(globalTimeoutId);
-    };
+    return () => clearTimeout(globalTimeoutId);
   }, [isLoading]);
   
-  // Afficher un interface simplifié quand aucun userId n'est disponible
-  // Cela permet d'éviter les redirections en boucle tout en montrant ce qui se passe
-  if (!validUserId) {
-    return (
-      <div className="p-8 bg-amber-50 border border-amber-200 rounded-lg m-4">
-        <h2 className="text-xl font-bold text-amber-800 mb-4">⚠️ Problème d'identification utilisateur</h2>
-        <p className="mb-4 text-amber-700">
-          Le tableau de bord a besoin d'un ID utilisateur pour fonctionner, mais aucun n'a été trouvé.
-        </p>
-        
-        <div className="bg-white p-4 rounded shadow mb-4">
-          <h3 className="font-bold mb-2">Données utilisateur reçues des props:</h3>
-          <pre className="bg-gray-100 p-2 rounded text-xs overflow-x-auto">
-            {JSON.stringify(userData, null, 2)}
-          </pre>
-        </div>
-        
-        <div className="bg-white p-4 rounded shadow mb-4">
-          <h3 className="font-bold mb-2">Contenu du localStorage:</h3>
-          <pre className="bg-gray-100 p-2 rounded text-xs overflow-x-auto">
-            {typeof window !== 'undefined' 
-              ? JSON.stringify({
-                  user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') || '{}') : null,
-                }, null, 2) 
-              : "Non disponible (côté serveur)"}
-          </pre>
-        </div>
-        
-        <div className="flex gap-4 mt-6">
-          <button
-            onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700"
-          >
-            Rafraîchir la page
-          </button>
-          <button
-            onClick={() => router.push(ROUTES.AUTH.SIGNIN)}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          >
-            Se reconnecter
-          </button>
-        </div>
-      </div>
-    );
-  }
+  // Vérification d'authentification avec timeout
+  useEffect(() => {
+    // Si l'ID est déjà dans les props, on l'utilise directement
+    if (userData?.id) {
+      console.log('ID utilisateur trouvé dans les props:', userData.id);
+      setValidUserId(userData.id);
+      setIsClientSideAuthChecked(true);
+      return;
+    }
+    
+    // Sinon, on essaie de le récupérer via Supabase avec un timeout
+    const checkAuth = async () => {
+      try {
+        if (supabase) {
+          // Timeout pour la requête Supabase
+          const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Timeout Supabase')), 5000)
+          );
+          
+          const authPromise = supabase.auth.getSession();
+          const result = await Promise.race([authPromise, timeoutPromise]) as any;
+          
+          if (result?.data?.session?.user?.id) {
+            console.log('ID trouvé dans Supabase:', result.data.session.user.id);
+            setValidUserId(result.data.session.user.id);
+          } else {
+            console.warn('Aucune session Supabase trouvée');
+            setAuthError(new Error('Session introuvable'));
+          }
+        } else {
+          console.error('Client Supabase non disponible');
+          setAuthError(new Error('Client Supabase non disponible'));
+        }
+      } catch (error) {
+        console.error('Erreur authentification:', error);
+        setAuthError(error instanceof Error ? error : new Error('Erreur inconnue'));
+      } finally {
+        setIsClientSideAuthChecked(true);
+      }
+    };
+    
+    checkAuth();
+  }, [userData?.id]);
   
-  // Si un timeout s'est produit et que nous avons un ID utilisateur
-  // afficher une interface minimale fonctionnelle
-  if (hasTimedOut && validUserId) {
+  // Appel du hook de données avec protection contre le chargement infini
+  const { data: originalData, loading: originalLoading, error: originalError } = 
+    useCreatorDashboard(validUserId);
+  
+  // Force la fin du chargement après un timeout
+  const [hookTimeout, setHookTimeout] = useState(false);
+  useEffect(() => {
+    const hookTimeoutId = setTimeout(() => {
+      if (originalLoading) {
+        console.log('Hook timeout - forçage de fin de chargement');
+        setHookTimeout(true);
+      }
+    }, 5000); // 5 secondes
+    
+    return () => clearTimeout(hookTimeoutId);
+  }, [originalLoading]);
+  
+  // Créer des données par défaut si le hook timeout
+  const dashboardData = hookTimeout ? {
+    userAgents: [],
+    stats: { views: 0, clicks: 0, contacts: 0, conversions: 0 },
+    agentViews: {},
+    agentConversions: {},
+    agentRevenue: {},
+    contacts: [],
+    recommendations: []
+  } : originalData;
+  
+  const dataLoading = hookTimeout ? false : originalLoading;
+  const dataError = originalError;
+  
+  // Mettre à jour l'état de chargement global
+  useEffect(() => {
+    if (isClientSideAuthChecked && (!dataLoading || hookTimeout)) {
+      setIsLoading(false);
+    }
+  }, [isClientSideAuthChecked, dataLoading, hookTimeout]);
+  
+  // 1. Écran de timeout global
+  if (hasTimedOut) {
     return (
       <div className="p-8">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-gray-900">
-            Bienvenue {userData?.name || userData?.email || 'Créateur'} dans votre espace
+            Bienvenue {userData?.name || userData?.email || 'Créateur'}
           </h1>
           <p className="text-gray-600 mt-1">
             Le chargement des données a pris trop de temps
@@ -240,69 +146,69 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-gray-50 p-6 rounded-lg text-center">
                 <h3 className="font-medium mb-2">Rafraîchir la page</h3>
-                <p className="text-gray-600 mb-4">Essayez de recharger la page pour résoudre le problème</p>
+                <p className="text-gray-600 mb-4">Essayez de recharger la page</p>
                 <Button onClick={() => window.location.reload()}>
                   Rafraîchir
                 </Button>
               </div>
               
               <div className="bg-gray-50 p-6 rounded-lg text-center">
-                <h3 className="font-medium mb-2">Créer un nouvel agent</h3>
-                <p className="text-gray-600 mb-4">Vous pouvez toujours créer un nouvel agent IA</p>
-                <Link href={ROUTES.DASHBOARD.CREATOR.ADD_AGENT}>
+                <h3 className="font-medium mb-2">Se reconnecter</h3>
+                <p className="text-gray-600 mb-4">Essayez de vous reconnecter</p>
+                <Link href={ROUTES.AUTH.SIGNIN}>
                   <Button>
-                    Ajouter un agent
+                    Se connecter
                   </Button>
                 </Link>
               </div>
             </div>
           </CardBody>
         </Card>
-        
-        <div className="text-center mt-8">
-          <p className="text-gray-500 mb-4">
-            Si le problème persiste, essayez de vider le cache de votre navigateur ou de vous déconnecter puis reconnecter.
-          </p>
-                  <Link href={ROUTES.AUTH.SIGNOUT}>
-            <Button variant="outline">
-              Se déconnecter
-            </Button>
-          </Link>
+      </div>
+    );
+  }
+  
+  // 2. Écran de chargement
+  if (isLoading) {
+    return (
+      <div className="p-8">
+        <div className="flex justify-center items-center h-64">
+          <div className="flex flex-col items-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mb-4"></div>
+            <p className="text-lg text-gray-600">Chargement des données...</p>
+          </div>
         </div>
       </div>
     );
   }
   
-  // Gérer les erreurs
-  if ((authError || dataError) && !isLoading) {
-    console.error('Erreur lors du chargement des données du dashboard:', authError || dataError);
-    
-    // Erreur spécifique : ID utilisateur non fourni
-    if ((authError?.message === "Aucun ID utilisateur trouvé") || (dataError?.message === 'ID utilisateur non fourni')) {
-      return (
-        <div className="p-8 text-center">
-          <div className="mb-4 text-red-500">
-            <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
-          <h2 className="text-xl font-bold mb-2">Session expirée ou introuvable</h2>
-          <p className="text-gray-600 mb-4">
-            Nous n'avons pas pu identifier votre session. Veuillez vous reconnecter pour accéder à votre tableau de bord.
-          </p>
-          <div className="flex justify-center">
-            <Button 
-              onClick={() => router.push(ROUTES.AUTH.SIGNIN)}
-              variant="primary"
-            >
-              Se connecter
-            </Button>
-          </div>
+  // 3. Écran d'erreur d'authentification
+  if (isClientSideAuthChecked && !validUserId) {
+    return (
+      <div className="p-8 text-center">
+        <div className="mb-4 text-red-500">
+          <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
         </div>
-      );
-    }
-    
-    // Autres erreurs génériques
+        <h2 className="text-xl font-bold mb-2">Session expirée ou introuvable</h2>
+        <p className="text-gray-600 mb-4">
+          Nous n'avons pas pu identifier votre session. Veuillez vous reconnecter pour accéder à votre tableau de bord.
+        </p>
+        <div className="flex justify-center">
+          <Button 
+            onClick={() => router.push(ROUTES.AUTH.SIGNIN)}
+            variant="primary"
+          >
+            Se connecter
+          </Button>
+        </div>
+      </div>
+    );
+  }
+  
+  // 4. Écran d'erreur de données
+  if (dataError) {
     return (
       <div className="p-8 text-center">
         <div className="mb-4 text-red-500">
@@ -311,7 +217,7 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
           </svg>
         </div>
         <h2 className="text-xl font-bold mb-2">Erreur de chargement des données</h2>
-        <p className="text-gray-600 mb-4">{authError?.message || dataError?.message || "Une erreur est survenue lors du chargement de vos données."}</p>
+        <p className="text-gray-600 mb-4">{dataError.message || "Une erreur est survenue lors du chargement de vos données."}</p>
         <div className="flex justify-center space-x-4">
           <Button 
             onClick={() => window.location.reload()}
@@ -319,18 +225,12 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
           >
             Réessayer
           </Button>
-          <Button 
-            onClick={() => router.push(ROUTES.AUTH.SIGNIN)}
-            variant="primary"
-          >
-            Se reconnecter
-          </Button>
         </div>
       </div>
     );
   }
   
-  // Extraire les données du dashboard - utiliser les données réelles de Supabase
+  // 5. Tableau de bord normal (ou avec données minimales en cas de timeout du hook)
   const userAgents = dashboardData?.userAgents || [];
   const stats = dashboardData?.stats || { views: 0, clicks: 0, contacts: 0, conversions: 0 };
   const agentViews = dashboardData?.agentViews || {};
@@ -339,53 +239,7 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
   const contacts = dashboardData?.contacts || [];
   const recommendations = dashboardData?.recommendations || [];
   
-  // Fonction utilitaire pour les calculs et formatages
-  const formatNumber = (num: number) => new Intl.NumberFormat('fr-FR').format(num);
-
-  // Afficher un indicateur de chargement avec message de timeout
-  if (isLoading) {
-    return (
-      <div className="p-8">
-        <div className="flex justify-center items-center h-64">
-          <div className="flex flex-col items-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mb-4"></div>
-            <p className="text-lg text-gray-600">Chargement des données...</p>
-            
-            {hasTimedOut && (
-              <div className="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg max-w-lg">
-                <h3 className="text-amber-700 font-medium mb-2">Chargement plus long que prévu</h3>
-                <p className="text-sm text-amber-700 mb-4">
-                  Le chargement prend plus de temps que d'habitude. Si le problème persiste :
-                </p>
-                <ul className="text-sm list-disc list-inside text-amber-600 space-y-1 mb-3">
-                  <li>Vérifiez votre connexion internet</li>
-                  <li>Rafraîchissez la page</li>
-                  <li>Videz le cache du navigateur</li>
-                  <li>Essayez de vous déconnecter puis reconnecter</li>
-                </ul>
-                <div className="flex space-x-3">
-                  <button 
-                    onClick={() => window.location.reload()} 
-                    className="text-sm bg-amber-100 hover:bg-amber-200 text-amber-800 py-2 px-4 rounded-md transition-colors"
-                  >
-                    Rafraîchir la page
-                  </button>
-                  <Link href={ROUTES.AUTH.SIGNIN}>
-                    <button 
-                      className="text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 px-4 rounded-md transition-colors"
-                    >
-                      Se déconnecter
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  }
-  
+  // Afficher le dashboard fonctionnel
   return (
     <div>
       <div className="mb-6 flex justify-between items-center">
@@ -403,6 +257,22 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
           </Button>
         </Link>
       </div>
+      
+      {hookTimeout && (
+        <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg mb-6">
+          <h3 className="font-medium text-amber-800">Données partiellement disponibles</h3>
+          <p className="text-amber-700 mt-1">
+            Certaines données n'ont pas pu être chargées. Vous pouvez utiliser le tableau de bord 
+            avec des fonctionnalités limitées ou essayer de rafraîchir la page.
+          </p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="mt-2 px-3 py-1 bg-amber-100 text-amber-800 rounded hover:bg-amber-200"
+          >
+            Rafraîchir
+          </button>
+        </div>
+      )}
       
       {/* Résumé des métriques */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -485,7 +355,7 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
         </CardBody>
       </Card>
       
-      {/* Contenu simplifié du tableau de bord pour éviter les erreurs */}
+      {/* Message de confirmation */}
       <div className="text-center p-6 bg-green-50 rounded-md mb-8">
         <h3 className="text-xl font-medium text-green-800 mb-2">
           Tableau de bord chargé avec succès !
@@ -494,7 +364,7 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
           Le problème de chargement infini a été résolu. Les données sont maintenant disponibles.
         </p>
         <p className="text-sm text-green-600">
-          ID Utilisateur valide: {validUserId}
+          ID Utilisateur: {validUserId}
         </p>
       </div>
     </div>
