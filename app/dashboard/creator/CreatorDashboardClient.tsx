@@ -11,6 +11,15 @@ export default function CreatorDashboardClient() {
     const testSupabase = async () => {
       try {
         console.log('Test de connexion Supabase...');
+        
+        // Vérifier si supabase est disponible
+        if (!supabase) {
+          setStatus('Erreur critique');
+          setDetail('Client Supabase non initialisé');
+          return;
+        }
+        
+        // Maintenant on peut utiliser supabase en toute sécurité
         const { data, error } = await supabase.auth.getSession();
         
         if (error) {
@@ -23,9 +32,9 @@ export default function CreatorDashboardClient() {
           setStatus('Pas de session');
           setDetail('Aucune session trouvée');
         }
-      } catch (e) {
+      } catch (e: any) {
         setStatus('Erreur critique');
-        setDetail(e.message);
+        setDetail(e.message || 'Erreur inconnue');
       }
     };
     
