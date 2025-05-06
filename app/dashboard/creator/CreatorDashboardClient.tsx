@@ -1,33 +1,39 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ROUTES, STATS_METRICS, AGENT_CATEGORIES } from '@/constants';
 import Card, { CardBody, CardHeader } from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
-import ProspectionTool from '@/components/dashboard/creator/ProspectionTool';
 import { supabase } from '@/lib/supabaseClient';
+import { useAuth } from '@/lib/context/AuthContext';
+
+type UserData = {
+  id: string;
+  email: string;
+  name?: string;
+  role?: string;
+};
 
 type CreatorDashboardClientProps = {
-  userData: {
-    email: string;
-    name?: string;
-    id?: string;
-  };
+  userData: UserData;
 };
 
 export default function CreatorDashboardClient({ userData }: CreatorDashboardClientProps) {
-  console.log("CreatorDashboardClient initialisation avec userData:", userData);
-  
   const router = useRouter();
+  const authInitialized = useRef(false);
+  const { user: contextUser, loading: authLoading } = useAuth();
   
-  // États de base
-  const [isLoading, setIsLoading] = useState(true);
+  // États
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  const [hasTimedOut, setHasTimedOut] = useState(false);
+  const [authState, setAuthState] = useState<'checking' | 'authenticated' | 'unauthenticated'>('checking');
   
-  // Définir les types pour les données du tableau de bord
+  // État pour stocker l'identifiant de l'utilisateur, avec priorité et réconciliation
+  const [effectiveUserId, setEffectiveUserId] = useState<string | null>(null);
+  
+  // États pour les données du tableau de bord
   interface AgentData {
     id: string;
     name?: string;
@@ -56,7 +62,6 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
     recommendations: any[];
   }
   
-  // État pour les données du tableau de bord
   const [dashboardData, setDashboardData] = useState<DashboardData>({
     userAgents: [],
     stats: { views: 0, clicks: 0, contacts: 0, conversions: 0 },
@@ -67,146 +72,286 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
     recommendations: []
   });
   
-  // État pour l'ID utilisateur
-  const [userId, setUserId] = useState<string | undefined>(userData?.id || undefined);
+  // Système de monitoring - logs et informations
+  const [authAttempts, setAuthAttempts] = useState(0);
+  const [authSource, setAuthSource] = useState<string>('Aucune source');
+  const [loadAttempts, setLoadAttempts] = useState(0);
   
-  // Vérification de l'état de Supabase (diagnostic)
-  const [supabaseStatus, setSupabaseStatus] = useState<string>('Vérification...');
+  // Système anti-boucle avancé
+  const maxCheckAttempts = 3;
+  const maxLoadAttempts = 3;
+  const lastAuthCheck = useRef(0);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   
-  // Timeout global pour éviter le chargement infini
+  // Step 1: Auth Reconciliation - priorité aux sources d'authentification
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      if (isLoading) {
-        console.log('⚠️ Timeout global atteint - arrêt forcé du chargement');
-        setHasTimedOut(true);
-        setIsLoading(false);
-      }
-    }, 8000); // 8 secondes maximum
+    // Anti-boucle: limite la fréquence des vérifications d'authentification
+    const now = Date.now();
+    if (now - lastAuthCheck.current < 2000 && authAttempts > 0) {
+      console.log('🛑 Verification d\'auth trop fréquente, ignorée');
+      return;
+    }
     
-    return () => clearTimeout(timeoutId);
-  }, [isLoading]);
-  
-  // Effet pour vérifier l'authentification côté client
-  useEffect(() => {
-    const checkAuth = async () => {
+    lastAuthCheck.current = now;
+    setAuthAttempts(prev => prev + 1);
+    
+    // N'exécuter qu'un certain nombre de fois
+    if (authAttempts >= maxCheckAttempts) {
+      console.log(`⚠️ Limite d'authentification atteinte (${maxCheckAttempts}), arrêt des vérifications`);
+      setAuthState(effectiveUserId ? 'authenticated' : 'unauthenticated');
+      return;
+    }
+    
+    const determineUserId = async () => {
+      // Déjà authentifié?
+      if (effectiveUserId) {
+        console.log('🔑 ID déjà déterminé:', effectiveUserId);
+        setAuthState('authenticated');
+        return;
+      }
+      
+      console.log('🔍 Vérification d\'authentification tentative #', authAttempts);
+      
+      // 1. Props venant du serveur (priority 1)
+      if (userData?.id) {
+        console.log('✅ Utilisation ID des props:', userData.id);
+        setEffectiveUserId(userData.id);
+        setAuthSource('props serveur');
+        setAuthState('authenticated');
+        return;
+      }
+      
+      // 2. React Context (priority 2)
+      if (!authLoading && contextUser?.id) {
+        console.log('✅ Utilisation ID du context Auth:', contextUser.id);
+        setEffectiveUserId(contextUser.id);
+        setAuthSource('context React');
+        setAuthState('authenticated');
+        return;
+      }
+      
+      // 3. Supabase Auth directement (priority 3)
       try {
-        // Si l'ID est déjà présent dans les props, on l'utilise
-        if (userData?.id) {
-          console.log('ID trouvé dans les props:', userData.id);
-          setUserId(userData.id);
-          setSupabaseStatus('Utilisation de l\'ID depuis les props');
+        // Vérifier si Supabase est disponible
+        if (!supabase) {
+          console.error('Client Supabase non disponible pour la vérification d\'authentification');
+          setAuthState('unauthenticated');
           return;
         }
         
-        // Vérifier si Supabase est disponible
-        if (!supabase) {
-          throw new Error('Client Supabase non disponible');
-        }
-        
-        // Tester la connexion Supabase avec timeout
-        const authPromise = supabase.auth.getSession();
-        const timeoutPromise = new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('Timeout de la requête Supabase')), 5000)
-        );
-        
-        const result = await Promise.race([authPromise, timeoutPromise]) as any;
-        const { data, error } = result;
-        
-        if (error) {
-          throw error;
-        }
-        
-        if (data?.session?.user?.id) {
-          console.log('ID trouvé dans la session Supabase:', data.session.user.id);
-          setUserId(data.session.user.id);
-          setSupabaseStatus('Session Supabase active');
-        } else {
-          console.warn('Aucun ID utilisateur trouvé dans la session Supabase');
-          setSupabaseStatus('Pas de session Supabase');
-        }
-      } catch (e: any) {
-        console.error('Erreur lors de la vérification d\'authentification:', e);
-        setError(e);
-        setSupabaseStatus(`Erreur: ${e.message}`);
+        // Nous n'utilisons pas await directement pour éviter les problèmes de mémoire avec les
+        // effets React, mais plutôt une approche avec gestion des promesses
+        supabase.auth.getSession()
+          .then(({ data, error }) => {
+            if (error) throw error;
+            
+            if (data?.session?.user?.id) {
+              console.log('✅ Utilisation ID de supabase.auth.getSession:', data.session.user.id);
+              setEffectiveUserId(data.session.user.id);
+              setAuthSource('Supabase getSession');
+              setAuthState('authenticated');
+              return;
+            }
+            
+            // 4. LocalStorage comme fallback (priority 4)
+            try {
+              const storedUser = localStorage.getItem('user');
+              if (storedUser) {
+                const userObj = JSON.parse(storedUser);
+                if (userObj?.id) {
+                  console.log('✅ Utilisation ID depuis localStorage:', userObj.id);
+                  setEffectiveUserId(userObj.id);
+                  setAuthSource('localStorage');
+                  setAuthState('authenticated');
+                  return;
+                }
+              }
+            } catch (lsError) {
+              console.error('Erreur lors de la lecture localStorage:', lsError);
+            }
+            
+            // Aucune source d'authentification trouvée
+            console.log('❌ Aucun ID trouvé dans toutes les sources');
+            setAuthState('unauthenticated');
+          })
+          .catch(error => {
+            console.error('Erreur lors de la vérification Supabase:', error);
+            setAuthState('unauthenticated');
+          });
+      } catch (e) {
+        console.error('Exception lors de la vérification d\'authentification:', e);
+        setAuthState('unauthenticated');
       }
     };
     
-    checkAuth();
-  }, [userData?.id]);
+    determineUserId();
+  }, [userData, contextUser, authLoading, authAttempts, effectiveUserId]);
   
-  // Effet pour charger les données du dashboard
+  // Step 2: Chargement des données du dashboard seulement si authentifié
   useEffect(() => {
+    // N'exécuter que si nous avons un ID utilisateur et passé l'étape d'authentification
+    if (!effectiveUserId || authState !== 'authenticated') {
+      return;
+    }
+    
+    // Anti-boucle: limiter le nombre de tentatives de chargement
+    if (loadAttempts >= maxLoadAttempts) {
+      console.log(`⚠️ Limite de chargement atteinte (${maxLoadAttempts}), arrêt des tentatives`);
+      setIsLoading(false);
+      return;
+    }
+    
     const loadDashboardData = async () => {
+      // Actualiser le compteur de tentatives
+      setLoadAttempts(prev => prev + 1);
+      setIsLoading(true);
+      
       try {
-        // Si aucun ID utilisateur n'est disponible, on ne peut pas charger les données
-        if (!userId) {
-          console.warn('Impossible de charger les données sans ID utilisateur');
-          // Ne pas définir d'erreur ici - afficher un message dans l'interface
-          setIsLoading(false);
-          return;
+        console.log('📊 Chargement des données pour l\'utilisateur:', effectiveUserId);
+        
+        // Établir un timeout de sécurité (circuit breaker pattern)
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
         }
+        
+        timeoutRef.current = setTimeout(() => {
+          console.log('⏱️ Timeout du chargement des données atteint');
+          setIsLoading(false);
+          setError(new Error('Le chargement des données a pris trop de temps'));
+        }, 8000);
         
         // Vérifier si Supabase est disponible
         if (!supabase) {
           throw new Error('Client Supabase non disponible pour charger les données');
         }
         
-        console.log('Chargement des données pour l\'utilisateur:', userId);
-        
-        // Charger les agents avec timeout
-        const loadPromise = supabase
+        // Charger les agents
+        const { data: agents, error } = await supabase
           .from('agents')
           .select('*')
-          .eq('creator_id', userId);
+          .eq('creator_id', effectiveUserId);
           
-        const timeoutPromise = new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('Timeout du chargement des données')), 5000)
-        );
+        if (error) throw error;
         
-        const result = await Promise.race([loadPromise, timeoutPromise]) as any;
-        const { data: agents, error } = result;
-        
-        if (error) {
-          throw error;
+        // Si nous arrivons ici, le chargement a réussi
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+          timeoutRef.current = null;
         }
         
+        // Simuler des données de statistiques basiques
+        // Dans un environnement réel, vous chargeriez ces données depuis Supabase
+        const mockStats = {
+          views: Math.floor(Math.random() * 1000),
+          clicks: Math.floor(Math.random() * 200),
+          contacts: Math.floor(Math.random() * 50),
+          conversions: Math.floor(Math.random() * 20)
+        };
+        
         // Mettre à jour les données du dashboard
-        // Les autres données seront vides/factices pour cette version simplifiée
         setDashboardData(prev => ({
           ...prev,
-          userAgents: agents || []
+          userAgents: agents || [],
+          stats: mockStats,
+          agentViews: (agents || []).reduce((acc, agent) => {
+            acc[agent.id] = Math.floor(Math.random() * 500);
+            return acc;
+          }, {}),
+          agentConversions: (agents || []).reduce((acc, agent) => {
+            acc[agent.id] = Math.floor(Math.random() * 50);
+            return acc;
+          }, {})
         }));
         
-        console.log('Données chargées avec succès, nombre d\'agents:', agents?.length || 0);
+        console.log('✅ Données chargées avec succès:', (agents || []).length, 'agents');
+        setError(null);
       } catch (e: any) {
         console.error('Erreur lors du chargement des données:', e);
         setError(e);
       } finally {
-        // Terminer le chargement dans tous les cas
         setIsLoading(false);
+        
+        // Nettoyage du timeout si nécessaire
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+          timeoutRef.current = null;
+        }
       }
     };
     
-    // Ne charger les données que si un ID utilisateur est disponible
-    if (userId) {
-      loadDashboardData();
-    } else if (supabaseStatus !== 'Vérification...') {
-      // Si la vérification d'authentification est terminée et qu'il n'y a pas d'ID
-      setIsLoading(false);
-    }
-  }, [userId, supabaseStatus]);
+    loadDashboardData();
+    
+    // Nettoyage lors du démontage
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [effectiveUserId, authState, loadAttempts]);
+  
+  // Gérer le cas de non-authentification
+  if (authState === 'unauthenticated') {
+    return (
+      <div className="p-8 text-center">
+        <div className="mb-4 text-amber-500">
+          <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h2 className="text-xl font-bold mb-2">Authentification requise</h2>
+        <p className="text-gray-600 mb-4">
+          Veuillez vous connecter pour accéder à votre tableau de bord créateur.
+        </p>
+        <div className="flex justify-center gap-4">
+          <Button 
+            onClick={() => router.push(ROUTES.AUTH.SIGNIN)}
+            variant="primary"
+          >
+            Se connecter
+          </Button>
+          <Button 
+            onClick={() => router.push(ROUTES.HOME)}
+            variant="outline"
+          >
+            Retour à l'accueil
+          </Button>
+        </div>
+        
+        <div className="mt-8 p-4 bg-gray-100 rounded-lg max-w-lg mx-auto text-left">
+          <h3 className="font-medium mb-2">Informations de diagnostic:</h3>
+          <p className="text-sm text-gray-600">Tentatives d'authentification: {authAttempts}/{maxCheckAttempts}</p>
+          <p className="text-sm text-gray-600">Source utilisée: {authSource}</p>
+          {error && (
+            <p className="text-sm text-red-600 mt-2">Erreur: {error.message}</p>
+          )}
+        </div>
+      </div>
+    );
+  }
   
   // Afficher un écran de chargement
-  if (isLoading) {
+  if (isLoading || authState === 'checking') {
     return (
       <div className="p-8">
         <div className="flex justify-center items-center h-64">
           <div className="flex flex-col items-center">
             <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mb-4"></div>
-            <p className="text-lg text-gray-600">Chargement des données...</p>
-            <p className="text-sm text-gray-500 mt-2">État Supabase: {supabaseStatus}</p>
+            <p className="text-lg text-gray-600">
+              {authState === 'checking' ? 'Vérification de l\'authentification...' : 'Chargement des données...'}
+            </p>
+            <p className="text-sm text-gray-500 mt-2">
+              Source d'authentification: {authSource}
+            </p>
             
-            {hasTimedOut && (
+            {loadAttempts > 1 && (
+              <div className="mt-6">
+                <p className="text-sm text-amber-600">
+                  Tentative {loadAttempts}/{maxLoadAttempts}...
+                </p>
+              </div>
+            )}
+            
+            {loadAttempts === maxLoadAttempts && (
               <div className="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg max-w-lg">
                 <h3 className="text-amber-700 font-medium mb-2">Chargement plus long que prévu</h3>
                 <p className="text-sm text-amber-700 mb-2">
@@ -215,7 +360,6 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
                 <button 
                   onClick={() => {
                     setIsLoading(false);
-                    setHasTimedOut(true);
                   }}
                   className="bg-amber-100 hover:bg-amber-200 text-amber-800 px-4 py-2 rounded text-sm"
                 >
@@ -229,76 +373,72 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
     );
   }
   
-  // Afficher un message si aucun ID utilisateur n'est disponible
-  if (!userId) {
+  // Extraire les données du dashboard
+  const { userAgents, stats, agentViews, agentConversions } = dashboardData;
+  
+  // Affichage d'erreur
+  if (error) {
     return (
-      <div className="p-8 text-center">
-        <div className="mb-4 text-red-500">
-          <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </div>
-        <h2 className="text-xl font-bold mb-2">Session utilisateur introuvable</h2>
-        <p className="text-gray-600 mb-4">
-          Nous n'avons pas pu identifier votre session. Veuillez vous reconnecter pour accéder à votre tableau de bord.
-        </p>
-        <div className="flex justify-center gap-4">
-          <Button onClick={() => window.location.reload()}>
-            Rafraîchir
-          </Button>
-          <Button 
-            onClick={() => router.push(ROUTES.AUTH.SIGNIN)}
-            variant="primary"
-          >
-            Se connecter
-          </Button>
+      <div className="p-8">
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+          <div className="flex items-start">
+            <div className="flex-shrink-0 mr-3">
+              <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M19 10a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="font-medium text-red-800">Erreur lors du chargement des données</h3>
+              <p className="text-sm text-red-700 mt-1">
+                {error.message}
+              </p>
+              <div className="mt-3 flex space-x-2">
+                <button 
+                  onClick={() => {
+                    setLoadAttempts(0);
+                    setAuthAttempts(0);
+                    setAuthState('checking');
+                  }} 
+                  className="px-3 py-1 bg-red-100 hover:bg-red-200 text-red-800 rounded text-sm"
+                >
+                  Réessayer
+                </button>
+                <button 
+                  onClick={() => router.push(ROUTES.HOME)} 
+                  className="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded text-sm"
+                >
+                  Retour à l'accueil
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
         
-        <div className="mt-8 p-4 bg-gray-100 rounded-lg max-w-lg mx-auto text-left">
-          <h3 className="font-medium mb-2">Détails techniques:</h3>
-          <p className="text-sm text-gray-600">État Supabase: {supabaseStatus}</p>
-          {error && (
-            <p className="text-sm text-red-600 mt-2">Erreur: {error.message}</p>
-          )}
+        {/* Afficher un tableau de bord limité malgré l'erreur */}
+        <div className="p-4 border rounded-lg bg-white shadow-sm">
+          <h2 className="text-lg font-semibold mb-4">Fonctionnalités limitées disponibles</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <Link href={ROUTES.DASHBOARD.CREATOR.ADD_AGENT} className="p-3 border rounded hover:bg-blue-50 text-center">
+              Ajouter un agent
+            </Link>
+            <Link href={ROUTES.DASHBOARD.CREATOR.AGENTS} className="p-3 border rounded hover:bg-blue-50 text-center">
+              Gérer mes agents
+            </Link>
+            <Link href={ROUTES.HOME} className="p-3 border rounded hover:bg-blue-50 text-center">
+              Retour à l'accueil
+            </Link>
+          </div>
         </div>
       </div>
     );
   }
   
-  // Extraire les données du dashboard
-  const { userAgents, stats, agentViews, agentConversions, agentRevenue, contacts, recommendations } = dashboardData;
-  
-  // Fonction utilitaire pour les calculs et formatages
+  // Fonction utilitaire pour les formatages
   const formatNumber = (num: number) => new Intl.NumberFormat('fr-FR').format(num);
   
   // Rendu normal du tableau de bord
   return (
     <div>
-      {/* Bandeau de notification si le chargement a été forcé par timeout */}
-      {hasTimedOut && (
-        <div className="p-4 mb-6 bg-amber-50 border border-amber-200 rounded-lg">
-          <div className="flex items-start">
-            <div className="flex-shrink-0 mr-3">
-              <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M19 10a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div>
-              <h3 className="font-medium text-amber-800">Le chargement a été interrompu</h3>
-              <p className="text-sm text-amber-700 mt-1">
-                Certaines données peuvent être incomplètes. Vous pouvez essayer de rafraîchir la page.
-              </p>
-              <button 
-                onClick={() => window.location.reload()} 
-                className="mt-2 px-3 py-1 bg-amber-100 hover:bg-amber-200 text-amber-800 rounded text-sm"
-              >
-                Rafraîchir la page
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-      
       {/* En-tête du tableau de bord */}
       <div className="mb-6 flex justify-between items-center">
         <div>
@@ -315,31 +455,6 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
           </Button>
         </Link>
       </div>
-      
-      {/* Afficher un message d'erreur si nécessaire */}
-      {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-          <div className="flex items-start">
-            <div className="flex-shrink-0 mr-3">
-              <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M19 10a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div>
-              <h3 className="font-medium text-red-800">Erreur lors du chargement des données</h3>
-              <p className="text-sm text-red-700 mt-1">
-                {error.message}
-              </p>
-              <button 
-                onClick={() => window.location.reload()} 
-                className="mt-2 px-3 py-1 bg-red-100 hover:bg-red-200 text-red-800 rounded text-sm"
-              >
-                Réessayer
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
       
       {/* Résumé des métriques */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -370,10 +485,10 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
                   </p>
                   <p className="text-2xl font-bold text-gray-900">
                     {/* Afficher les statistiques */}
-                    {metric.id === 'views' && stats.views}
-                    {metric.id === 'clicks' && stats.clicks}
-                    {metric.id === 'contacts' && stats.contacts}
-                    {metric.id === 'conversions' && stats.conversions}
+                    {metric.id === 'views' && formatNumber(stats.views)}
+                    {metric.id === 'clicks' && formatNumber(stats.clicks)}
+                    {metric.id === 'contacts' && formatNumber(stats.contacts)}
+                    {metric.id === 'conversions' && formatNumber(stats.conversions)}
                   </p>
                 </div>
               </div>
@@ -381,46 +496,6 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
           </Card>
         ))}
       </div>
-      
-      {/* Statistiques rapides */}
-      <Card className="mb-8">
-        <CardHeader>
-          <h2 className="text-lg font-medium text-gray-900">
-            Statistiques rapides
-          </h2>
-        </CardHeader>
-        <CardBody>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <div className="flex items-center">
-                <div className="bg-blue-100 p-3 rounded-full mr-4">
-                  <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-500">Agents publiés</p>
-                  <p className="text-2xl font-bold text-gray-900">{userAgents.length}</p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <div className="flex items-center">
-                <div className="bg-green-100 p-3 rounded-full mr-4">
-                  <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-500">Prospects contactés</p>
-                  <p className="text-2xl font-bold text-gray-900">{contacts.length}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </CardBody>
-      </Card>
       
       {/* Liste des agents */}
       <Card className="mb-8">
@@ -562,16 +637,13 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
       
       {/* Informations techniques (pour le débogage) */}
       <div className="mt-8 p-4 bg-gray-50 rounded-lg text-sm">
-        <h3 className="font-medium mb-2">Informations de débogage</h3>
-        <p><strong>ID utilisateur:</strong> {userId}</p>
-        <p><strong>État Supabase:</strong> {supabaseStatus}</p>
+        <h3 className="font-medium mb-2">Informations de diagnostic</h3>
+        <p><strong>ID utilisateur:</strong> {effectiveUserId}</p>
+        <p><strong>Source d'authentification:</strong> {authSource}</p>
+        <p><strong>Tentatives d'authentification:</strong> {authAttempts}/{maxCheckAttempts}</p>
+        <p><strong>Tentatives de chargement:</strong> {loadAttempts}/{maxLoadAttempts}</p>
+        <p><strong>État d'authentification:</strong> {authState}</p>
         <p><strong>Agents chargés:</strong> {userAgents.length}</p>
-        <button 
-          onClick={() => window.location.reload()} 
-          className="mt-2 px-3 py-1 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded"
-        >
-          Rafraîchir la page
-        </button>
       </div>
     </div>
   );

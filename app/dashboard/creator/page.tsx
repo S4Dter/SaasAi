@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { APP_NAME } from '@/constants';
+import { createServerSupabaseClient } from '@/lib/api/auth-server';
 import CreatorDashboardClient from './CreatorDashboardClient';
 
 export const metadata: Metadata = {
@@ -7,8 +8,66 @@ export const metadata: Metadata = {
   description: 'Gérez vos agents IA, suivez vos performances et développez votre activité',
 };
 
-// Version d'urgence sans vérification serveur
-export default function CreatorDashboardPage() {
-  // Passer un objet vide - le client récupèrera lui-même les informations
-  return <CreatorDashboardClient userData={{ id: '', email: '', name: '' }} />;
+/**
+ * Page principale du dashboard créateur avec nouvelle logique d'authentification
+ * Amélioration pour éviter les boucles infinies et redirections inutiles
+ */
+export default async function CreatorDashboardPage() {
+  // Obtenir un client Supabase côté serveur
+  const supabase = createServerSupabaseClient();
+  
+  // Tenter de récupérer les données utilisateur avec gestion d'erreur renforcée
+  let userData = {
+    id: '',
+    email: '',
+    name: '',
+    role: 'creator'
+  };
+  
+  try {
+    // Récupérer la session utilisateur
+    const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+    
+    if (sessionError) {
+      console.error('Erreur lors de la récupération de la session:', sessionError.message);
+    } else if (sessionData?.session?.user) {
+      const user = sessionData.session.user;
+      
+      // Essayer de récupérer des données supplémentaires depuis la BD
+      try {
+        const { data: userDBData } = await supabase
+          .from('users')
+          .select('name, role')
+          .eq('id', user.id)
+          .single();
+          
+        // Préparer les données utilisateur pour le client
+        userData = {
+          id: user.id,
+          email: user.email || '',
+          name: userDBData?.name || user.user_metadata?.name || user.email || '',
+          role: userDBData?.role || user.user_metadata?.role || 'creator'
+        };
+        
+      } catch (dbError) {
+        console.error('Erreur BD lors de la récupération des données utilisateur:', dbError);
+        // Utiliser les données de base même en cas d'erreur de BD
+        userData = {
+          id: user.id,
+          email: user.email || '',
+          name: user.user_metadata?.name || user.email || '',
+          role: user.user_metadata?.role || 'creator'
+        };
+      }
+    }
+  } catch (error) {
+    console.error('Exception lors de la vérification d\'authentification:', error);
+    // Ne pas redirect - laisser le client gérer l'état non authentifié
+  }
+  
+  // Log des données transmises au client - supprimable en production
+  console.log('CreatorDashboardPage transmit au client:', JSON.stringify(userData));
+  
+  // Passage des données au composant client (même si l'utilisateur n'est pas authentifié)
+  return <CreatorDashboardClient userData={userData} />;
 }
