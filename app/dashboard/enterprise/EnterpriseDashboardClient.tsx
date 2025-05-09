@@ -1,4 +1,4 @@
-'use client';
+ 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
@@ -200,29 +200,87 @@ export default function EnterpriseDashboardClient({ userData }: EnterpriseDashbo
         
         // 1. Charger les favoris
         const { data: favorites, error: favoritesError } = await supabase
-          .from('favorite_agents')
-          .select('*, agent:agents(*)')
+          .from('favorites')
+          .select('id, user_id, agent_id, created_at')
           .eq('user_id', effectiveUserId);
           
-        if (favoritesError) throw favoritesError;
+        if (favoritesError) {
+          console.error('Erreur lors du chargement des favoris:', favoritesError);
+        }
         
-        // 2. Charger l'historique
+        // Récupérer les informations des agents favoris
+        let favoriteAgents: any[] = [];
+        if (favorites && favorites.length > 0) {
+          const agentIds = favorites.map(fav => fav.agent_id);
+          const { data: agents, error: agentsError } = await supabase
+            .from('agents')
+            .select('*')
+            .in('id', agentIds);
+            
+          if (agentsError) {
+            console.error('Erreur lors du chargement des agents favoris:', agentsError);
+          } else if (agents) {
+            // Associer chaque favori à son agent
+            favoriteAgents = favorites.map(favorite => {
+              const agent = agents.find(a => a.id === favorite.agent_id);
+              return {
+                ...favorite,
+                agent: agent || null
+              };
+            });
+          }
+        }
+        
+        // 2. Charger l'historique des contacts
         const { data: history, error: historyError } = await supabase
-          .from('contact_history')
-          .select('*, agent:agents(*)')
+          .from('contacts')
+          .select('*, agent_id')
           .eq('enterprise_id', effectiveUserId)
           .order('created_at', { ascending: false })
           .limit(10);
           
-        if (historyError) throw historyError;
+        if (historyError) {
+          console.error('Erreur lors du chargement de l\'historique:', historyError);
+        }
         
-        // 3. Générer des suggestions (en pratique, cela viendrait d'une requête plus complexe)
+        // Récupérer les informations des agents contactés
+        let contactHistory: any[] = [];
+        if (history && history.length > 0) {
+          const agentIds = history.map(entry => entry.agent_id).filter(id => id);
+          if (agentIds.length > 0) {
+            const { data: agents, error: agentsError } = await supabase
+              .from('agents')
+              .select('*')
+              .in('id', agentIds);
+              
+            if (agentsError) {
+              console.error('Erreur lors du chargement des agents contactés:', agentsError);
+            } else if (agents) {
+              // Associer chaque entrée d'historique à son agent
+              contactHistory = history.map(entry => {
+                const agent = agents.find(a => a.id === entry.agent_id);
+                return {
+                  ...entry,
+                  agent: agent || null
+                };
+              });
+            }
+          } else {
+            contactHistory = history;
+          }
+        }
+        
+        // 3. Charger des suggestions (agents recommandés)
         const { data: suggestions, error: suggestionsError } = await supabase
           .from('agents')
           .select('*')
+          .eq('is_public', true)
+          .order('created_at', { ascending: false })
           .limit(5);
           
-        if (suggestionsError) throw suggestionsError;
+        if (suggestionsError) {
+          console.error('Erreur lors du chargement des suggestions:', suggestionsError);
+        }
         
         // Si nous arrivons ici, le chargement a réussi
         if (timeoutRef.current) {
@@ -232,8 +290,8 @@ export default function EnterpriseDashboardClient({ userData }: EnterpriseDashbo
         
         // Mettre à jour les données du dashboard
         setDashboardData({
-          favorites: favorites || [],
-          history: history || [],
+          favorites: favoriteAgents || [],
+          history: contactHistory || [],
           suggestions: suggestions || []
         });
         

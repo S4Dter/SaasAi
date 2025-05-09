@@ -239,28 +239,70 @@ export default function CreatorDashboardClient({ userData }: CreatorDashboardCli
           timeoutRef.current = null;
         }
         
-        // Simuler des données de statistiques basiques
-        // Dans un environnement réel, vous chargeriez ces données depuis Supabase
-        const mockStats = {
-          views: Math.floor(Math.random() * 1000),
-          clicks: Math.floor(Math.random() * 200),
-          contacts: Math.floor(Math.random() * 50),
-          conversions: Math.floor(Math.random() * 20)
+        // Charger les vues d'agents
+        const { data: agentViews, error: viewsError } = await supabase
+          .from('agent_views')
+          .select('agent_id, count')
+          .eq('creator_id', effectiveUserId);
+        
+        if (viewsError) {
+          console.warn('Erreur lors du chargement des vues:', viewsError);
+        }
+        
+        // Charger les conversions
+        const { data: agentConversions, error: conversionsError } = await supabase
+          .from('agent_conversions')
+          .select('agent_id, count')
+          .eq('creator_id', effectiveUserId);
+        
+        if (conversionsError) {
+          console.warn('Erreur lors du chargement des conversions:', conversionsError);
+        }
+        
+        // Charger les contacts
+        const { data: contacts, error: contactsError } = await supabase
+          .from('contacts')
+          .select('id')
+          .eq('creator_id', effectiveUserId);
+          
+        if (contactsError) {
+          console.warn('Erreur lors du chargement des contacts:', contactsError);
+        }
+        
+        // Calcul des statistiques
+        const viewsMap: Record<string, number> = {};
+        agentViews?.forEach(view => {
+          if (view.agent_id) {
+            viewsMap[view.agent_id] = view.count || 0;
+          }
+        });
+        
+        const conversionsMap: Record<string, number> = {};
+        agentConversions?.forEach(conversion => {
+          if (conversion.agent_id) {
+            conversionsMap[conversion.agent_id] = conversion.count || 0;
+          }
+        });
+        
+        const totalViews = agentViews ? agentViews.reduce((sum, view) => sum + (view.count || 0), 0) : 0;
+        const totalConversions = agentConversions ? agentConversions.reduce((sum, conv) => sum + (conv.count || 0), 0) : 0;
+        const totalContacts = contacts?.length || 0;
+        const totalClicks = Math.round(totalViews * 0.2); // Estimation
+        
+        const stats = {
+          views: totalViews,
+          clicks: totalClicks, 
+          contacts: totalContacts,
+          conversions: totalConversions
         };
         
         // Mettre à jour les données du dashboard
         setDashboardData(prev => ({
           ...prev,
           userAgents: agents || [],
-          stats: mockStats,
-          agentViews: (agents || []).reduce((acc, agent) => {
-            acc[agent.id] = Math.floor(Math.random() * 500);
-            return acc;
-          }, {}),
-          agentConversions: (agents || []).reduce((acc, agent) => {
-            acc[agent.id] = Math.floor(Math.random() * 50);
-            return acc;
-          }, {})
+          stats: stats,
+          agentViews: viewsMap,
+          agentConversions: conversionsMap
         }));
         
         console.log('✅ Données chargées avec succès:', (agents || []).length, 'agents');
