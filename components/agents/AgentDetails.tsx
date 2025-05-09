@@ -1,10 +1,11 @@
 import React from 'react';
-import { Agent } from '@/types';
+import { Agent, User } from '@/types';
 import Button from '../ui/Button';
 import { AGENT_CATEGORIES, INTEGRATION_TYPES } from '@/constants';
 
 interface AgentDetailsProps {
   agent: Agent;
+  creator?: User | null;
 }
 
 /**
@@ -12,7 +13,7 @@ interface AgentDetailsProps {
  * 
  * @param {Agent} agent - L'agent à afficher en détail
  */
-const AgentDetails: React.FC<AgentDetailsProps> = ({ agent }) => {
+const AgentDetails: React.FC<AgentDetailsProps> = ({ agent, creator }) => {
   // Fonction pour formater le prix
   const formatPrice = () => {
     const { pricing } = agent;
@@ -174,6 +175,39 @@ const AgentDetails: React.FC<AgentDetailsProps> = ({ agent }) => {
               </li>
             </ul>
           </div>
+          
+          {/* Informations sur le créateur */}
+          {creator && (
+            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+              <h3 className="text-sm font-medium text-gray-900 mb-2">
+                À propos du créateur
+              </h3>
+              <div className="flex items-center mb-2">
+                {creator.avatar ? (
+                  <img 
+                    src={creator.avatar} 
+                    alt={creator.name} 
+                    className="w-8 h-8 rounded-full mr-2"
+                  />
+                ) : (
+                  <div className="w-8 h-8 bg-blue-100 rounded-full mr-2 flex items-center justify-center">
+                    <span className="text-blue-600 text-sm font-medium">{creator.name.charAt(0)}</span>
+                  </div>
+                )}
+                <span className="font-medium">{creator.name}</span>
+              </div>
+              {creator.company && (
+                <p className="text-sm text-gray-700 mb-1">
+                  {creator.company}
+                </p>
+              )}
+              {creator.bio && (
+                <p className="text-sm text-gray-500">
+                  {creator.bio}
+                </p>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

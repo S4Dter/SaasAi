@@ -1,11 +1,12 @@
 import { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getAgentById } from '@/mock/agents';
+import { getAgentById, getUserById } from '@/lib/supabase-server';
+// MOCK DATA: import { getAgentById } from '@/mock/agents';
+// MOCK DATA: import { getUserById } from '@/mock/users';
 import AgentDetails from '@/components/agents/AgentDetails';
 import Button from '@/components/ui/Button';
 import Link from 'next/link';
 import { ROUTES } from '@/constants';
-import { getUserById } from '@/mock/users';
 
 // Types compatibles avec Next.js 15
 type Props = {
@@ -20,7 +21,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   // Résoudre les params
   const { id } = await params;
-  const agent = getAgentById(id);
+  const agent = await getAgentById(id);
 
   if (!agent) {
     return {
@@ -55,11 +56,11 @@ export async function generateMetadata(
 export default async function AgentPage({ params }: Props) {
   // Résoudre les params
   const { id } = await params;
-  const agent = getAgentById(id);
+  const agent = await getAgentById(id);
   
   if (!agent) notFound();
 
-  const creator = getUserById(agent.creatorId);
+  const creator = await getUserById(agent.creatorId);
 
   return (
     <div className="bg-gray-50 py-12">
@@ -78,7 +79,7 @@ export default async function AgentPage({ params }: Props) {
           </nav>
         </div>
 
-        <AgentDetails agent={agent} />
+        <AgentDetails agent={agent} creator={creator} />
 
         <div className="mt-8 flex justify-between">
           <Link href={ROUTES.AGENTS}>

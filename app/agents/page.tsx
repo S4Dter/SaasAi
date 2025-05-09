@@ -1,6 +1,7 @@
 import React from 'react';
 import { Metadata } from 'next';
-import { getAllAgents } from '@/mock/agents';
+import { getAllAgents } from '@/lib/supabase-server';
+// MOCK DATA: import { getAllAgents } from '@/mock/agents';
 import { AGENT_CATEGORIES, INTEGRATION_TYPES, APP_NAME } from '@/constants';
 import AgentCard from '@/components/agents/AgentCard';
 
@@ -19,10 +20,9 @@ type PageProps = {
   searchParams?: Record<string, string | string[] | undefined>;
 }
 
-export default function AgentsPage() {
-  // Dans une vraie application, ces états seraient gérés côté client avec useState
-  // Ici on utilise simplement les données statiques car c'est une page server component
-  const agents = getAllAgents();
+export default async function AgentsPage() {
+  // Récupération des agents depuis Supabase
+  const agents = await getAllAgents();
   
   return (
     <div className="bg-gray-50 min-h-screen py-12">
@@ -108,9 +108,16 @@ export default function AgentsPage() {
         
         {/* Liste des agents */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
-          {agents.map((agent) => (
-            <AgentCard key={agent.id} agent={agent} />
-          ))}
+          {agents.length > 0 ? (
+            agents.map((agent) => (
+              <AgentCard key={agent.id} agent={agent} />
+            ))
+          ) : (
+            <div className="col-span-3 text-center py-10">
+              <h3 className="text-xl font-medium text-gray-700 mb-2">Aucun agent trouvé</h3>
+              <p className="text-gray-500">Aucun agent n'est disponible actuellement.</p>
+            </div>
+          )}
         </div>
         
         {/* Pagination (statique pour le prototype) */}
