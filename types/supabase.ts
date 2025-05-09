@@ -6,15 +6,21 @@ export type Database = {
           id: string;
           email: string;
           name: string;
-          role: 'creator' | 'enterprise';
-          created_at: string;
+          role: 'creator' | 'enterprise' | 'admin';
+          avatar?: string | null;
+          company?: string | null;
+          bio?: string | null;
+          created_at?: string;
           updated_at?: string | null;
         };
         Insert: {
           id: string;
           email: string;
           name: string;
-          role: 'creator' | 'enterprise';
+          role: 'creator' | 'enterprise' | 'admin';
+          avatar?: string | null;
+          company?: string | null;
+          bio?: string | null;
           created_at?: string;
           updated_at?: string | null;
         };
@@ -24,16 +30,38 @@ export type Database = {
         Row: {
           id: string;
           name: string;
-          description: string;
+          slug: string;
+          description?: string | null;
+          short_description?: string | null;
+          category?: string | null;
           creator_id: string;
-          created_at: string;
+          pricing: any; // JSON type
+          featured?: boolean | null;
+          logo_url?: string | null;
+          integrations: string[];
+          demo_url?: string | null;
+          demo_video_url?: string | null;
+          screenshots: string[];
+          created_at?: string;
+          updated_at?: string | null;
         };
         Insert: {
           id?: string;
           name: string;
-          description: string;
+          slug: string;
+          description?: string | null;
+          short_description?: string | null;
+          category?: string | null;
           creator_id: string;
+          pricing: any; // JSON type
+          featured?: boolean | null;
+          logo_url?: string | null;
+          integrations?: string[];
+          demo_url?: string | null;
+          demo_video_url?: string | null;
+          screenshots?: string[];
           created_at?: string;
+          updated_at?: string | null;
         };
         Update: Partial<Database['public']['Tables']['agents']['Insert']>;
       };
@@ -42,7 +70,7 @@ export type Database = {
           id: string;
           user_id: string;
           agent_id: string;
-          created_at: string;
+          created_at?: string;
         };
         Insert: {
           id?: string;
@@ -52,7 +80,63 @@ export type Database = {
         };
         Update: Partial<Database['public']['Tables']['favorites']['Insert']>;
       };
-      // Tu peux ajouter ici les autres tables comme contacts, agent_views, etc.
+      agent_views: {
+        Row: {
+          id: string;
+          agent_id: string;
+          creator_id: string;
+          count?: number;
+          updated_at?: string;
+        };
+        Insert: {
+          id?: string;
+          agent_id: string;
+          creator_id: string;
+          count?: number;
+          updated_at?: string;
+        };
+        Update: Partial<Database['public']['Tables']['agent_views']['Insert']>;
+      };
+      agent_conversions: {
+        Row: {
+          id: string;
+          agent_id: string;
+          creator_id: string;
+          count?: number;
+          updated_at?: string;
+        };
+        Insert: {
+          id?: string;
+          agent_id: string;
+          creator_id: string;
+          count?: number;
+          updated_at?: string;
+        };
+        Update: Partial<Database['public']['Tables']['agent_conversions']['Insert']>;
+      };
+      contacts: {
+        Row: {
+          id: string;
+          agent_id: string;
+          enterprise_id: string;
+          creator_id: string;
+          message: string;
+          status: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Insert: {
+          id?: string;
+          agent_id: string;
+          enterprise_id: string;
+          creator_id: string;
+          message: string;
+          status: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<Database['public']['Tables']['contacts']['Insert']>;
+      };
     };
     Views: {};
     Functions: {};
