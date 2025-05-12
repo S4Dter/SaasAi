@@ -22,8 +22,9 @@ export async function generateMetadata({
   }
 }
 
-export default function CategoryPage({ params }: { params: { category: string } }) {
-  const category = decodeURIComponent(params.category)
+export default async function CategoryPage({ params }: { params: Promise<{ category: string }> }) {
+  const resolvedParams = await params;
+  const category = decodeURIComponent(resolvedParams.category)
   
   return (
     <div className="container mx-auto px-4 py-8">

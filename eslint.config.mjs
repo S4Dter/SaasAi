@@ -20,7 +20,7 @@ export default [
     },
     plugins: {
       '@typescript-eslint': tsPlugin,
-      '@next/next': nextPlugin,
+      '@next/eslint-plugin-next': nextPlugin, // Corrigé pour correspondre au nom du package importé
     },
     rules: {
       'no-unused-vars': 'off',

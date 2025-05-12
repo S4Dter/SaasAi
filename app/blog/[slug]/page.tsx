@@ -29,8 +29,9 @@ export async function generateMetadata({
   }
 }
 
-export default function BlogPost({ params }: { params: { slug: string } }) {
-  const { slug } = params
+export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
+  const { slug } = resolvedParams;
   
   // In a real implementation, you would fetch the article data based on the slug
   // For now, we'll create a placeholder article structure
