@@ -3,54 +3,71 @@ import { getAgents } from '@/lib/api/admin';
 import { ROUTES } from '@/constants';
 import AgentManagementClient from './AgentManagementClient';
 
+// Type pour les props de la page
+type Props = {
+  params: { [key: string]: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
 /**
  * Page de gestion des agents pour les administrateurs
  * Affiche la liste des agents avec options de modération et mise en avant
+ * Permet de filtrer les agents par statut, catégorie, mise en avant, et recherche
  */
-export default async function AgentsPage({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
+export default async function AgentsPage({ searchParams }: Props) {
   // Vérifier que l'utilisateur est authentifié et a le rôle admin
   await withAdminProtection();
   
-  // Extraire les paramètres de recherche
-  const page = searchParams.page ? parseInt(searchParams.page as string) : 1;
+  // Extraire les paramètres de recherche avec valeurs par défaut sécurisées
+  const page = searchParams.page ? parseInt(searchParams.page as string, 10) || 1 : 1;
   const status = searchParams.status as string | undefined;
   const category = searchParams.category as string | undefined;
   const search = searchParams.search as string | undefined;
   const featured = searchParams.featured === 'true' ? true : 
                    searchParams.featured === 'false' ? false : undefined;
   
-  // Récupérer la liste des agents avec pagination et filtres
-  const agentsData = await getAgents({
-    page,
-    limit: 12,
-    status,
-    category,
-    featured,
-    search,
-  });
+  try {
+    // Récupérer la liste des agents avec pagination et filtres
+    const agentsData = await getAgents({
+      page,
+      limit: 12,
+      status,
+      category,
+      featured,
+      search,
+    });
 
-  return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Gestion des agents</h1>
+    return (
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold">Gestion des agents</h1>
+          
+          <div>
+            {/* Espace réservé pour des boutons d'action globaux si nécessaire */}
+          </div>
+        </div>
         
-        <div>
-          {/* Si besoin de boutons d'action globaux */}
+        {/* Composant client pour la gestion interactive des agents */}
+        <AgentManagementClient 
+          initialAgents={agentsData.agents} 
+          totalAgents={agentsData.totalCount}
+          currentPage={agentsData.currentPage}
+          totalPages={agentsData.totalPages}
+          initialFilters={{ status, category, featured, search }}
+        />
+      </div>
+    );
+  } catch (error) {
+    console.error('Erreur lors du chargement des agents:', error);
+    return (
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold">Gestion des agents</h1>
+        </div>
+        <div className="bg-red-50 border border-red-200 text-red-800 p-4 rounded-md">
+          Une erreur est survenue lors du chargement des agents. Veuillez réessayer plus tard.
         </div>
       </div>
-      
-      {/* Composant client pour la gestion des agents */}
-      <AgentManagementClient 
-        initialAgents={agentsData.agents} 
-        totalAgents={agentsData.totalCount}
-        currentPage={agentsData.currentPage}
-        totalPages={agentsData.totalPages}
-        initialFilters={{ status, category, featured, search }}
-      />
-    </div>
-  );
+    );
+  }
 }

@@ -1,8 +1,7 @@
-// eslint.config.mjs
-import next from '@next/eslint-plugin-next';
 import js from '@eslint/js';
-import ts from '@typescript-eslint/eslint-plugin';
-import parser from '@typescript-eslint/parser';
+import nextPlugin from '@next/eslint-plugin-next';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
 
 /** @type {import("eslint").Linter.FlatConfig[]} */
 export default [
@@ -12,7 +11,7 @@ export default [
   js.configs.recommended,
   {
     languageOptions: {
-      parser,
+      parser: tsParser,
       parserOptions: {
         project: './tsconfig.json',
         sourceType: 'module',
@@ -20,8 +19,8 @@ export default [
       },
     },
     plugins: {
-      '@typescript-eslint': ts,
-      next,
+      '@typescript-eslint': tsPlugin,
+      '@next/next': nextPlugin,
     },
     rules: {
       'no-unused-vars': 'off',
@@ -29,5 +28,5 @@ export default [
       '@typescript-eslint/no-explicit-any': 'warn',
     },
   },
-  next.configs.recommended,
+  nextPlugin.configs.recommended,
 ];
