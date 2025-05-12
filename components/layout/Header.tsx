@@ -104,6 +104,12 @@ const Header: React.FC = () => {
             >
               Communauté
             </Link>
+            <Link 
+              href={ROUTES.BLOG}
+              className={`text-gray-700 hover:text-blue-600 ${isActive(ROUTES.BLOG) ? 'font-medium text-blue-600' : ''}`}
+            >
+              Blog
+            </Link>
             
             {/* Affichage d'un indicateur de chargement pendant la vérification d'authentification */}
             {loading ? (
@@ -200,6 +206,13 @@ const Header: React.FC = () => {
               onClick={() => setIsMenuOpen(false)}
             >
               Communauté
+            </Link>
+            <Link 
+              href={ROUTES.BLOG}
+              className={`block py-2 text-gray-700 hover:text-blue-600 ${isActive(ROUTES.BLOG) ? 'font-medium text-blue-600' : ''}`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Blog
             </Link>
             
             {/* Affichage d'un indicateur de chargement pendant la vérification d'authentification */}

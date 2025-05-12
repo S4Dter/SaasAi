@@ -77,6 +77,11 @@ const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
+                <Link href={ROUTES.BLOG} className="text-gray-600 hover:text-blue-600">
+                  Blog
+                </Link>
+              </li>
+              <li>
                 <Link href={ROUTES.AUTH.SIGNIN} className="text-gray-600 hover:text-blue-600">
                   Connexion
                 </Link>

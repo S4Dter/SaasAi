@@ -7,6 +7,7 @@ export const ROUTES = {
   AGENTS: '/agents',
   AGENT_DETAILS: (id: string) => `/agents/${id}`,
   COMMUNITY: '/community',
+  BLOG: '/blog',
   DASHBOARD: {
     ENTERPRISE: {
       ROOT: '/dashboard/enterprise',
