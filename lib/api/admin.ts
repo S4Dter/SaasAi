@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma';
-import { supabaseAdmin } from '@/lib/supabase-server';
+import { supabaseAdmin } from '@/lib/supabase-client-admin';
 import { User } from '@/types';
 
 // Types for filters and data structures
@@ -1141,4 +1141,3 @@ export async function getAdminOverview() {
         throw error; 
       } 
     }
-
