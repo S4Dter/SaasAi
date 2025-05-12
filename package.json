@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next dev",
+    "build": "cross-env NODE_ENV=production next build || next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -35,6 +35,7 @@
     "@typescript-eslint/parser": "^8.32.0",
     "@vercel/node": "^2.3.0",
     "autoprefixer": "^10.4.16",
+    "cross-env": "^7.0.3",
     "eslint": "^9",
     "postcss": "^8.4.33",
     "prisma": "^6.7.0",
