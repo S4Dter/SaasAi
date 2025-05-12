@@ -61,6 +61,31 @@ export type community_posts = $Result.DefaultSelection<Prisma.$community_postsPa
  */
 export type contacts = $Result.DefaultSelection<Prisma.$contactsPayload>
 /**
+ * Model admin_activity_log
+ * 
+ */
+export type admin_activity_log = $Result.DefaultSelection<Prisma.$admin_activity_logPayload>
+/**
+ * Model agent_categories
+ * 
+ */
+export type agent_categories = $Result.DefaultSelection<Prisma.$agent_categoriesPayload>
+/**
+ * Model agent_reports
+ * 
+ */
+export type agent_reports = $Result.DefaultSelection<Prisma.$agent_reportsPayload>
+/**
+ * Model system_settings
+ * 
+ */
+export type system_settings = $Result.DefaultSelection<Prisma.$system_settingsPayload>
+/**
+ * Model notification_templates
+ * 
+ */
+export type notification_templates = $Result.DefaultSelection<Prisma.$notification_templatesPayload>
+/**
  * Model debug_logs
  * 
  */
@@ -301,6 +326,56 @@ export class PrismaClient<
     * ```
     */
   get contacts(): Prisma.contactsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.admin_activity_log`: Exposes CRUD operations for the **admin_activity_log** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Admin_activity_logs
+    * const admin_activity_logs = await prisma.admin_activity_log.findMany()
+    * ```
+    */
+  get admin_activity_log(): Prisma.admin_activity_logDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.agent_categories`: Exposes CRUD operations for the **agent_categories** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Agent_categories
+    * const agent_categories = await prisma.agent_categories.findMany()
+    * ```
+    */
+  get agent_categories(): Prisma.agent_categoriesDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.agent_reports`: Exposes CRUD operations for the **agent_reports** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Agent_reports
+    * const agent_reports = await prisma.agent_reports.findMany()
+    * ```
+    */
+  get agent_reports(): Prisma.agent_reportsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.system_settings`: Exposes CRUD operations for the **system_settings** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more System_settings
+    * const system_settings = await prisma.system_settings.findMany()
+    * ```
+    */
+  get system_settings(): Prisma.system_settingsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.notification_templates`: Exposes CRUD operations for the **notification_templates** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Notification_templates
+    * const notification_templates = await prisma.notification_templates.findMany()
+    * ```
+    */
+  get notification_templates(): Prisma.notification_templatesDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.debug_logs`: Exposes CRUD operations for the **debug_logs** model.
@@ -800,6 +875,11 @@ export namespace Prisma {
     community_post_likes: 'community_post_likes',
     community_posts: 'community_posts',
     contacts: 'contacts',
+    admin_activity_log: 'admin_activity_log',
+    agent_categories: 'agent_categories',
+    agent_reports: 'agent_reports',
+    system_settings: 'system_settings',
+    notification_templates: 'notification_templates',
     debug_logs: 'debug_logs',
     enterprise_contacts: 'enterprise_contacts',
     enterprises: 'enterprises',
@@ -823,7 +903,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "agent" | "agent_conversions" | "agent_recommendations" | "agent_revenue" | "agent_views" | "community_post_likes" | "community_posts" | "contacts" | "debug_logs" | "enterprise_contacts" | "enterprises" | "favorites" | "purchased_agents"
+      modelProps: "user" | "agent" | "agent_conversions" | "agent_recommendations" | "agent_revenue" | "agent_views" | "community_post_likes" | "community_posts" | "contacts" | "admin_activity_log" | "agent_categories" | "agent_reports" | "system_settings" | "notification_templates" | "debug_logs" | "enterprise_contacts" | "enterprises" | "favorites" | "purchased_agents"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1493,6 +1573,376 @@ export namespace Prisma {
           }
         }
       }
+      admin_activity_log: {
+        payload: Prisma.$admin_activity_logPayload<ExtArgs>
+        fields: Prisma.admin_activity_logFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.admin_activity_logFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$admin_activity_logPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.admin_activity_logFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$admin_activity_logPayload>
+          }
+          findFirst: {
+            args: Prisma.admin_activity_logFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$admin_activity_logPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.admin_activity_logFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$admin_activity_logPayload>
+          }
+          findMany: {
+            args: Prisma.admin_activity_logFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$admin_activity_logPayload>[]
+          }
+          create: {
+            args: Prisma.admin_activity_logCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$admin_activity_logPayload>
+          }
+          createMany: {
+            args: Prisma.admin_activity_logCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.admin_activity_logCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$admin_activity_logPayload>[]
+          }
+          delete: {
+            args: Prisma.admin_activity_logDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$admin_activity_logPayload>
+          }
+          update: {
+            args: Prisma.admin_activity_logUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$admin_activity_logPayload>
+          }
+          deleteMany: {
+            args: Prisma.admin_activity_logDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.admin_activity_logUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.admin_activity_logUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$admin_activity_logPayload>[]
+          }
+          upsert: {
+            args: Prisma.admin_activity_logUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$admin_activity_logPayload>
+          }
+          aggregate: {
+            args: Prisma.Admin_activity_logAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAdmin_activity_log>
+          }
+          groupBy: {
+            args: Prisma.admin_activity_logGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Admin_activity_logGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.admin_activity_logCountArgs<ExtArgs>
+            result: $Utils.Optional<Admin_activity_logCountAggregateOutputType> | number
+          }
+        }
+      }
+      agent_categories: {
+        payload: Prisma.$agent_categoriesPayload<ExtArgs>
+        fields: Prisma.agent_categoriesFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.agent_categoriesFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$agent_categoriesPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.agent_categoriesFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$agent_categoriesPayload>
+          }
+          findFirst: {
+            args: Prisma.agent_categoriesFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$agent_categoriesPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.agent_categoriesFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$agent_categoriesPayload>
+          }
+          findMany: {
+            args: Prisma.agent_categoriesFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$agent_categoriesPayload>[]
+          }
+          create: {
+            args: Prisma.agent_categoriesCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$agent_categoriesPayload>
+          }
+          createMany: {
+            args: Prisma.agent_categoriesCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.agent_categoriesCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$agent_categoriesPayload>[]
+          }
+          delete: {
+            args: Prisma.agent_categoriesDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$agent_categoriesPayload>
+          }
+          update: {
+            args: Prisma.agent_categoriesUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$agent_categoriesPayload>
+          }
+          deleteMany: {
+            args: Prisma.agent_categoriesDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.agent_categoriesUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.agent_categoriesUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$agent_categoriesPayload>[]
+          }
+          upsert: {
+            args: Prisma.agent_categoriesUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$agent_categoriesPayload>
+          }
+          aggregate: {
+            args: Prisma.Agent_categoriesAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAgent_categories>
+          }
+          groupBy: {
+            args: Prisma.agent_categoriesGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Agent_categoriesGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.agent_categoriesCountArgs<ExtArgs>
+            result: $Utils.Optional<Agent_categoriesCountAggregateOutputType> | number
+          }
+        }
+      }
+      agent_reports: {
+        payload: Prisma.$agent_reportsPayload<ExtArgs>
+        fields: Prisma.agent_reportsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.agent_reportsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$agent_reportsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.agent_reportsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$agent_reportsPayload>
+          }
+          findFirst: {
+            args: Prisma.agent_reportsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$agent_reportsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.agent_reportsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$agent_reportsPayload>
+          }
+          findMany: {
+            args: Prisma.agent_reportsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$agent_reportsPayload>[]
+          }
+          create: {
+            args: Prisma.agent_reportsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$agent_reportsPayload>
+          }
+          createMany: {
+            args: Prisma.agent_reportsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.agent_reportsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$agent_reportsPayload>[]
+          }
+          delete: {
+            args: Prisma.agent_reportsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$agent_reportsPayload>
+          }
+          update: {
+            args: Prisma.agent_reportsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$agent_reportsPayload>
+          }
+          deleteMany: {
+            args: Prisma.agent_reportsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.agent_reportsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.agent_reportsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$agent_reportsPayload>[]
+          }
+          upsert: {
+            args: Prisma.agent_reportsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$agent_reportsPayload>
+          }
+          aggregate: {
+            args: Prisma.Agent_reportsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAgent_reports>
+          }
+          groupBy: {
+            args: Prisma.agent_reportsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Agent_reportsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.agent_reportsCountArgs<ExtArgs>
+            result: $Utils.Optional<Agent_reportsCountAggregateOutputType> | number
+          }
+        }
+      }
+      system_settings: {
+        payload: Prisma.$system_settingsPayload<ExtArgs>
+        fields: Prisma.system_settingsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.system_settingsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$system_settingsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.system_settingsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$system_settingsPayload>
+          }
+          findFirst: {
+            args: Prisma.system_settingsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$system_settingsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.system_settingsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$system_settingsPayload>
+          }
+          findMany: {
+            args: Prisma.system_settingsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$system_settingsPayload>[]
+          }
+          create: {
+            args: Prisma.system_settingsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$system_settingsPayload>
+          }
+          createMany: {
+            args: Prisma.system_settingsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.system_settingsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$system_settingsPayload>[]
+          }
+          delete: {
+            args: Prisma.system_settingsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$system_settingsPayload>
+          }
+          update: {
+            args: Prisma.system_settingsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$system_settingsPayload>
+          }
+          deleteMany: {
+            args: Prisma.system_settingsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.system_settingsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.system_settingsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$system_settingsPayload>[]
+          }
+          upsert: {
+            args: Prisma.system_settingsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$system_settingsPayload>
+          }
+          aggregate: {
+            args: Prisma.System_settingsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSystem_settings>
+          }
+          groupBy: {
+            args: Prisma.system_settingsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<System_settingsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.system_settingsCountArgs<ExtArgs>
+            result: $Utils.Optional<System_settingsCountAggregateOutputType> | number
+          }
+        }
+      }
+      notification_templates: {
+        payload: Prisma.$notification_templatesPayload<ExtArgs>
+        fields: Prisma.notification_templatesFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.notification_templatesFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$notification_templatesPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.notification_templatesFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$notification_templatesPayload>
+          }
+          findFirst: {
+            args: Prisma.notification_templatesFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$notification_templatesPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.notification_templatesFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$notification_templatesPayload>
+          }
+          findMany: {
+            args: Prisma.notification_templatesFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$notification_templatesPayload>[]
+          }
+          create: {
+            args: Prisma.notification_templatesCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$notification_templatesPayload>
+          }
+          createMany: {
+            args: Prisma.notification_templatesCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.notification_templatesCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$notification_templatesPayload>[]
+          }
+          delete: {
+            args: Prisma.notification_templatesDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$notification_templatesPayload>
+          }
+          update: {
+            args: Prisma.notification_templatesUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$notification_templatesPayload>
+          }
+          deleteMany: {
+            args: Prisma.notification_templatesDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.notification_templatesUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.notification_templatesUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$notification_templatesPayload>[]
+          }
+          upsert: {
+            args: Prisma.notification_templatesUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$notification_templatesPayload>
+          }
+          aggregate: {
+            args: Prisma.Notification_templatesAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateNotification_templates>
+          }
+          groupBy: {
+            args: Prisma.notification_templatesGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Notification_templatesGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.notification_templatesCountArgs<ExtArgs>
+            result: $Utils.Optional<Notification_templatesCountAggregateOutputType> | number
+          }
+        }
+      }
       debug_logs: {
         payload: Prisma.$debug_logsPayload<ExtArgs>
         fields: Prisma.debug_logsFieldRefs
@@ -1956,6 +2406,11 @@ export namespace Prisma {
     community_post_likes?: community_post_likesOmit
     community_posts?: community_postsOmit
     contacts?: contactsOmit
+    admin_activity_log?: admin_activity_logOmit
+    agent_categories?: agent_categoriesOmit
+    agent_reports?: agent_reportsOmit
+    system_settings?: system_settingsOmit
+    notification_templates?: notification_templatesOmit
     debug_logs?: debug_logsOmit
     enterprise_contacts?: enterprise_contactsOmit
     enterprises?: enterprisesOmit
@@ -2067,6 +2522,9 @@ export namespace Prisma {
     contacts_contacts_enterprise_idTousers: number
     favorites: number
     purchased_agents: number
+    admin_activity_log: number
+    agent_reports_reporter: number
+    agent_reports_admin: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2082,6 +2540,9 @@ export namespace Prisma {
     contacts_contacts_enterprise_idTousers?: boolean | UserCountOutputTypeCountContacts_contacts_enterprise_idTousersArgs
     favorites?: boolean | UserCountOutputTypeCountFavoritesArgs
     purchased_agents?: boolean | UserCountOutputTypeCountPurchased_agentsArgs
+    admin_activity_log?: boolean | UserCountOutputTypeCountAdmin_activity_logArgs
+    agent_reports_reporter?: boolean | UserCountOutputTypeCountAgent_reports_reporterArgs
+    agent_reports_admin?: boolean | UserCountOutputTypeCountAgent_reports_adminArgs
   }
 
   // Custom InputTypes
@@ -2179,6 +2640,27 @@ export namespace Prisma {
     where?: purchased_agentsWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAdmin_activity_logArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: admin_activity_logWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAgent_reports_reporterArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: agent_reportsWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAgent_reports_adminArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: agent_reportsWhereInput
+  }
+
 
   /**
    * Count Type AgentCountOutputType
@@ -2192,6 +2674,7 @@ export namespace Prisma {
     contacts: number
     favorites: number
     purchased_agents: number
+    agent_reports: number
   }
 
   export type AgentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2202,6 +2685,7 @@ export namespace Prisma {
     contacts?: boolean | AgentCountOutputTypeCountContactsArgs
     favorites?: boolean | AgentCountOutputTypeCountFavoritesArgs
     purchased_agents?: boolean | AgentCountOutputTypeCountPurchased_agentsArgs
+    agent_reports?: boolean | AgentCountOutputTypeCountAgent_reportsArgs
   }
 
   // Custom InputTypes
@@ -2262,6 +2746,13 @@ export namespace Prisma {
    */
   export type AgentCountOutputTypeCountPurchased_agentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: purchased_agentsWhereInput
+  }
+
+  /**
+   * AgentCountOutputType without action
+   */
+  export type AgentCountOutputTypeCountAgent_reportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: agent_reportsWhereInput
   }
 
 
@@ -2351,6 +2842,7 @@ export namespace Prisma {
     bio: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    status: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -2363,6 +2855,7 @@ export namespace Prisma {
     bio: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    status: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -2375,6 +2868,7 @@ export namespace Prisma {
     bio: number
     createdAt: number
     updatedAt: number
+    status: number
     _all: number
   }
 
@@ -2389,6 +2883,7 @@ export namespace Prisma {
     bio?: true
     createdAt?: true
     updatedAt?: true
+    status?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -2401,6 +2896,7 @@ export namespace Prisma {
     bio?: true
     createdAt?: true
     updatedAt?: true
+    status?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -2413,6 +2909,7 @@ export namespace Prisma {
     bio?: true
     createdAt?: true
     updatedAt?: true
+    status?: true
     _all?: true
   }
 
@@ -2498,6 +2995,7 @@ export namespace Prisma {
     bio: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    status: string | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -2527,6 +3025,7 @@ export namespace Prisma {
     bio?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    status?: boolean
     agent_conversions?: boolean | User$agent_conversionsArgs<ExtArgs>
     agent_recommendations_agent_recommendations_creator_idTousers?: boolean | User$agent_recommendations_agent_recommendations_creator_idTousersArgs<ExtArgs>
     agent_recommendations_agent_recommendations_enterprise_idTousers?: boolean | User$agent_recommendations_agent_recommendations_enterprise_idTousersArgs<ExtArgs>
@@ -2540,6 +3039,9 @@ export namespace Prisma {
     enterprises?: boolean | User$enterprisesArgs<ExtArgs>
     favorites?: boolean | User$favoritesArgs<ExtArgs>
     purchased_agents?: boolean | User$purchased_agentsArgs<ExtArgs>
+    admin_activity_log?: boolean | User$admin_activity_logArgs<ExtArgs>
+    agent_reports_reporter?: boolean | User$agent_reports_reporterArgs<ExtArgs>
+    agent_reports_admin?: boolean | User$agent_reports_adminArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2553,6 +3055,7 @@ export namespace Prisma {
     bio?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    status?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2565,6 +3068,7 @@ export namespace Prisma {
     bio?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    status?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -2577,9 +3081,10 @@ export namespace Prisma {
     bio?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    status?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "role" | "avatar" | "company" | "bio" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "role" | "avatar" | "company" | "bio" | "createdAt" | "updatedAt" | "status", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     agent_conversions?: boolean | User$agent_conversionsArgs<ExtArgs>
     agent_recommendations_agent_recommendations_creator_idTousers?: boolean | User$agent_recommendations_agent_recommendations_creator_idTousersArgs<ExtArgs>
@@ -2594,6 +3099,9 @@ export namespace Prisma {
     enterprises?: boolean | User$enterprisesArgs<ExtArgs>
     favorites?: boolean | User$favoritesArgs<ExtArgs>
     purchased_agents?: boolean | User$purchased_agentsArgs<ExtArgs>
+    admin_activity_log?: boolean | User$admin_activity_logArgs<ExtArgs>
+    agent_reports_reporter?: boolean | User$agent_reports_reporterArgs<ExtArgs>
+    agent_reports_admin?: boolean | User$agent_reports_adminArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2615,6 +3123,9 @@ export namespace Prisma {
       enterprises: Prisma.$enterprisesPayload<ExtArgs> | null
       favorites: Prisma.$favoritesPayload<ExtArgs>[]
       purchased_agents: Prisma.$purchased_agentsPayload<ExtArgs>[]
+      admin_activity_log: Prisma.$admin_activity_logPayload<ExtArgs>[]
+      agent_reports_reporter: Prisma.$agent_reportsPayload<ExtArgs>[]
+      agent_reports_admin: Prisma.$agent_reportsPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2626,6 +3137,7 @@ export namespace Prisma {
       bio: string | null
       createdAt: Date | null
       updatedAt: Date | null
+      status: string | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -3033,6 +3545,9 @@ export namespace Prisma {
     enterprises<T extends User$enterprisesArgs<ExtArgs> = {}>(args?: Subset<T, User$enterprisesArgs<ExtArgs>>): Prisma__enterprisesClient<$Result.GetResult<Prisma.$enterprisesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     favorites<T extends User$favoritesArgs<ExtArgs> = {}>(args?: Subset<T, User$favoritesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$favoritesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     purchased_agents<T extends User$purchased_agentsArgs<ExtArgs> = {}>(args?: Subset<T, User$purchased_agentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$purchased_agentsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    admin_activity_log<T extends User$admin_activity_logArgs<ExtArgs> = {}>(args?: Subset<T, User$admin_activity_logArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$admin_activity_logPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    agent_reports_reporter<T extends User$agent_reports_reporterArgs<ExtArgs> = {}>(args?: Subset<T, User$agent_reports_reporterArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$agent_reportsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    agent_reports_admin<T extends User$agent_reports_adminArgs<ExtArgs> = {}>(args?: Subset<T, User$agent_reports_adminArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$agent_reportsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3071,6 +3586,7 @@ export namespace Prisma {
     readonly bio: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
+    readonly status: FieldRef<"User", 'String'>
   }
     
 
@@ -3766,6 +4282,78 @@ export namespace Prisma {
   }
 
   /**
+   * User.admin_activity_log
+   */
+  export type User$admin_activity_logArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the admin_activity_log
+     */
+    select?: admin_activity_logSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the admin_activity_log
+     */
+    omit?: admin_activity_logOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: admin_activity_logInclude<ExtArgs> | null
+    where?: admin_activity_logWhereInput
+    orderBy?: admin_activity_logOrderByWithRelationInput | admin_activity_logOrderByWithRelationInput[]
+    cursor?: admin_activity_logWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Admin_activity_logScalarFieldEnum | Admin_activity_logScalarFieldEnum[]
+  }
+
+  /**
+   * User.agent_reports_reporter
+   */
+  export type User$agent_reports_reporterArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_reports
+     */
+    select?: agent_reportsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_reports
+     */
+    omit?: agent_reportsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: agent_reportsInclude<ExtArgs> | null
+    where?: agent_reportsWhereInput
+    orderBy?: agent_reportsOrderByWithRelationInput | agent_reportsOrderByWithRelationInput[]
+    cursor?: agent_reportsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Agent_reportsScalarFieldEnum | Agent_reportsScalarFieldEnum[]
+  }
+
+  /**
+   * User.agent_reports_admin
+   */
+  export type User$agent_reports_adminArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_reports
+     */
+    select?: agent_reportsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_reports
+     */
+    omit?: agent_reportsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: agent_reportsInclude<ExtArgs> | null
+    where?: agent_reportsWhereInput
+    orderBy?: agent_reportsOrderByWithRelationInput | agent_reportsOrderByWithRelationInput[]
+    cursor?: agent_reportsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Agent_reportsScalarFieldEnum | Agent_reportsScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3808,6 +4396,10 @@ export namespace Prisma {
     demo_video_url: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    status: string | null
+    approval_date: Date | null
+    approved_by: string | null
+    rejection_reason: string | null
   }
 
   export type AgentMaxAggregateOutputType = {
@@ -3824,6 +4416,10 @@ export namespace Prisma {
     demo_video_url: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    status: string | null
+    approval_date: Date | null
+    approved_by: string | null
+    rejection_reason: string | null
   }
 
   export type AgentCountAggregateOutputType = {
@@ -3843,6 +4439,10 @@ export namespace Prisma {
     screenshots: number
     createdAt: number
     updatedAt: number
+    status: number
+    approval_date: number
+    approved_by: number
+    rejection_reason: number
     _all: number
   }
 
@@ -3861,6 +4461,10 @@ export namespace Prisma {
     demo_video_url?: true
     createdAt?: true
     updatedAt?: true
+    status?: true
+    approval_date?: true
+    approved_by?: true
+    rejection_reason?: true
   }
 
   export type AgentMaxAggregateInputType = {
@@ -3877,6 +4481,10 @@ export namespace Prisma {
     demo_video_url?: true
     createdAt?: true
     updatedAt?: true
+    status?: true
+    approval_date?: true
+    approved_by?: true
+    rejection_reason?: true
   }
 
   export type AgentCountAggregateInputType = {
@@ -3896,6 +4504,10 @@ export namespace Prisma {
     screenshots?: true
     createdAt?: true
     updatedAt?: true
+    status?: true
+    approval_date?: true
+    approved_by?: true
+    rejection_reason?: true
     _all?: true
   }
 
@@ -3988,6 +4600,10 @@ export namespace Prisma {
     screenshots: string[]
     createdAt: Date | null
     updatedAt: Date | null
+    status: string
+    approval_date: Date | null
+    approved_by: string | null
+    rejection_reason: string | null
     _count: AgentCountAggregateOutputType | null
     _min: AgentMinAggregateOutputType | null
     _max: AgentMaxAggregateOutputType | null
@@ -4024,6 +4640,10 @@ export namespace Prisma {
     screenshots?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    status?: boolean
+    approval_date?: boolean
+    approved_by?: boolean
+    rejection_reason?: boolean
     agent_conversions?: boolean | Agent$agent_conversionsArgs<ExtArgs>
     agent_recommendations?: boolean | Agent$agent_recommendationsArgs<ExtArgs>
     agent_revenue?: boolean | Agent$agent_revenueArgs<ExtArgs>
@@ -4032,6 +4652,7 @@ export namespace Prisma {
     contacts?: boolean | Agent$contactsArgs<ExtArgs>
     favorites?: boolean | Agent$favoritesArgs<ExtArgs>
     purchased_agents?: boolean | Agent$purchased_agentsArgs<ExtArgs>
+    agent_reports?: boolean | Agent$agent_reportsArgs<ExtArgs>
     _count?: boolean | AgentCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["agent"]>
 
@@ -4052,6 +4673,10 @@ export namespace Prisma {
     screenshots?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    status?: boolean
+    approval_date?: boolean
+    approved_by?: boolean
+    rejection_reason?: boolean
     creator?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["agent"]>
 
@@ -4072,6 +4697,10 @@ export namespace Prisma {
     screenshots?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    status?: boolean
+    approval_date?: boolean
+    approved_by?: boolean
+    rejection_reason?: boolean
     creator?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["agent"]>
 
@@ -4092,9 +4721,13 @@ export namespace Prisma {
     screenshots?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    status?: boolean
+    approval_date?: boolean
+    approved_by?: boolean
+    rejection_reason?: boolean
   }
 
-  export type AgentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "description" | "short_description" | "category" | "creatorId" | "pricing" | "featured" | "logo_url" | "integrations" | "demo_url" | "demo_video_url" | "screenshots" | "createdAt" | "updatedAt", ExtArgs["result"]["agent"]>
+  export type AgentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "description" | "short_description" | "category" | "creatorId" | "pricing" | "featured" | "logo_url" | "integrations" | "demo_url" | "demo_video_url" | "screenshots" | "createdAt" | "updatedAt" | "status" | "approval_date" | "approved_by" | "rejection_reason", ExtArgs["result"]["agent"]>
   export type AgentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     agent_conversions?: boolean | Agent$agent_conversionsArgs<ExtArgs>
     agent_recommendations?: boolean | Agent$agent_recommendationsArgs<ExtArgs>
@@ -4104,6 +4737,7 @@ export namespace Prisma {
     contacts?: boolean | Agent$contactsArgs<ExtArgs>
     favorites?: boolean | Agent$favoritesArgs<ExtArgs>
     purchased_agents?: boolean | Agent$purchased_agentsArgs<ExtArgs>
+    agent_reports?: boolean | Agent$agent_reportsArgs<ExtArgs>
     _count?: boolean | AgentCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type AgentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4124,6 +4758,7 @@ export namespace Prisma {
       contacts: Prisma.$contactsPayload<ExtArgs>[]
       favorites: Prisma.$favoritesPayload<ExtArgs>[]
       purchased_agents: Prisma.$purchased_agentsPayload<ExtArgs>[]
+      agent_reports: Prisma.$agent_reportsPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4142,6 +4777,10 @@ export namespace Prisma {
       screenshots: string[]
       createdAt: Date | null
       updatedAt: Date | null
+      status: string
+      approval_date: Date | null
+      approved_by: string | null
+      rejection_reason: string | null
     }, ExtArgs["result"]["agent"]>
     composites: {}
   }
@@ -4544,6 +5183,7 @@ export namespace Prisma {
     contacts<T extends Agent$contactsArgs<ExtArgs> = {}>(args?: Subset<T, Agent$contactsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$contactsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     favorites<T extends Agent$favoritesArgs<ExtArgs> = {}>(args?: Subset<T, Agent$favoritesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$favoritesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     purchased_agents<T extends Agent$purchased_agentsArgs<ExtArgs> = {}>(args?: Subset<T, Agent$purchased_agentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$purchased_agentsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    agent_reports<T extends Agent$agent_reportsArgs<ExtArgs> = {}>(args?: Subset<T, Agent$agent_reportsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$agent_reportsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4589,6 +5229,10 @@ export namespace Prisma {
     readonly screenshots: FieldRef<"Agent", 'String[]'>
     readonly createdAt: FieldRef<"Agent", 'DateTime'>
     readonly updatedAt: FieldRef<"Agent", 'DateTime'>
+    readonly status: FieldRef<"Agent", 'String'>
+    readonly approval_date: FieldRef<"Agent", 'DateTime'>
+    readonly approved_by: FieldRef<"Agent", 'String'>
+    readonly rejection_reason: FieldRef<"Agent", 'String'>
   }
     
 
@@ -5150,6 +5794,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: Purchased_agentsScalarFieldEnum | Purchased_agentsScalarFieldEnum[]
+  }
+
+  /**
+   * Agent.agent_reports
+   */
+  export type Agent$agent_reportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_reports
+     */
+    select?: agent_reportsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_reports
+     */
+    omit?: agent_reportsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: agent_reportsInclude<ExtArgs> | null
+    where?: agent_reportsWhereInput
+    orderBy?: agent_reportsOrderByWithRelationInput | agent_reportsOrderByWithRelationInput[]
+    cursor?: agent_reportsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Agent_reportsScalarFieldEnum | Agent_reportsScalarFieldEnum[]
   }
 
   /**
@@ -12916,6 +13584,5312 @@ export namespace Prisma {
 
 
   /**
+   * Model admin_activity_log
+   */
+
+  export type AggregateAdmin_activity_log = {
+    _count: Admin_activity_logCountAggregateOutputType | null
+    _min: Admin_activity_logMinAggregateOutputType | null
+    _max: Admin_activity_logMaxAggregateOutputType | null
+  }
+
+  export type Admin_activity_logMinAggregateOutputType = {
+    id: string | null
+    admin_id: string | null
+    action: string | null
+    entity_type: string | null
+    entity_id: string | null
+    created_at: Date | null
+  }
+
+  export type Admin_activity_logMaxAggregateOutputType = {
+    id: string | null
+    admin_id: string | null
+    action: string | null
+    entity_type: string | null
+    entity_id: string | null
+    created_at: Date | null
+  }
+
+  export type Admin_activity_logCountAggregateOutputType = {
+    id: number
+    admin_id: number
+    action: number
+    entity_type: number
+    entity_id: number
+    details: number
+    created_at: number
+    _all: number
+  }
+
+
+  export type Admin_activity_logMinAggregateInputType = {
+    id?: true
+    admin_id?: true
+    action?: true
+    entity_type?: true
+    entity_id?: true
+    created_at?: true
+  }
+
+  export type Admin_activity_logMaxAggregateInputType = {
+    id?: true
+    admin_id?: true
+    action?: true
+    entity_type?: true
+    entity_id?: true
+    created_at?: true
+  }
+
+  export type Admin_activity_logCountAggregateInputType = {
+    id?: true
+    admin_id?: true
+    action?: true
+    entity_type?: true
+    entity_id?: true
+    details?: true
+    created_at?: true
+    _all?: true
+  }
+
+  export type Admin_activity_logAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which admin_activity_log to aggregate.
+     */
+    where?: admin_activity_logWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of admin_activity_logs to fetch.
+     */
+    orderBy?: admin_activity_logOrderByWithRelationInput | admin_activity_logOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: admin_activity_logWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` admin_activity_logs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` admin_activity_logs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned admin_activity_logs
+    **/
+    _count?: true | Admin_activity_logCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Admin_activity_logMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Admin_activity_logMaxAggregateInputType
+  }
+
+  export type GetAdmin_activity_logAggregateType<T extends Admin_activity_logAggregateArgs> = {
+        [P in keyof T & keyof AggregateAdmin_activity_log]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAdmin_activity_log[P]>
+      : GetScalarType<T[P], AggregateAdmin_activity_log[P]>
+  }
+
+
+
+
+  export type admin_activity_logGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: admin_activity_logWhereInput
+    orderBy?: admin_activity_logOrderByWithAggregationInput | admin_activity_logOrderByWithAggregationInput[]
+    by: Admin_activity_logScalarFieldEnum[] | Admin_activity_logScalarFieldEnum
+    having?: admin_activity_logScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Admin_activity_logCountAggregateInputType | true
+    _min?: Admin_activity_logMinAggregateInputType
+    _max?: Admin_activity_logMaxAggregateInputType
+  }
+
+  export type Admin_activity_logGroupByOutputType = {
+    id: string
+    admin_id: string
+    action: string
+    entity_type: string
+    entity_id: string
+    details: JsonValue | null
+    created_at: Date | null
+    _count: Admin_activity_logCountAggregateOutputType | null
+    _min: Admin_activity_logMinAggregateOutputType | null
+    _max: Admin_activity_logMaxAggregateOutputType | null
+  }
+
+  type GetAdmin_activity_logGroupByPayload<T extends admin_activity_logGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Admin_activity_logGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Admin_activity_logGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Admin_activity_logGroupByOutputType[P]>
+            : GetScalarType<T[P], Admin_activity_logGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type admin_activity_logSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    admin_id?: boolean
+    action?: boolean
+    entity_type?: boolean
+    entity_id?: boolean
+    details?: boolean
+    created_at?: boolean
+    admin?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["admin_activity_log"]>
+
+  export type admin_activity_logSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    admin_id?: boolean
+    action?: boolean
+    entity_type?: boolean
+    entity_id?: boolean
+    details?: boolean
+    created_at?: boolean
+    admin?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["admin_activity_log"]>
+
+  export type admin_activity_logSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    admin_id?: boolean
+    action?: boolean
+    entity_type?: boolean
+    entity_id?: boolean
+    details?: boolean
+    created_at?: boolean
+    admin?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["admin_activity_log"]>
+
+  export type admin_activity_logSelectScalar = {
+    id?: boolean
+    admin_id?: boolean
+    action?: boolean
+    entity_type?: boolean
+    entity_id?: boolean
+    details?: boolean
+    created_at?: boolean
+  }
+
+  export type admin_activity_logOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "admin_id" | "action" | "entity_type" | "entity_id" | "details" | "created_at", ExtArgs["result"]["admin_activity_log"]>
+  export type admin_activity_logInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    admin?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type admin_activity_logIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    admin?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type admin_activity_logIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    admin?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $admin_activity_logPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "admin_activity_log"
+    objects: {
+      admin: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      admin_id: string
+      action: string
+      entity_type: string
+      entity_id: string
+      details: Prisma.JsonValue | null
+      created_at: Date | null
+    }, ExtArgs["result"]["admin_activity_log"]>
+    composites: {}
+  }
+
+  type admin_activity_logGetPayload<S extends boolean | null | undefined | admin_activity_logDefaultArgs> = $Result.GetResult<Prisma.$admin_activity_logPayload, S>
+
+  type admin_activity_logCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<admin_activity_logFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: Admin_activity_logCountAggregateInputType | true
+    }
+
+  export interface admin_activity_logDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['admin_activity_log'], meta: { name: 'admin_activity_log' } }
+    /**
+     * Find zero or one Admin_activity_log that matches the filter.
+     * @param {admin_activity_logFindUniqueArgs} args - Arguments to find a Admin_activity_log
+     * @example
+     * // Get one Admin_activity_log
+     * const admin_activity_log = await prisma.admin_activity_log.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends admin_activity_logFindUniqueArgs>(args: SelectSubset<T, admin_activity_logFindUniqueArgs<ExtArgs>>): Prisma__admin_activity_logClient<$Result.GetResult<Prisma.$admin_activity_logPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Admin_activity_log that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {admin_activity_logFindUniqueOrThrowArgs} args - Arguments to find a Admin_activity_log
+     * @example
+     * // Get one Admin_activity_log
+     * const admin_activity_log = await prisma.admin_activity_log.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends admin_activity_logFindUniqueOrThrowArgs>(args: SelectSubset<T, admin_activity_logFindUniqueOrThrowArgs<ExtArgs>>): Prisma__admin_activity_logClient<$Result.GetResult<Prisma.$admin_activity_logPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Admin_activity_log that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {admin_activity_logFindFirstArgs} args - Arguments to find a Admin_activity_log
+     * @example
+     * // Get one Admin_activity_log
+     * const admin_activity_log = await prisma.admin_activity_log.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends admin_activity_logFindFirstArgs>(args?: SelectSubset<T, admin_activity_logFindFirstArgs<ExtArgs>>): Prisma__admin_activity_logClient<$Result.GetResult<Prisma.$admin_activity_logPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Admin_activity_log that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {admin_activity_logFindFirstOrThrowArgs} args - Arguments to find a Admin_activity_log
+     * @example
+     * // Get one Admin_activity_log
+     * const admin_activity_log = await prisma.admin_activity_log.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends admin_activity_logFindFirstOrThrowArgs>(args?: SelectSubset<T, admin_activity_logFindFirstOrThrowArgs<ExtArgs>>): Prisma__admin_activity_logClient<$Result.GetResult<Prisma.$admin_activity_logPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Admin_activity_logs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {admin_activity_logFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Admin_activity_logs
+     * const admin_activity_logs = await prisma.admin_activity_log.findMany()
+     * 
+     * // Get first 10 Admin_activity_logs
+     * const admin_activity_logs = await prisma.admin_activity_log.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const admin_activity_logWithIdOnly = await prisma.admin_activity_log.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends admin_activity_logFindManyArgs>(args?: SelectSubset<T, admin_activity_logFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$admin_activity_logPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Admin_activity_log.
+     * @param {admin_activity_logCreateArgs} args - Arguments to create a Admin_activity_log.
+     * @example
+     * // Create one Admin_activity_log
+     * const Admin_activity_log = await prisma.admin_activity_log.create({
+     *   data: {
+     *     // ... data to create a Admin_activity_log
+     *   }
+     * })
+     * 
+     */
+    create<T extends admin_activity_logCreateArgs>(args: SelectSubset<T, admin_activity_logCreateArgs<ExtArgs>>): Prisma__admin_activity_logClient<$Result.GetResult<Prisma.$admin_activity_logPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Admin_activity_logs.
+     * @param {admin_activity_logCreateManyArgs} args - Arguments to create many Admin_activity_logs.
+     * @example
+     * // Create many Admin_activity_logs
+     * const admin_activity_log = await prisma.admin_activity_log.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends admin_activity_logCreateManyArgs>(args?: SelectSubset<T, admin_activity_logCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Admin_activity_logs and returns the data saved in the database.
+     * @param {admin_activity_logCreateManyAndReturnArgs} args - Arguments to create many Admin_activity_logs.
+     * @example
+     * // Create many Admin_activity_logs
+     * const admin_activity_log = await prisma.admin_activity_log.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Admin_activity_logs and only return the `id`
+     * const admin_activity_logWithIdOnly = await prisma.admin_activity_log.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends admin_activity_logCreateManyAndReturnArgs>(args?: SelectSubset<T, admin_activity_logCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$admin_activity_logPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Admin_activity_log.
+     * @param {admin_activity_logDeleteArgs} args - Arguments to delete one Admin_activity_log.
+     * @example
+     * // Delete one Admin_activity_log
+     * const Admin_activity_log = await prisma.admin_activity_log.delete({
+     *   where: {
+     *     // ... filter to delete one Admin_activity_log
+     *   }
+     * })
+     * 
+     */
+    delete<T extends admin_activity_logDeleteArgs>(args: SelectSubset<T, admin_activity_logDeleteArgs<ExtArgs>>): Prisma__admin_activity_logClient<$Result.GetResult<Prisma.$admin_activity_logPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Admin_activity_log.
+     * @param {admin_activity_logUpdateArgs} args - Arguments to update one Admin_activity_log.
+     * @example
+     * // Update one Admin_activity_log
+     * const admin_activity_log = await prisma.admin_activity_log.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends admin_activity_logUpdateArgs>(args: SelectSubset<T, admin_activity_logUpdateArgs<ExtArgs>>): Prisma__admin_activity_logClient<$Result.GetResult<Prisma.$admin_activity_logPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Admin_activity_logs.
+     * @param {admin_activity_logDeleteManyArgs} args - Arguments to filter Admin_activity_logs to delete.
+     * @example
+     * // Delete a few Admin_activity_logs
+     * const { count } = await prisma.admin_activity_log.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends admin_activity_logDeleteManyArgs>(args?: SelectSubset<T, admin_activity_logDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Admin_activity_logs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {admin_activity_logUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Admin_activity_logs
+     * const admin_activity_log = await prisma.admin_activity_log.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends admin_activity_logUpdateManyArgs>(args: SelectSubset<T, admin_activity_logUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Admin_activity_logs and returns the data updated in the database.
+     * @param {admin_activity_logUpdateManyAndReturnArgs} args - Arguments to update many Admin_activity_logs.
+     * @example
+     * // Update many Admin_activity_logs
+     * const admin_activity_log = await prisma.admin_activity_log.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Admin_activity_logs and only return the `id`
+     * const admin_activity_logWithIdOnly = await prisma.admin_activity_log.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends admin_activity_logUpdateManyAndReturnArgs>(args: SelectSubset<T, admin_activity_logUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$admin_activity_logPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Admin_activity_log.
+     * @param {admin_activity_logUpsertArgs} args - Arguments to update or create a Admin_activity_log.
+     * @example
+     * // Update or create a Admin_activity_log
+     * const admin_activity_log = await prisma.admin_activity_log.upsert({
+     *   create: {
+     *     // ... data to create a Admin_activity_log
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Admin_activity_log we want to update
+     *   }
+     * })
+     */
+    upsert<T extends admin_activity_logUpsertArgs>(args: SelectSubset<T, admin_activity_logUpsertArgs<ExtArgs>>): Prisma__admin_activity_logClient<$Result.GetResult<Prisma.$admin_activity_logPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Admin_activity_logs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {admin_activity_logCountArgs} args - Arguments to filter Admin_activity_logs to count.
+     * @example
+     * // Count the number of Admin_activity_logs
+     * const count = await prisma.admin_activity_log.count({
+     *   where: {
+     *     // ... the filter for the Admin_activity_logs we want to count
+     *   }
+     * })
+    **/
+    count<T extends admin_activity_logCountArgs>(
+      args?: Subset<T, admin_activity_logCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Admin_activity_logCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Admin_activity_log.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Admin_activity_logAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Admin_activity_logAggregateArgs>(args: Subset<T, Admin_activity_logAggregateArgs>): Prisma.PrismaPromise<GetAdmin_activity_logAggregateType<T>>
+
+    /**
+     * Group by Admin_activity_log.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {admin_activity_logGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends admin_activity_logGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: admin_activity_logGroupByArgs['orderBy'] }
+        : { orderBy?: admin_activity_logGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, admin_activity_logGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAdmin_activity_logGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the admin_activity_log model
+   */
+  readonly fields: admin_activity_logFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for admin_activity_log.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__admin_activity_logClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    admin<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the admin_activity_log model
+   */
+  interface admin_activity_logFieldRefs {
+    readonly id: FieldRef<"admin_activity_log", 'String'>
+    readonly admin_id: FieldRef<"admin_activity_log", 'String'>
+    readonly action: FieldRef<"admin_activity_log", 'String'>
+    readonly entity_type: FieldRef<"admin_activity_log", 'String'>
+    readonly entity_id: FieldRef<"admin_activity_log", 'String'>
+    readonly details: FieldRef<"admin_activity_log", 'Json'>
+    readonly created_at: FieldRef<"admin_activity_log", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * admin_activity_log findUnique
+   */
+  export type admin_activity_logFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the admin_activity_log
+     */
+    select?: admin_activity_logSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the admin_activity_log
+     */
+    omit?: admin_activity_logOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: admin_activity_logInclude<ExtArgs> | null
+    /**
+     * Filter, which admin_activity_log to fetch.
+     */
+    where: admin_activity_logWhereUniqueInput
+  }
+
+  /**
+   * admin_activity_log findUniqueOrThrow
+   */
+  export type admin_activity_logFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the admin_activity_log
+     */
+    select?: admin_activity_logSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the admin_activity_log
+     */
+    omit?: admin_activity_logOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: admin_activity_logInclude<ExtArgs> | null
+    /**
+     * Filter, which admin_activity_log to fetch.
+     */
+    where: admin_activity_logWhereUniqueInput
+  }
+
+  /**
+   * admin_activity_log findFirst
+   */
+  export type admin_activity_logFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the admin_activity_log
+     */
+    select?: admin_activity_logSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the admin_activity_log
+     */
+    omit?: admin_activity_logOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: admin_activity_logInclude<ExtArgs> | null
+    /**
+     * Filter, which admin_activity_log to fetch.
+     */
+    where?: admin_activity_logWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of admin_activity_logs to fetch.
+     */
+    orderBy?: admin_activity_logOrderByWithRelationInput | admin_activity_logOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for admin_activity_logs.
+     */
+    cursor?: admin_activity_logWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` admin_activity_logs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` admin_activity_logs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of admin_activity_logs.
+     */
+    distinct?: Admin_activity_logScalarFieldEnum | Admin_activity_logScalarFieldEnum[]
+  }
+
+  /**
+   * admin_activity_log findFirstOrThrow
+   */
+  export type admin_activity_logFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the admin_activity_log
+     */
+    select?: admin_activity_logSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the admin_activity_log
+     */
+    omit?: admin_activity_logOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: admin_activity_logInclude<ExtArgs> | null
+    /**
+     * Filter, which admin_activity_log to fetch.
+     */
+    where?: admin_activity_logWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of admin_activity_logs to fetch.
+     */
+    orderBy?: admin_activity_logOrderByWithRelationInput | admin_activity_logOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for admin_activity_logs.
+     */
+    cursor?: admin_activity_logWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` admin_activity_logs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` admin_activity_logs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of admin_activity_logs.
+     */
+    distinct?: Admin_activity_logScalarFieldEnum | Admin_activity_logScalarFieldEnum[]
+  }
+
+  /**
+   * admin_activity_log findMany
+   */
+  export type admin_activity_logFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the admin_activity_log
+     */
+    select?: admin_activity_logSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the admin_activity_log
+     */
+    omit?: admin_activity_logOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: admin_activity_logInclude<ExtArgs> | null
+    /**
+     * Filter, which admin_activity_logs to fetch.
+     */
+    where?: admin_activity_logWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of admin_activity_logs to fetch.
+     */
+    orderBy?: admin_activity_logOrderByWithRelationInput | admin_activity_logOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing admin_activity_logs.
+     */
+    cursor?: admin_activity_logWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` admin_activity_logs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` admin_activity_logs.
+     */
+    skip?: number
+    distinct?: Admin_activity_logScalarFieldEnum | Admin_activity_logScalarFieldEnum[]
+  }
+
+  /**
+   * admin_activity_log create
+   */
+  export type admin_activity_logCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the admin_activity_log
+     */
+    select?: admin_activity_logSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the admin_activity_log
+     */
+    omit?: admin_activity_logOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: admin_activity_logInclude<ExtArgs> | null
+    /**
+     * The data needed to create a admin_activity_log.
+     */
+    data: XOR<admin_activity_logCreateInput, admin_activity_logUncheckedCreateInput>
+  }
+
+  /**
+   * admin_activity_log createMany
+   */
+  export type admin_activity_logCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many admin_activity_logs.
+     */
+    data: admin_activity_logCreateManyInput | admin_activity_logCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * admin_activity_log createManyAndReturn
+   */
+  export type admin_activity_logCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the admin_activity_log
+     */
+    select?: admin_activity_logSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the admin_activity_log
+     */
+    omit?: admin_activity_logOmit<ExtArgs> | null
+    /**
+     * The data used to create many admin_activity_logs.
+     */
+    data: admin_activity_logCreateManyInput | admin_activity_logCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: admin_activity_logIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * admin_activity_log update
+   */
+  export type admin_activity_logUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the admin_activity_log
+     */
+    select?: admin_activity_logSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the admin_activity_log
+     */
+    omit?: admin_activity_logOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: admin_activity_logInclude<ExtArgs> | null
+    /**
+     * The data needed to update a admin_activity_log.
+     */
+    data: XOR<admin_activity_logUpdateInput, admin_activity_logUncheckedUpdateInput>
+    /**
+     * Choose, which admin_activity_log to update.
+     */
+    where: admin_activity_logWhereUniqueInput
+  }
+
+  /**
+   * admin_activity_log updateMany
+   */
+  export type admin_activity_logUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update admin_activity_logs.
+     */
+    data: XOR<admin_activity_logUpdateManyMutationInput, admin_activity_logUncheckedUpdateManyInput>
+    /**
+     * Filter which admin_activity_logs to update
+     */
+    where?: admin_activity_logWhereInput
+    /**
+     * Limit how many admin_activity_logs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * admin_activity_log updateManyAndReturn
+   */
+  export type admin_activity_logUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the admin_activity_log
+     */
+    select?: admin_activity_logSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the admin_activity_log
+     */
+    omit?: admin_activity_logOmit<ExtArgs> | null
+    /**
+     * The data used to update admin_activity_logs.
+     */
+    data: XOR<admin_activity_logUpdateManyMutationInput, admin_activity_logUncheckedUpdateManyInput>
+    /**
+     * Filter which admin_activity_logs to update
+     */
+    where?: admin_activity_logWhereInput
+    /**
+     * Limit how many admin_activity_logs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: admin_activity_logIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * admin_activity_log upsert
+   */
+  export type admin_activity_logUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the admin_activity_log
+     */
+    select?: admin_activity_logSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the admin_activity_log
+     */
+    omit?: admin_activity_logOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: admin_activity_logInclude<ExtArgs> | null
+    /**
+     * The filter to search for the admin_activity_log to update in case it exists.
+     */
+    where: admin_activity_logWhereUniqueInput
+    /**
+     * In case the admin_activity_log found by the `where` argument doesn't exist, create a new admin_activity_log with this data.
+     */
+    create: XOR<admin_activity_logCreateInput, admin_activity_logUncheckedCreateInput>
+    /**
+     * In case the admin_activity_log was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<admin_activity_logUpdateInput, admin_activity_logUncheckedUpdateInput>
+  }
+
+  /**
+   * admin_activity_log delete
+   */
+  export type admin_activity_logDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the admin_activity_log
+     */
+    select?: admin_activity_logSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the admin_activity_log
+     */
+    omit?: admin_activity_logOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: admin_activity_logInclude<ExtArgs> | null
+    /**
+     * Filter which admin_activity_log to delete.
+     */
+    where: admin_activity_logWhereUniqueInput
+  }
+
+  /**
+   * admin_activity_log deleteMany
+   */
+  export type admin_activity_logDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which admin_activity_logs to delete
+     */
+    where?: admin_activity_logWhereInput
+    /**
+     * Limit how many admin_activity_logs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * admin_activity_log without action
+   */
+  export type admin_activity_logDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the admin_activity_log
+     */
+    select?: admin_activity_logSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the admin_activity_log
+     */
+    omit?: admin_activity_logOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: admin_activity_logInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model agent_categories
+   */
+
+  export type AggregateAgent_categories = {
+    _count: Agent_categoriesCountAggregateOutputType | null
+    _min: Agent_categoriesMinAggregateOutputType | null
+    _max: Agent_categoriesMaxAggregateOutputType | null
+  }
+
+  export type Agent_categoriesMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    slug: string | null
+    description: string | null
+    icon: string | null
+    created_at: Date | null
+    updated_at: Date | null
+  }
+
+  export type Agent_categoriesMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    slug: string | null
+    description: string | null
+    icon: string | null
+    created_at: Date | null
+    updated_at: Date | null
+  }
+
+  export type Agent_categoriesCountAggregateOutputType = {
+    id: number
+    name: number
+    slug: number
+    description: number
+    icon: number
+    created_at: number
+    updated_at: number
+    _all: number
+  }
+
+
+  export type Agent_categoriesMinAggregateInputType = {
+    id?: true
+    name?: true
+    slug?: true
+    description?: true
+    icon?: true
+    created_at?: true
+    updated_at?: true
+  }
+
+  export type Agent_categoriesMaxAggregateInputType = {
+    id?: true
+    name?: true
+    slug?: true
+    description?: true
+    icon?: true
+    created_at?: true
+    updated_at?: true
+  }
+
+  export type Agent_categoriesCountAggregateInputType = {
+    id?: true
+    name?: true
+    slug?: true
+    description?: true
+    icon?: true
+    created_at?: true
+    updated_at?: true
+    _all?: true
+  }
+
+  export type Agent_categoriesAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which agent_categories to aggregate.
+     */
+    where?: agent_categoriesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of agent_categories to fetch.
+     */
+    orderBy?: agent_categoriesOrderByWithRelationInput | agent_categoriesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: agent_categoriesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` agent_categories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` agent_categories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned agent_categories
+    **/
+    _count?: true | Agent_categoriesCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Agent_categoriesMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Agent_categoriesMaxAggregateInputType
+  }
+
+  export type GetAgent_categoriesAggregateType<T extends Agent_categoriesAggregateArgs> = {
+        [P in keyof T & keyof AggregateAgent_categories]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAgent_categories[P]>
+      : GetScalarType<T[P], AggregateAgent_categories[P]>
+  }
+
+
+
+
+  export type agent_categoriesGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: agent_categoriesWhereInput
+    orderBy?: agent_categoriesOrderByWithAggregationInput | agent_categoriesOrderByWithAggregationInput[]
+    by: Agent_categoriesScalarFieldEnum[] | Agent_categoriesScalarFieldEnum
+    having?: agent_categoriesScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Agent_categoriesCountAggregateInputType | true
+    _min?: Agent_categoriesMinAggregateInputType
+    _max?: Agent_categoriesMaxAggregateInputType
+  }
+
+  export type Agent_categoriesGroupByOutputType = {
+    id: string
+    name: string
+    slug: string
+    description: string | null
+    icon: string | null
+    created_at: Date | null
+    updated_at: Date | null
+    _count: Agent_categoriesCountAggregateOutputType | null
+    _min: Agent_categoriesMinAggregateOutputType | null
+    _max: Agent_categoriesMaxAggregateOutputType | null
+  }
+
+  type GetAgent_categoriesGroupByPayload<T extends agent_categoriesGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Agent_categoriesGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Agent_categoriesGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Agent_categoriesGroupByOutputType[P]>
+            : GetScalarType<T[P], Agent_categoriesGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type agent_categoriesSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    slug?: boolean
+    description?: boolean
+    icon?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+  }, ExtArgs["result"]["agent_categories"]>
+
+  export type agent_categoriesSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    slug?: boolean
+    description?: boolean
+    icon?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+  }, ExtArgs["result"]["agent_categories"]>
+
+  export type agent_categoriesSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    slug?: boolean
+    description?: boolean
+    icon?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+  }, ExtArgs["result"]["agent_categories"]>
+
+  export type agent_categoriesSelectScalar = {
+    id?: boolean
+    name?: boolean
+    slug?: boolean
+    description?: boolean
+    icon?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+  }
+
+  export type agent_categoriesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "description" | "icon" | "created_at" | "updated_at", ExtArgs["result"]["agent_categories"]>
+
+  export type $agent_categoriesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "agent_categories"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      slug: string
+      description: string | null
+      icon: string | null
+      created_at: Date | null
+      updated_at: Date | null
+    }, ExtArgs["result"]["agent_categories"]>
+    composites: {}
+  }
+
+  type agent_categoriesGetPayload<S extends boolean | null | undefined | agent_categoriesDefaultArgs> = $Result.GetResult<Prisma.$agent_categoriesPayload, S>
+
+  type agent_categoriesCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<agent_categoriesFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: Agent_categoriesCountAggregateInputType | true
+    }
+
+  export interface agent_categoriesDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['agent_categories'], meta: { name: 'agent_categories' } }
+    /**
+     * Find zero or one Agent_categories that matches the filter.
+     * @param {agent_categoriesFindUniqueArgs} args - Arguments to find a Agent_categories
+     * @example
+     * // Get one Agent_categories
+     * const agent_categories = await prisma.agent_categories.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends agent_categoriesFindUniqueArgs>(args: SelectSubset<T, agent_categoriesFindUniqueArgs<ExtArgs>>): Prisma__agent_categoriesClient<$Result.GetResult<Prisma.$agent_categoriesPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Agent_categories that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {agent_categoriesFindUniqueOrThrowArgs} args - Arguments to find a Agent_categories
+     * @example
+     * // Get one Agent_categories
+     * const agent_categories = await prisma.agent_categories.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends agent_categoriesFindUniqueOrThrowArgs>(args: SelectSubset<T, agent_categoriesFindUniqueOrThrowArgs<ExtArgs>>): Prisma__agent_categoriesClient<$Result.GetResult<Prisma.$agent_categoriesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Agent_categories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {agent_categoriesFindFirstArgs} args - Arguments to find a Agent_categories
+     * @example
+     * // Get one Agent_categories
+     * const agent_categories = await prisma.agent_categories.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends agent_categoriesFindFirstArgs>(args?: SelectSubset<T, agent_categoriesFindFirstArgs<ExtArgs>>): Prisma__agent_categoriesClient<$Result.GetResult<Prisma.$agent_categoriesPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Agent_categories that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {agent_categoriesFindFirstOrThrowArgs} args - Arguments to find a Agent_categories
+     * @example
+     * // Get one Agent_categories
+     * const agent_categories = await prisma.agent_categories.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends agent_categoriesFindFirstOrThrowArgs>(args?: SelectSubset<T, agent_categoriesFindFirstOrThrowArgs<ExtArgs>>): Prisma__agent_categoriesClient<$Result.GetResult<Prisma.$agent_categoriesPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Agent_categories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {agent_categoriesFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Agent_categories
+     * const agent_categories = await prisma.agent_categories.findMany()
+     * 
+     * // Get first 10 Agent_categories
+     * const agent_categories = await prisma.agent_categories.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const agent_categoriesWithIdOnly = await prisma.agent_categories.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends agent_categoriesFindManyArgs>(args?: SelectSubset<T, agent_categoriesFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$agent_categoriesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Agent_categories.
+     * @param {agent_categoriesCreateArgs} args - Arguments to create a Agent_categories.
+     * @example
+     * // Create one Agent_categories
+     * const Agent_categories = await prisma.agent_categories.create({
+     *   data: {
+     *     // ... data to create a Agent_categories
+     *   }
+     * })
+     * 
+     */
+    create<T extends agent_categoriesCreateArgs>(args: SelectSubset<T, agent_categoriesCreateArgs<ExtArgs>>): Prisma__agent_categoriesClient<$Result.GetResult<Prisma.$agent_categoriesPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Agent_categories.
+     * @param {agent_categoriesCreateManyArgs} args - Arguments to create many Agent_categories.
+     * @example
+     * // Create many Agent_categories
+     * const agent_categories = await prisma.agent_categories.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends agent_categoriesCreateManyArgs>(args?: SelectSubset<T, agent_categoriesCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Agent_categories and returns the data saved in the database.
+     * @param {agent_categoriesCreateManyAndReturnArgs} args - Arguments to create many Agent_categories.
+     * @example
+     * // Create many Agent_categories
+     * const agent_categories = await prisma.agent_categories.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Agent_categories and only return the `id`
+     * const agent_categoriesWithIdOnly = await prisma.agent_categories.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends agent_categoriesCreateManyAndReturnArgs>(args?: SelectSubset<T, agent_categoriesCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$agent_categoriesPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Agent_categories.
+     * @param {agent_categoriesDeleteArgs} args - Arguments to delete one Agent_categories.
+     * @example
+     * // Delete one Agent_categories
+     * const Agent_categories = await prisma.agent_categories.delete({
+     *   where: {
+     *     // ... filter to delete one Agent_categories
+     *   }
+     * })
+     * 
+     */
+    delete<T extends agent_categoriesDeleteArgs>(args: SelectSubset<T, agent_categoriesDeleteArgs<ExtArgs>>): Prisma__agent_categoriesClient<$Result.GetResult<Prisma.$agent_categoriesPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Agent_categories.
+     * @param {agent_categoriesUpdateArgs} args - Arguments to update one Agent_categories.
+     * @example
+     * // Update one Agent_categories
+     * const agent_categories = await prisma.agent_categories.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends agent_categoriesUpdateArgs>(args: SelectSubset<T, agent_categoriesUpdateArgs<ExtArgs>>): Prisma__agent_categoriesClient<$Result.GetResult<Prisma.$agent_categoriesPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Agent_categories.
+     * @param {agent_categoriesDeleteManyArgs} args - Arguments to filter Agent_categories to delete.
+     * @example
+     * // Delete a few Agent_categories
+     * const { count } = await prisma.agent_categories.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends agent_categoriesDeleteManyArgs>(args?: SelectSubset<T, agent_categoriesDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Agent_categories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {agent_categoriesUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Agent_categories
+     * const agent_categories = await prisma.agent_categories.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends agent_categoriesUpdateManyArgs>(args: SelectSubset<T, agent_categoriesUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Agent_categories and returns the data updated in the database.
+     * @param {agent_categoriesUpdateManyAndReturnArgs} args - Arguments to update many Agent_categories.
+     * @example
+     * // Update many Agent_categories
+     * const agent_categories = await prisma.agent_categories.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Agent_categories and only return the `id`
+     * const agent_categoriesWithIdOnly = await prisma.agent_categories.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends agent_categoriesUpdateManyAndReturnArgs>(args: SelectSubset<T, agent_categoriesUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$agent_categoriesPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Agent_categories.
+     * @param {agent_categoriesUpsertArgs} args - Arguments to update or create a Agent_categories.
+     * @example
+     * // Update or create a Agent_categories
+     * const agent_categories = await prisma.agent_categories.upsert({
+     *   create: {
+     *     // ... data to create a Agent_categories
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Agent_categories we want to update
+     *   }
+     * })
+     */
+    upsert<T extends agent_categoriesUpsertArgs>(args: SelectSubset<T, agent_categoriesUpsertArgs<ExtArgs>>): Prisma__agent_categoriesClient<$Result.GetResult<Prisma.$agent_categoriesPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Agent_categories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {agent_categoriesCountArgs} args - Arguments to filter Agent_categories to count.
+     * @example
+     * // Count the number of Agent_categories
+     * const count = await prisma.agent_categories.count({
+     *   where: {
+     *     // ... the filter for the Agent_categories we want to count
+     *   }
+     * })
+    **/
+    count<T extends agent_categoriesCountArgs>(
+      args?: Subset<T, agent_categoriesCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Agent_categoriesCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Agent_categories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Agent_categoriesAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Agent_categoriesAggregateArgs>(args: Subset<T, Agent_categoriesAggregateArgs>): Prisma.PrismaPromise<GetAgent_categoriesAggregateType<T>>
+
+    /**
+     * Group by Agent_categories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {agent_categoriesGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends agent_categoriesGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: agent_categoriesGroupByArgs['orderBy'] }
+        : { orderBy?: agent_categoriesGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, agent_categoriesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAgent_categoriesGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the agent_categories model
+   */
+  readonly fields: agent_categoriesFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for agent_categories.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__agent_categoriesClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the agent_categories model
+   */
+  interface agent_categoriesFieldRefs {
+    readonly id: FieldRef<"agent_categories", 'String'>
+    readonly name: FieldRef<"agent_categories", 'String'>
+    readonly slug: FieldRef<"agent_categories", 'String'>
+    readonly description: FieldRef<"agent_categories", 'String'>
+    readonly icon: FieldRef<"agent_categories", 'String'>
+    readonly created_at: FieldRef<"agent_categories", 'DateTime'>
+    readonly updated_at: FieldRef<"agent_categories", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * agent_categories findUnique
+   */
+  export type agent_categoriesFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_categories
+     */
+    select?: agent_categoriesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_categories
+     */
+    omit?: agent_categoriesOmit<ExtArgs> | null
+    /**
+     * Filter, which agent_categories to fetch.
+     */
+    where: agent_categoriesWhereUniqueInput
+  }
+
+  /**
+   * agent_categories findUniqueOrThrow
+   */
+  export type agent_categoriesFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_categories
+     */
+    select?: agent_categoriesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_categories
+     */
+    omit?: agent_categoriesOmit<ExtArgs> | null
+    /**
+     * Filter, which agent_categories to fetch.
+     */
+    where: agent_categoriesWhereUniqueInput
+  }
+
+  /**
+   * agent_categories findFirst
+   */
+  export type agent_categoriesFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_categories
+     */
+    select?: agent_categoriesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_categories
+     */
+    omit?: agent_categoriesOmit<ExtArgs> | null
+    /**
+     * Filter, which agent_categories to fetch.
+     */
+    where?: agent_categoriesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of agent_categories to fetch.
+     */
+    orderBy?: agent_categoriesOrderByWithRelationInput | agent_categoriesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for agent_categories.
+     */
+    cursor?: agent_categoriesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` agent_categories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` agent_categories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of agent_categories.
+     */
+    distinct?: Agent_categoriesScalarFieldEnum | Agent_categoriesScalarFieldEnum[]
+  }
+
+  /**
+   * agent_categories findFirstOrThrow
+   */
+  export type agent_categoriesFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_categories
+     */
+    select?: agent_categoriesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_categories
+     */
+    omit?: agent_categoriesOmit<ExtArgs> | null
+    /**
+     * Filter, which agent_categories to fetch.
+     */
+    where?: agent_categoriesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of agent_categories to fetch.
+     */
+    orderBy?: agent_categoriesOrderByWithRelationInput | agent_categoriesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for agent_categories.
+     */
+    cursor?: agent_categoriesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` agent_categories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` agent_categories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of agent_categories.
+     */
+    distinct?: Agent_categoriesScalarFieldEnum | Agent_categoriesScalarFieldEnum[]
+  }
+
+  /**
+   * agent_categories findMany
+   */
+  export type agent_categoriesFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_categories
+     */
+    select?: agent_categoriesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_categories
+     */
+    omit?: agent_categoriesOmit<ExtArgs> | null
+    /**
+     * Filter, which agent_categories to fetch.
+     */
+    where?: agent_categoriesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of agent_categories to fetch.
+     */
+    orderBy?: agent_categoriesOrderByWithRelationInput | agent_categoriesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing agent_categories.
+     */
+    cursor?: agent_categoriesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` agent_categories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` agent_categories.
+     */
+    skip?: number
+    distinct?: Agent_categoriesScalarFieldEnum | Agent_categoriesScalarFieldEnum[]
+  }
+
+  /**
+   * agent_categories create
+   */
+  export type agent_categoriesCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_categories
+     */
+    select?: agent_categoriesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_categories
+     */
+    omit?: agent_categoriesOmit<ExtArgs> | null
+    /**
+     * The data needed to create a agent_categories.
+     */
+    data: XOR<agent_categoriesCreateInput, agent_categoriesUncheckedCreateInput>
+  }
+
+  /**
+   * agent_categories createMany
+   */
+  export type agent_categoriesCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many agent_categories.
+     */
+    data: agent_categoriesCreateManyInput | agent_categoriesCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * agent_categories createManyAndReturn
+   */
+  export type agent_categoriesCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_categories
+     */
+    select?: agent_categoriesSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_categories
+     */
+    omit?: agent_categoriesOmit<ExtArgs> | null
+    /**
+     * The data used to create many agent_categories.
+     */
+    data: agent_categoriesCreateManyInput | agent_categoriesCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * agent_categories update
+   */
+  export type agent_categoriesUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_categories
+     */
+    select?: agent_categoriesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_categories
+     */
+    omit?: agent_categoriesOmit<ExtArgs> | null
+    /**
+     * The data needed to update a agent_categories.
+     */
+    data: XOR<agent_categoriesUpdateInput, agent_categoriesUncheckedUpdateInput>
+    /**
+     * Choose, which agent_categories to update.
+     */
+    where: agent_categoriesWhereUniqueInput
+  }
+
+  /**
+   * agent_categories updateMany
+   */
+  export type agent_categoriesUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update agent_categories.
+     */
+    data: XOR<agent_categoriesUpdateManyMutationInput, agent_categoriesUncheckedUpdateManyInput>
+    /**
+     * Filter which agent_categories to update
+     */
+    where?: agent_categoriesWhereInput
+    /**
+     * Limit how many agent_categories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * agent_categories updateManyAndReturn
+   */
+  export type agent_categoriesUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_categories
+     */
+    select?: agent_categoriesSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_categories
+     */
+    omit?: agent_categoriesOmit<ExtArgs> | null
+    /**
+     * The data used to update agent_categories.
+     */
+    data: XOR<agent_categoriesUpdateManyMutationInput, agent_categoriesUncheckedUpdateManyInput>
+    /**
+     * Filter which agent_categories to update
+     */
+    where?: agent_categoriesWhereInput
+    /**
+     * Limit how many agent_categories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * agent_categories upsert
+   */
+  export type agent_categoriesUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_categories
+     */
+    select?: agent_categoriesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_categories
+     */
+    omit?: agent_categoriesOmit<ExtArgs> | null
+    /**
+     * The filter to search for the agent_categories to update in case it exists.
+     */
+    where: agent_categoriesWhereUniqueInput
+    /**
+     * In case the agent_categories found by the `where` argument doesn't exist, create a new agent_categories with this data.
+     */
+    create: XOR<agent_categoriesCreateInput, agent_categoriesUncheckedCreateInput>
+    /**
+     * In case the agent_categories was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<agent_categoriesUpdateInput, agent_categoriesUncheckedUpdateInput>
+  }
+
+  /**
+   * agent_categories delete
+   */
+  export type agent_categoriesDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_categories
+     */
+    select?: agent_categoriesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_categories
+     */
+    omit?: agent_categoriesOmit<ExtArgs> | null
+    /**
+     * Filter which agent_categories to delete.
+     */
+    where: agent_categoriesWhereUniqueInput
+  }
+
+  /**
+   * agent_categories deleteMany
+   */
+  export type agent_categoriesDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which agent_categories to delete
+     */
+    where?: agent_categoriesWhereInput
+    /**
+     * Limit how many agent_categories to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * agent_categories without action
+   */
+  export type agent_categoriesDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_categories
+     */
+    select?: agent_categoriesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_categories
+     */
+    omit?: agent_categoriesOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model agent_reports
+   */
+
+  export type AggregateAgent_reports = {
+    _count: Agent_reportsCountAggregateOutputType | null
+    _min: Agent_reportsMinAggregateOutputType | null
+    _max: Agent_reportsMaxAggregateOutputType | null
+  }
+
+  export type Agent_reportsMinAggregateOutputType = {
+    id: string | null
+    agent_id: string | null
+    reporter_id: string | null
+    reason: string | null
+    description: string | null
+    status: string | null
+    admin_notes: string | null
+    resolution: string | null
+    created_at: Date | null
+    updated_at: Date | null
+    reviewed_by: string | null
+    reviewed_at: Date | null
+  }
+
+  export type Agent_reportsMaxAggregateOutputType = {
+    id: string | null
+    agent_id: string | null
+    reporter_id: string | null
+    reason: string | null
+    description: string | null
+    status: string | null
+    admin_notes: string | null
+    resolution: string | null
+    created_at: Date | null
+    updated_at: Date | null
+    reviewed_by: string | null
+    reviewed_at: Date | null
+  }
+
+  export type Agent_reportsCountAggregateOutputType = {
+    id: number
+    agent_id: number
+    reporter_id: number
+    reason: number
+    description: number
+    status: number
+    admin_notes: number
+    resolution: number
+    created_at: number
+    updated_at: number
+    reviewed_by: number
+    reviewed_at: number
+    _all: number
+  }
+
+
+  export type Agent_reportsMinAggregateInputType = {
+    id?: true
+    agent_id?: true
+    reporter_id?: true
+    reason?: true
+    description?: true
+    status?: true
+    admin_notes?: true
+    resolution?: true
+    created_at?: true
+    updated_at?: true
+    reviewed_by?: true
+    reviewed_at?: true
+  }
+
+  export type Agent_reportsMaxAggregateInputType = {
+    id?: true
+    agent_id?: true
+    reporter_id?: true
+    reason?: true
+    description?: true
+    status?: true
+    admin_notes?: true
+    resolution?: true
+    created_at?: true
+    updated_at?: true
+    reviewed_by?: true
+    reviewed_at?: true
+  }
+
+  export type Agent_reportsCountAggregateInputType = {
+    id?: true
+    agent_id?: true
+    reporter_id?: true
+    reason?: true
+    description?: true
+    status?: true
+    admin_notes?: true
+    resolution?: true
+    created_at?: true
+    updated_at?: true
+    reviewed_by?: true
+    reviewed_at?: true
+    _all?: true
+  }
+
+  export type Agent_reportsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which agent_reports to aggregate.
+     */
+    where?: agent_reportsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of agent_reports to fetch.
+     */
+    orderBy?: agent_reportsOrderByWithRelationInput | agent_reportsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: agent_reportsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` agent_reports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` agent_reports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned agent_reports
+    **/
+    _count?: true | Agent_reportsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Agent_reportsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Agent_reportsMaxAggregateInputType
+  }
+
+  export type GetAgent_reportsAggregateType<T extends Agent_reportsAggregateArgs> = {
+        [P in keyof T & keyof AggregateAgent_reports]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAgent_reports[P]>
+      : GetScalarType<T[P], AggregateAgent_reports[P]>
+  }
+
+
+
+
+  export type agent_reportsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: agent_reportsWhereInput
+    orderBy?: agent_reportsOrderByWithAggregationInput | agent_reportsOrderByWithAggregationInput[]
+    by: Agent_reportsScalarFieldEnum[] | Agent_reportsScalarFieldEnum
+    having?: agent_reportsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Agent_reportsCountAggregateInputType | true
+    _min?: Agent_reportsMinAggregateInputType
+    _max?: Agent_reportsMaxAggregateInputType
+  }
+
+  export type Agent_reportsGroupByOutputType = {
+    id: string
+    agent_id: string
+    reporter_id: string
+    reason: string
+    description: string | null
+    status: string
+    admin_notes: string | null
+    resolution: string | null
+    created_at: Date | null
+    updated_at: Date | null
+    reviewed_by: string | null
+    reviewed_at: Date | null
+    _count: Agent_reportsCountAggregateOutputType | null
+    _min: Agent_reportsMinAggregateOutputType | null
+    _max: Agent_reportsMaxAggregateOutputType | null
+  }
+
+  type GetAgent_reportsGroupByPayload<T extends agent_reportsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Agent_reportsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Agent_reportsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Agent_reportsGroupByOutputType[P]>
+            : GetScalarType<T[P], Agent_reportsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type agent_reportsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    agent_id?: boolean
+    reporter_id?: boolean
+    reason?: boolean
+    description?: boolean
+    status?: boolean
+    admin_notes?: boolean
+    resolution?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    reviewed_by?: boolean
+    reviewed_at?: boolean
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    reporter?: boolean | UserDefaultArgs<ExtArgs>
+    admin?: boolean | agent_reports$adminArgs<ExtArgs>
+  }, ExtArgs["result"]["agent_reports"]>
+
+  export type agent_reportsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    agent_id?: boolean
+    reporter_id?: boolean
+    reason?: boolean
+    description?: boolean
+    status?: boolean
+    admin_notes?: boolean
+    resolution?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    reviewed_by?: boolean
+    reviewed_at?: boolean
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    reporter?: boolean | UserDefaultArgs<ExtArgs>
+    admin?: boolean | agent_reports$adminArgs<ExtArgs>
+  }, ExtArgs["result"]["agent_reports"]>
+
+  export type agent_reportsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    agent_id?: boolean
+    reporter_id?: boolean
+    reason?: boolean
+    description?: boolean
+    status?: boolean
+    admin_notes?: boolean
+    resolution?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    reviewed_by?: boolean
+    reviewed_at?: boolean
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    reporter?: boolean | UserDefaultArgs<ExtArgs>
+    admin?: boolean | agent_reports$adminArgs<ExtArgs>
+  }, ExtArgs["result"]["agent_reports"]>
+
+  export type agent_reportsSelectScalar = {
+    id?: boolean
+    agent_id?: boolean
+    reporter_id?: boolean
+    reason?: boolean
+    description?: boolean
+    status?: boolean
+    admin_notes?: boolean
+    resolution?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    reviewed_by?: boolean
+    reviewed_at?: boolean
+  }
+
+  export type agent_reportsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "agent_id" | "reporter_id" | "reason" | "description" | "status" | "admin_notes" | "resolution" | "created_at" | "updated_at" | "reviewed_by" | "reviewed_at", ExtArgs["result"]["agent_reports"]>
+  export type agent_reportsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    reporter?: boolean | UserDefaultArgs<ExtArgs>
+    admin?: boolean | agent_reports$adminArgs<ExtArgs>
+  }
+  export type agent_reportsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    reporter?: boolean | UserDefaultArgs<ExtArgs>
+    admin?: boolean | agent_reports$adminArgs<ExtArgs>
+  }
+  export type agent_reportsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    reporter?: boolean | UserDefaultArgs<ExtArgs>
+    admin?: boolean | agent_reports$adminArgs<ExtArgs>
+  }
+
+  export type $agent_reportsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "agent_reports"
+    objects: {
+      agent: Prisma.$AgentPayload<ExtArgs>
+      reporter: Prisma.$UserPayload<ExtArgs>
+      admin: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      agent_id: string
+      reporter_id: string
+      reason: string
+      description: string | null
+      status: string
+      admin_notes: string | null
+      resolution: string | null
+      created_at: Date | null
+      updated_at: Date | null
+      reviewed_by: string | null
+      reviewed_at: Date | null
+    }, ExtArgs["result"]["agent_reports"]>
+    composites: {}
+  }
+
+  type agent_reportsGetPayload<S extends boolean | null | undefined | agent_reportsDefaultArgs> = $Result.GetResult<Prisma.$agent_reportsPayload, S>
+
+  type agent_reportsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<agent_reportsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: Agent_reportsCountAggregateInputType | true
+    }
+
+  export interface agent_reportsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['agent_reports'], meta: { name: 'agent_reports' } }
+    /**
+     * Find zero or one Agent_reports that matches the filter.
+     * @param {agent_reportsFindUniqueArgs} args - Arguments to find a Agent_reports
+     * @example
+     * // Get one Agent_reports
+     * const agent_reports = await prisma.agent_reports.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends agent_reportsFindUniqueArgs>(args: SelectSubset<T, agent_reportsFindUniqueArgs<ExtArgs>>): Prisma__agent_reportsClient<$Result.GetResult<Prisma.$agent_reportsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Agent_reports that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {agent_reportsFindUniqueOrThrowArgs} args - Arguments to find a Agent_reports
+     * @example
+     * // Get one Agent_reports
+     * const agent_reports = await prisma.agent_reports.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends agent_reportsFindUniqueOrThrowArgs>(args: SelectSubset<T, agent_reportsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__agent_reportsClient<$Result.GetResult<Prisma.$agent_reportsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Agent_reports that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {agent_reportsFindFirstArgs} args - Arguments to find a Agent_reports
+     * @example
+     * // Get one Agent_reports
+     * const agent_reports = await prisma.agent_reports.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends agent_reportsFindFirstArgs>(args?: SelectSubset<T, agent_reportsFindFirstArgs<ExtArgs>>): Prisma__agent_reportsClient<$Result.GetResult<Prisma.$agent_reportsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Agent_reports that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {agent_reportsFindFirstOrThrowArgs} args - Arguments to find a Agent_reports
+     * @example
+     * // Get one Agent_reports
+     * const agent_reports = await prisma.agent_reports.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends agent_reportsFindFirstOrThrowArgs>(args?: SelectSubset<T, agent_reportsFindFirstOrThrowArgs<ExtArgs>>): Prisma__agent_reportsClient<$Result.GetResult<Prisma.$agent_reportsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Agent_reports that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {agent_reportsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Agent_reports
+     * const agent_reports = await prisma.agent_reports.findMany()
+     * 
+     * // Get first 10 Agent_reports
+     * const agent_reports = await prisma.agent_reports.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const agent_reportsWithIdOnly = await prisma.agent_reports.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends agent_reportsFindManyArgs>(args?: SelectSubset<T, agent_reportsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$agent_reportsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Agent_reports.
+     * @param {agent_reportsCreateArgs} args - Arguments to create a Agent_reports.
+     * @example
+     * // Create one Agent_reports
+     * const Agent_reports = await prisma.agent_reports.create({
+     *   data: {
+     *     // ... data to create a Agent_reports
+     *   }
+     * })
+     * 
+     */
+    create<T extends agent_reportsCreateArgs>(args: SelectSubset<T, agent_reportsCreateArgs<ExtArgs>>): Prisma__agent_reportsClient<$Result.GetResult<Prisma.$agent_reportsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Agent_reports.
+     * @param {agent_reportsCreateManyArgs} args - Arguments to create many Agent_reports.
+     * @example
+     * // Create many Agent_reports
+     * const agent_reports = await prisma.agent_reports.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends agent_reportsCreateManyArgs>(args?: SelectSubset<T, agent_reportsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Agent_reports and returns the data saved in the database.
+     * @param {agent_reportsCreateManyAndReturnArgs} args - Arguments to create many Agent_reports.
+     * @example
+     * // Create many Agent_reports
+     * const agent_reports = await prisma.agent_reports.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Agent_reports and only return the `id`
+     * const agent_reportsWithIdOnly = await prisma.agent_reports.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends agent_reportsCreateManyAndReturnArgs>(args?: SelectSubset<T, agent_reportsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$agent_reportsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Agent_reports.
+     * @param {agent_reportsDeleteArgs} args - Arguments to delete one Agent_reports.
+     * @example
+     * // Delete one Agent_reports
+     * const Agent_reports = await prisma.agent_reports.delete({
+     *   where: {
+     *     // ... filter to delete one Agent_reports
+     *   }
+     * })
+     * 
+     */
+    delete<T extends agent_reportsDeleteArgs>(args: SelectSubset<T, agent_reportsDeleteArgs<ExtArgs>>): Prisma__agent_reportsClient<$Result.GetResult<Prisma.$agent_reportsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Agent_reports.
+     * @param {agent_reportsUpdateArgs} args - Arguments to update one Agent_reports.
+     * @example
+     * // Update one Agent_reports
+     * const agent_reports = await prisma.agent_reports.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends agent_reportsUpdateArgs>(args: SelectSubset<T, agent_reportsUpdateArgs<ExtArgs>>): Prisma__agent_reportsClient<$Result.GetResult<Prisma.$agent_reportsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Agent_reports.
+     * @param {agent_reportsDeleteManyArgs} args - Arguments to filter Agent_reports to delete.
+     * @example
+     * // Delete a few Agent_reports
+     * const { count } = await prisma.agent_reports.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends agent_reportsDeleteManyArgs>(args?: SelectSubset<T, agent_reportsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Agent_reports.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {agent_reportsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Agent_reports
+     * const agent_reports = await prisma.agent_reports.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends agent_reportsUpdateManyArgs>(args: SelectSubset<T, agent_reportsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Agent_reports and returns the data updated in the database.
+     * @param {agent_reportsUpdateManyAndReturnArgs} args - Arguments to update many Agent_reports.
+     * @example
+     * // Update many Agent_reports
+     * const agent_reports = await prisma.agent_reports.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Agent_reports and only return the `id`
+     * const agent_reportsWithIdOnly = await prisma.agent_reports.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends agent_reportsUpdateManyAndReturnArgs>(args: SelectSubset<T, agent_reportsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$agent_reportsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Agent_reports.
+     * @param {agent_reportsUpsertArgs} args - Arguments to update or create a Agent_reports.
+     * @example
+     * // Update or create a Agent_reports
+     * const agent_reports = await prisma.agent_reports.upsert({
+     *   create: {
+     *     // ... data to create a Agent_reports
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Agent_reports we want to update
+     *   }
+     * })
+     */
+    upsert<T extends agent_reportsUpsertArgs>(args: SelectSubset<T, agent_reportsUpsertArgs<ExtArgs>>): Prisma__agent_reportsClient<$Result.GetResult<Prisma.$agent_reportsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Agent_reports.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {agent_reportsCountArgs} args - Arguments to filter Agent_reports to count.
+     * @example
+     * // Count the number of Agent_reports
+     * const count = await prisma.agent_reports.count({
+     *   where: {
+     *     // ... the filter for the Agent_reports we want to count
+     *   }
+     * })
+    **/
+    count<T extends agent_reportsCountArgs>(
+      args?: Subset<T, agent_reportsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Agent_reportsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Agent_reports.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Agent_reportsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Agent_reportsAggregateArgs>(args: Subset<T, Agent_reportsAggregateArgs>): Prisma.PrismaPromise<GetAgent_reportsAggregateType<T>>
+
+    /**
+     * Group by Agent_reports.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {agent_reportsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends agent_reportsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: agent_reportsGroupByArgs['orderBy'] }
+        : { orderBy?: agent_reportsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, agent_reportsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAgent_reportsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the agent_reports model
+   */
+  readonly fields: agent_reportsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for agent_reports.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__agent_reportsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    agent<T extends AgentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AgentDefaultArgs<ExtArgs>>): Prisma__AgentClient<$Result.GetResult<Prisma.$AgentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    reporter<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    admin<T extends agent_reports$adminArgs<ExtArgs> = {}>(args?: Subset<T, agent_reports$adminArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the agent_reports model
+   */
+  interface agent_reportsFieldRefs {
+    readonly id: FieldRef<"agent_reports", 'String'>
+    readonly agent_id: FieldRef<"agent_reports", 'String'>
+    readonly reporter_id: FieldRef<"agent_reports", 'String'>
+    readonly reason: FieldRef<"agent_reports", 'String'>
+    readonly description: FieldRef<"agent_reports", 'String'>
+    readonly status: FieldRef<"agent_reports", 'String'>
+    readonly admin_notes: FieldRef<"agent_reports", 'String'>
+    readonly resolution: FieldRef<"agent_reports", 'String'>
+    readonly created_at: FieldRef<"agent_reports", 'DateTime'>
+    readonly updated_at: FieldRef<"agent_reports", 'DateTime'>
+    readonly reviewed_by: FieldRef<"agent_reports", 'String'>
+    readonly reviewed_at: FieldRef<"agent_reports", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * agent_reports findUnique
+   */
+  export type agent_reportsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_reports
+     */
+    select?: agent_reportsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_reports
+     */
+    omit?: agent_reportsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: agent_reportsInclude<ExtArgs> | null
+    /**
+     * Filter, which agent_reports to fetch.
+     */
+    where: agent_reportsWhereUniqueInput
+  }
+
+  /**
+   * agent_reports findUniqueOrThrow
+   */
+  export type agent_reportsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_reports
+     */
+    select?: agent_reportsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_reports
+     */
+    omit?: agent_reportsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: agent_reportsInclude<ExtArgs> | null
+    /**
+     * Filter, which agent_reports to fetch.
+     */
+    where: agent_reportsWhereUniqueInput
+  }
+
+  /**
+   * agent_reports findFirst
+   */
+  export type agent_reportsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_reports
+     */
+    select?: agent_reportsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_reports
+     */
+    omit?: agent_reportsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: agent_reportsInclude<ExtArgs> | null
+    /**
+     * Filter, which agent_reports to fetch.
+     */
+    where?: agent_reportsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of agent_reports to fetch.
+     */
+    orderBy?: agent_reportsOrderByWithRelationInput | agent_reportsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for agent_reports.
+     */
+    cursor?: agent_reportsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` agent_reports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` agent_reports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of agent_reports.
+     */
+    distinct?: Agent_reportsScalarFieldEnum | Agent_reportsScalarFieldEnum[]
+  }
+
+  /**
+   * agent_reports findFirstOrThrow
+   */
+  export type agent_reportsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_reports
+     */
+    select?: agent_reportsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_reports
+     */
+    omit?: agent_reportsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: agent_reportsInclude<ExtArgs> | null
+    /**
+     * Filter, which agent_reports to fetch.
+     */
+    where?: agent_reportsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of agent_reports to fetch.
+     */
+    orderBy?: agent_reportsOrderByWithRelationInput | agent_reportsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for agent_reports.
+     */
+    cursor?: agent_reportsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` agent_reports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` agent_reports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of agent_reports.
+     */
+    distinct?: Agent_reportsScalarFieldEnum | Agent_reportsScalarFieldEnum[]
+  }
+
+  /**
+   * agent_reports findMany
+   */
+  export type agent_reportsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_reports
+     */
+    select?: agent_reportsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_reports
+     */
+    omit?: agent_reportsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: agent_reportsInclude<ExtArgs> | null
+    /**
+     * Filter, which agent_reports to fetch.
+     */
+    where?: agent_reportsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of agent_reports to fetch.
+     */
+    orderBy?: agent_reportsOrderByWithRelationInput | agent_reportsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing agent_reports.
+     */
+    cursor?: agent_reportsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` agent_reports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` agent_reports.
+     */
+    skip?: number
+    distinct?: Agent_reportsScalarFieldEnum | Agent_reportsScalarFieldEnum[]
+  }
+
+  /**
+   * agent_reports create
+   */
+  export type agent_reportsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_reports
+     */
+    select?: agent_reportsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_reports
+     */
+    omit?: agent_reportsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: agent_reportsInclude<ExtArgs> | null
+    /**
+     * The data needed to create a agent_reports.
+     */
+    data: XOR<agent_reportsCreateInput, agent_reportsUncheckedCreateInput>
+  }
+
+  /**
+   * agent_reports createMany
+   */
+  export type agent_reportsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many agent_reports.
+     */
+    data: agent_reportsCreateManyInput | agent_reportsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * agent_reports createManyAndReturn
+   */
+  export type agent_reportsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_reports
+     */
+    select?: agent_reportsSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_reports
+     */
+    omit?: agent_reportsOmit<ExtArgs> | null
+    /**
+     * The data used to create many agent_reports.
+     */
+    data: agent_reportsCreateManyInput | agent_reportsCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: agent_reportsIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * agent_reports update
+   */
+  export type agent_reportsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_reports
+     */
+    select?: agent_reportsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_reports
+     */
+    omit?: agent_reportsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: agent_reportsInclude<ExtArgs> | null
+    /**
+     * The data needed to update a agent_reports.
+     */
+    data: XOR<agent_reportsUpdateInput, agent_reportsUncheckedUpdateInput>
+    /**
+     * Choose, which agent_reports to update.
+     */
+    where: agent_reportsWhereUniqueInput
+  }
+
+  /**
+   * agent_reports updateMany
+   */
+  export type agent_reportsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update agent_reports.
+     */
+    data: XOR<agent_reportsUpdateManyMutationInput, agent_reportsUncheckedUpdateManyInput>
+    /**
+     * Filter which agent_reports to update
+     */
+    where?: agent_reportsWhereInput
+    /**
+     * Limit how many agent_reports to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * agent_reports updateManyAndReturn
+   */
+  export type agent_reportsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_reports
+     */
+    select?: agent_reportsSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_reports
+     */
+    omit?: agent_reportsOmit<ExtArgs> | null
+    /**
+     * The data used to update agent_reports.
+     */
+    data: XOR<agent_reportsUpdateManyMutationInput, agent_reportsUncheckedUpdateManyInput>
+    /**
+     * Filter which agent_reports to update
+     */
+    where?: agent_reportsWhereInput
+    /**
+     * Limit how many agent_reports to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: agent_reportsIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * agent_reports upsert
+   */
+  export type agent_reportsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_reports
+     */
+    select?: agent_reportsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_reports
+     */
+    omit?: agent_reportsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: agent_reportsInclude<ExtArgs> | null
+    /**
+     * The filter to search for the agent_reports to update in case it exists.
+     */
+    where: agent_reportsWhereUniqueInput
+    /**
+     * In case the agent_reports found by the `where` argument doesn't exist, create a new agent_reports with this data.
+     */
+    create: XOR<agent_reportsCreateInput, agent_reportsUncheckedCreateInput>
+    /**
+     * In case the agent_reports was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<agent_reportsUpdateInput, agent_reportsUncheckedUpdateInput>
+  }
+
+  /**
+   * agent_reports delete
+   */
+  export type agent_reportsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_reports
+     */
+    select?: agent_reportsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_reports
+     */
+    omit?: agent_reportsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: agent_reportsInclude<ExtArgs> | null
+    /**
+     * Filter which agent_reports to delete.
+     */
+    where: agent_reportsWhereUniqueInput
+  }
+
+  /**
+   * agent_reports deleteMany
+   */
+  export type agent_reportsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which agent_reports to delete
+     */
+    where?: agent_reportsWhereInput
+    /**
+     * Limit how many agent_reports to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * agent_reports.admin
+   */
+  export type agent_reports$adminArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * agent_reports without action
+   */
+  export type agent_reportsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the agent_reports
+     */
+    select?: agent_reportsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the agent_reports
+     */
+    omit?: agent_reportsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: agent_reportsInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model system_settings
+   */
+
+  export type AggregateSystem_settings = {
+    _count: System_settingsCountAggregateOutputType | null
+    _min: System_settingsMinAggregateOutputType | null
+    _max: System_settingsMaxAggregateOutputType | null
+  }
+
+  export type System_settingsMinAggregateOutputType = {
+    id: string | null
+    setting_key: string | null
+    created_at: Date | null
+    updated_at: Date | null
+    description: string | null
+  }
+
+  export type System_settingsMaxAggregateOutputType = {
+    id: string | null
+    setting_key: string | null
+    created_at: Date | null
+    updated_at: Date | null
+    description: string | null
+  }
+
+  export type System_settingsCountAggregateOutputType = {
+    id: number
+    setting_key: number
+    setting_value: number
+    created_at: number
+    updated_at: number
+    description: number
+    _all: number
+  }
+
+
+  export type System_settingsMinAggregateInputType = {
+    id?: true
+    setting_key?: true
+    created_at?: true
+    updated_at?: true
+    description?: true
+  }
+
+  export type System_settingsMaxAggregateInputType = {
+    id?: true
+    setting_key?: true
+    created_at?: true
+    updated_at?: true
+    description?: true
+  }
+
+  export type System_settingsCountAggregateInputType = {
+    id?: true
+    setting_key?: true
+    setting_value?: true
+    created_at?: true
+    updated_at?: true
+    description?: true
+    _all?: true
+  }
+
+  export type System_settingsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which system_settings to aggregate.
+     */
+    where?: system_settingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of system_settings to fetch.
+     */
+    orderBy?: system_settingsOrderByWithRelationInput | system_settingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: system_settingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` system_settings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` system_settings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned system_settings
+    **/
+    _count?: true | System_settingsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: System_settingsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: System_settingsMaxAggregateInputType
+  }
+
+  export type GetSystem_settingsAggregateType<T extends System_settingsAggregateArgs> = {
+        [P in keyof T & keyof AggregateSystem_settings]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSystem_settings[P]>
+      : GetScalarType<T[P], AggregateSystem_settings[P]>
+  }
+
+
+
+
+  export type system_settingsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: system_settingsWhereInput
+    orderBy?: system_settingsOrderByWithAggregationInput | system_settingsOrderByWithAggregationInput[]
+    by: System_settingsScalarFieldEnum[] | System_settingsScalarFieldEnum
+    having?: system_settingsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: System_settingsCountAggregateInputType | true
+    _min?: System_settingsMinAggregateInputType
+    _max?: System_settingsMaxAggregateInputType
+  }
+
+  export type System_settingsGroupByOutputType = {
+    id: string
+    setting_key: string
+    setting_value: JsonValue
+    created_at: Date | null
+    updated_at: Date | null
+    description: string | null
+    _count: System_settingsCountAggregateOutputType | null
+    _min: System_settingsMinAggregateOutputType | null
+    _max: System_settingsMaxAggregateOutputType | null
+  }
+
+  type GetSystem_settingsGroupByPayload<T extends system_settingsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<System_settingsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof System_settingsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], System_settingsGroupByOutputType[P]>
+            : GetScalarType<T[P], System_settingsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type system_settingsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    setting_key?: boolean
+    setting_value?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    description?: boolean
+  }, ExtArgs["result"]["system_settings"]>
+
+  export type system_settingsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    setting_key?: boolean
+    setting_value?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    description?: boolean
+  }, ExtArgs["result"]["system_settings"]>
+
+  export type system_settingsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    setting_key?: boolean
+    setting_value?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    description?: boolean
+  }, ExtArgs["result"]["system_settings"]>
+
+  export type system_settingsSelectScalar = {
+    id?: boolean
+    setting_key?: boolean
+    setting_value?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    description?: boolean
+  }
+
+  export type system_settingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "setting_key" | "setting_value" | "created_at" | "updated_at" | "description", ExtArgs["result"]["system_settings"]>
+
+  export type $system_settingsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "system_settings"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      setting_key: string
+      setting_value: Prisma.JsonValue
+      created_at: Date | null
+      updated_at: Date | null
+      description: string | null
+    }, ExtArgs["result"]["system_settings"]>
+    composites: {}
+  }
+
+  type system_settingsGetPayload<S extends boolean | null | undefined | system_settingsDefaultArgs> = $Result.GetResult<Prisma.$system_settingsPayload, S>
+
+  type system_settingsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<system_settingsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: System_settingsCountAggregateInputType | true
+    }
+
+  export interface system_settingsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['system_settings'], meta: { name: 'system_settings' } }
+    /**
+     * Find zero or one System_settings that matches the filter.
+     * @param {system_settingsFindUniqueArgs} args - Arguments to find a System_settings
+     * @example
+     * // Get one System_settings
+     * const system_settings = await prisma.system_settings.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends system_settingsFindUniqueArgs>(args: SelectSubset<T, system_settingsFindUniqueArgs<ExtArgs>>): Prisma__system_settingsClient<$Result.GetResult<Prisma.$system_settingsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one System_settings that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {system_settingsFindUniqueOrThrowArgs} args - Arguments to find a System_settings
+     * @example
+     * // Get one System_settings
+     * const system_settings = await prisma.system_settings.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends system_settingsFindUniqueOrThrowArgs>(args: SelectSubset<T, system_settingsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__system_settingsClient<$Result.GetResult<Prisma.$system_settingsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first System_settings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {system_settingsFindFirstArgs} args - Arguments to find a System_settings
+     * @example
+     * // Get one System_settings
+     * const system_settings = await prisma.system_settings.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends system_settingsFindFirstArgs>(args?: SelectSubset<T, system_settingsFindFirstArgs<ExtArgs>>): Prisma__system_settingsClient<$Result.GetResult<Prisma.$system_settingsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first System_settings that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {system_settingsFindFirstOrThrowArgs} args - Arguments to find a System_settings
+     * @example
+     * // Get one System_settings
+     * const system_settings = await prisma.system_settings.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends system_settingsFindFirstOrThrowArgs>(args?: SelectSubset<T, system_settingsFindFirstOrThrowArgs<ExtArgs>>): Prisma__system_settingsClient<$Result.GetResult<Prisma.$system_settingsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more System_settings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {system_settingsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all System_settings
+     * const system_settings = await prisma.system_settings.findMany()
+     * 
+     * // Get first 10 System_settings
+     * const system_settings = await prisma.system_settings.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const system_settingsWithIdOnly = await prisma.system_settings.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends system_settingsFindManyArgs>(args?: SelectSubset<T, system_settingsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$system_settingsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a System_settings.
+     * @param {system_settingsCreateArgs} args - Arguments to create a System_settings.
+     * @example
+     * // Create one System_settings
+     * const System_settings = await prisma.system_settings.create({
+     *   data: {
+     *     // ... data to create a System_settings
+     *   }
+     * })
+     * 
+     */
+    create<T extends system_settingsCreateArgs>(args: SelectSubset<T, system_settingsCreateArgs<ExtArgs>>): Prisma__system_settingsClient<$Result.GetResult<Prisma.$system_settingsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many System_settings.
+     * @param {system_settingsCreateManyArgs} args - Arguments to create many System_settings.
+     * @example
+     * // Create many System_settings
+     * const system_settings = await prisma.system_settings.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends system_settingsCreateManyArgs>(args?: SelectSubset<T, system_settingsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many System_settings and returns the data saved in the database.
+     * @param {system_settingsCreateManyAndReturnArgs} args - Arguments to create many System_settings.
+     * @example
+     * // Create many System_settings
+     * const system_settings = await prisma.system_settings.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many System_settings and only return the `id`
+     * const system_settingsWithIdOnly = await prisma.system_settings.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends system_settingsCreateManyAndReturnArgs>(args?: SelectSubset<T, system_settingsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$system_settingsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a System_settings.
+     * @param {system_settingsDeleteArgs} args - Arguments to delete one System_settings.
+     * @example
+     * // Delete one System_settings
+     * const System_settings = await prisma.system_settings.delete({
+     *   where: {
+     *     // ... filter to delete one System_settings
+     *   }
+     * })
+     * 
+     */
+    delete<T extends system_settingsDeleteArgs>(args: SelectSubset<T, system_settingsDeleteArgs<ExtArgs>>): Prisma__system_settingsClient<$Result.GetResult<Prisma.$system_settingsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one System_settings.
+     * @param {system_settingsUpdateArgs} args - Arguments to update one System_settings.
+     * @example
+     * // Update one System_settings
+     * const system_settings = await prisma.system_settings.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends system_settingsUpdateArgs>(args: SelectSubset<T, system_settingsUpdateArgs<ExtArgs>>): Prisma__system_settingsClient<$Result.GetResult<Prisma.$system_settingsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more System_settings.
+     * @param {system_settingsDeleteManyArgs} args - Arguments to filter System_settings to delete.
+     * @example
+     * // Delete a few System_settings
+     * const { count } = await prisma.system_settings.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends system_settingsDeleteManyArgs>(args?: SelectSubset<T, system_settingsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more System_settings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {system_settingsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many System_settings
+     * const system_settings = await prisma.system_settings.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends system_settingsUpdateManyArgs>(args: SelectSubset<T, system_settingsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more System_settings and returns the data updated in the database.
+     * @param {system_settingsUpdateManyAndReturnArgs} args - Arguments to update many System_settings.
+     * @example
+     * // Update many System_settings
+     * const system_settings = await prisma.system_settings.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more System_settings and only return the `id`
+     * const system_settingsWithIdOnly = await prisma.system_settings.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends system_settingsUpdateManyAndReturnArgs>(args: SelectSubset<T, system_settingsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$system_settingsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one System_settings.
+     * @param {system_settingsUpsertArgs} args - Arguments to update or create a System_settings.
+     * @example
+     * // Update or create a System_settings
+     * const system_settings = await prisma.system_settings.upsert({
+     *   create: {
+     *     // ... data to create a System_settings
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the System_settings we want to update
+     *   }
+     * })
+     */
+    upsert<T extends system_settingsUpsertArgs>(args: SelectSubset<T, system_settingsUpsertArgs<ExtArgs>>): Prisma__system_settingsClient<$Result.GetResult<Prisma.$system_settingsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of System_settings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {system_settingsCountArgs} args - Arguments to filter System_settings to count.
+     * @example
+     * // Count the number of System_settings
+     * const count = await prisma.system_settings.count({
+     *   where: {
+     *     // ... the filter for the System_settings we want to count
+     *   }
+     * })
+    **/
+    count<T extends system_settingsCountArgs>(
+      args?: Subset<T, system_settingsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], System_settingsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a System_settings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {System_settingsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends System_settingsAggregateArgs>(args: Subset<T, System_settingsAggregateArgs>): Prisma.PrismaPromise<GetSystem_settingsAggregateType<T>>
+
+    /**
+     * Group by System_settings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {system_settingsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends system_settingsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: system_settingsGroupByArgs['orderBy'] }
+        : { orderBy?: system_settingsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, system_settingsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSystem_settingsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the system_settings model
+   */
+  readonly fields: system_settingsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for system_settings.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__system_settingsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the system_settings model
+   */
+  interface system_settingsFieldRefs {
+    readonly id: FieldRef<"system_settings", 'String'>
+    readonly setting_key: FieldRef<"system_settings", 'String'>
+    readonly setting_value: FieldRef<"system_settings", 'Json'>
+    readonly created_at: FieldRef<"system_settings", 'DateTime'>
+    readonly updated_at: FieldRef<"system_settings", 'DateTime'>
+    readonly description: FieldRef<"system_settings", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * system_settings findUnique
+   */
+  export type system_settingsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the system_settings
+     */
+    select?: system_settingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the system_settings
+     */
+    omit?: system_settingsOmit<ExtArgs> | null
+    /**
+     * Filter, which system_settings to fetch.
+     */
+    where: system_settingsWhereUniqueInput
+  }
+
+  /**
+   * system_settings findUniqueOrThrow
+   */
+  export type system_settingsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the system_settings
+     */
+    select?: system_settingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the system_settings
+     */
+    omit?: system_settingsOmit<ExtArgs> | null
+    /**
+     * Filter, which system_settings to fetch.
+     */
+    where: system_settingsWhereUniqueInput
+  }
+
+  /**
+   * system_settings findFirst
+   */
+  export type system_settingsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the system_settings
+     */
+    select?: system_settingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the system_settings
+     */
+    omit?: system_settingsOmit<ExtArgs> | null
+    /**
+     * Filter, which system_settings to fetch.
+     */
+    where?: system_settingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of system_settings to fetch.
+     */
+    orderBy?: system_settingsOrderByWithRelationInput | system_settingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for system_settings.
+     */
+    cursor?: system_settingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` system_settings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` system_settings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of system_settings.
+     */
+    distinct?: System_settingsScalarFieldEnum | System_settingsScalarFieldEnum[]
+  }
+
+  /**
+   * system_settings findFirstOrThrow
+   */
+  export type system_settingsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the system_settings
+     */
+    select?: system_settingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the system_settings
+     */
+    omit?: system_settingsOmit<ExtArgs> | null
+    /**
+     * Filter, which system_settings to fetch.
+     */
+    where?: system_settingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of system_settings to fetch.
+     */
+    orderBy?: system_settingsOrderByWithRelationInput | system_settingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for system_settings.
+     */
+    cursor?: system_settingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` system_settings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` system_settings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of system_settings.
+     */
+    distinct?: System_settingsScalarFieldEnum | System_settingsScalarFieldEnum[]
+  }
+
+  /**
+   * system_settings findMany
+   */
+  export type system_settingsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the system_settings
+     */
+    select?: system_settingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the system_settings
+     */
+    omit?: system_settingsOmit<ExtArgs> | null
+    /**
+     * Filter, which system_settings to fetch.
+     */
+    where?: system_settingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of system_settings to fetch.
+     */
+    orderBy?: system_settingsOrderByWithRelationInput | system_settingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing system_settings.
+     */
+    cursor?: system_settingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` system_settings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` system_settings.
+     */
+    skip?: number
+    distinct?: System_settingsScalarFieldEnum | System_settingsScalarFieldEnum[]
+  }
+
+  /**
+   * system_settings create
+   */
+  export type system_settingsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the system_settings
+     */
+    select?: system_settingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the system_settings
+     */
+    omit?: system_settingsOmit<ExtArgs> | null
+    /**
+     * The data needed to create a system_settings.
+     */
+    data: XOR<system_settingsCreateInput, system_settingsUncheckedCreateInput>
+  }
+
+  /**
+   * system_settings createMany
+   */
+  export type system_settingsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many system_settings.
+     */
+    data: system_settingsCreateManyInput | system_settingsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * system_settings createManyAndReturn
+   */
+  export type system_settingsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the system_settings
+     */
+    select?: system_settingsSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the system_settings
+     */
+    omit?: system_settingsOmit<ExtArgs> | null
+    /**
+     * The data used to create many system_settings.
+     */
+    data: system_settingsCreateManyInput | system_settingsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * system_settings update
+   */
+  export type system_settingsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the system_settings
+     */
+    select?: system_settingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the system_settings
+     */
+    omit?: system_settingsOmit<ExtArgs> | null
+    /**
+     * The data needed to update a system_settings.
+     */
+    data: XOR<system_settingsUpdateInput, system_settingsUncheckedUpdateInput>
+    /**
+     * Choose, which system_settings to update.
+     */
+    where: system_settingsWhereUniqueInput
+  }
+
+  /**
+   * system_settings updateMany
+   */
+  export type system_settingsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update system_settings.
+     */
+    data: XOR<system_settingsUpdateManyMutationInput, system_settingsUncheckedUpdateManyInput>
+    /**
+     * Filter which system_settings to update
+     */
+    where?: system_settingsWhereInput
+    /**
+     * Limit how many system_settings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * system_settings updateManyAndReturn
+   */
+  export type system_settingsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the system_settings
+     */
+    select?: system_settingsSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the system_settings
+     */
+    omit?: system_settingsOmit<ExtArgs> | null
+    /**
+     * The data used to update system_settings.
+     */
+    data: XOR<system_settingsUpdateManyMutationInput, system_settingsUncheckedUpdateManyInput>
+    /**
+     * Filter which system_settings to update
+     */
+    where?: system_settingsWhereInput
+    /**
+     * Limit how many system_settings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * system_settings upsert
+   */
+  export type system_settingsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the system_settings
+     */
+    select?: system_settingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the system_settings
+     */
+    omit?: system_settingsOmit<ExtArgs> | null
+    /**
+     * The filter to search for the system_settings to update in case it exists.
+     */
+    where: system_settingsWhereUniqueInput
+    /**
+     * In case the system_settings found by the `where` argument doesn't exist, create a new system_settings with this data.
+     */
+    create: XOR<system_settingsCreateInput, system_settingsUncheckedCreateInput>
+    /**
+     * In case the system_settings was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<system_settingsUpdateInput, system_settingsUncheckedUpdateInput>
+  }
+
+  /**
+   * system_settings delete
+   */
+  export type system_settingsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the system_settings
+     */
+    select?: system_settingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the system_settings
+     */
+    omit?: system_settingsOmit<ExtArgs> | null
+    /**
+     * Filter which system_settings to delete.
+     */
+    where: system_settingsWhereUniqueInput
+  }
+
+  /**
+   * system_settings deleteMany
+   */
+  export type system_settingsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which system_settings to delete
+     */
+    where?: system_settingsWhereInput
+    /**
+     * Limit how many system_settings to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * system_settings without action
+   */
+  export type system_settingsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the system_settings
+     */
+    select?: system_settingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the system_settings
+     */
+    omit?: system_settingsOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model notification_templates
+   */
+
+  export type AggregateNotification_templates = {
+    _count: Notification_templatesCountAggregateOutputType | null
+    _min: Notification_templatesMinAggregateOutputType | null
+    _max: Notification_templatesMaxAggregateOutputType | null
+  }
+
+  export type Notification_templatesMinAggregateOutputType = {
+    id: string | null
+    type: string | null
+    subject: string | null
+    body: string | null
+    created_at: Date | null
+    updated_at: Date | null
+  }
+
+  export type Notification_templatesMaxAggregateOutputType = {
+    id: string | null
+    type: string | null
+    subject: string | null
+    body: string | null
+    created_at: Date | null
+    updated_at: Date | null
+  }
+
+  export type Notification_templatesCountAggregateOutputType = {
+    id: number
+    type: number
+    subject: number
+    body: number
+    variables: number
+    created_at: number
+    updated_at: number
+    _all: number
+  }
+
+
+  export type Notification_templatesMinAggregateInputType = {
+    id?: true
+    type?: true
+    subject?: true
+    body?: true
+    created_at?: true
+    updated_at?: true
+  }
+
+  export type Notification_templatesMaxAggregateInputType = {
+    id?: true
+    type?: true
+    subject?: true
+    body?: true
+    created_at?: true
+    updated_at?: true
+  }
+
+  export type Notification_templatesCountAggregateInputType = {
+    id?: true
+    type?: true
+    subject?: true
+    body?: true
+    variables?: true
+    created_at?: true
+    updated_at?: true
+    _all?: true
+  }
+
+  export type Notification_templatesAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which notification_templates to aggregate.
+     */
+    where?: notification_templatesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of notification_templates to fetch.
+     */
+    orderBy?: notification_templatesOrderByWithRelationInput | notification_templatesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: notification_templatesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` notification_templates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` notification_templates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned notification_templates
+    **/
+    _count?: true | Notification_templatesCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Notification_templatesMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Notification_templatesMaxAggregateInputType
+  }
+
+  export type GetNotification_templatesAggregateType<T extends Notification_templatesAggregateArgs> = {
+        [P in keyof T & keyof AggregateNotification_templates]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateNotification_templates[P]>
+      : GetScalarType<T[P], AggregateNotification_templates[P]>
+  }
+
+
+
+
+  export type notification_templatesGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: notification_templatesWhereInput
+    orderBy?: notification_templatesOrderByWithAggregationInput | notification_templatesOrderByWithAggregationInput[]
+    by: Notification_templatesScalarFieldEnum[] | Notification_templatesScalarFieldEnum
+    having?: notification_templatesScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Notification_templatesCountAggregateInputType | true
+    _min?: Notification_templatesMinAggregateInputType
+    _max?: Notification_templatesMaxAggregateInputType
+  }
+
+  export type Notification_templatesGroupByOutputType = {
+    id: string
+    type: string
+    subject: string
+    body: string
+    variables: string[]
+    created_at: Date | null
+    updated_at: Date | null
+    _count: Notification_templatesCountAggregateOutputType | null
+    _min: Notification_templatesMinAggregateOutputType | null
+    _max: Notification_templatesMaxAggregateOutputType | null
+  }
+
+  type GetNotification_templatesGroupByPayload<T extends notification_templatesGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Notification_templatesGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Notification_templatesGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Notification_templatesGroupByOutputType[P]>
+            : GetScalarType<T[P], Notification_templatesGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type notification_templatesSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    subject?: boolean
+    body?: boolean
+    variables?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+  }, ExtArgs["result"]["notification_templates"]>
+
+  export type notification_templatesSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    subject?: boolean
+    body?: boolean
+    variables?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+  }, ExtArgs["result"]["notification_templates"]>
+
+  export type notification_templatesSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    subject?: boolean
+    body?: boolean
+    variables?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+  }, ExtArgs["result"]["notification_templates"]>
+
+  export type notification_templatesSelectScalar = {
+    id?: boolean
+    type?: boolean
+    subject?: boolean
+    body?: boolean
+    variables?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+  }
+
+  export type notification_templatesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "subject" | "body" | "variables" | "created_at" | "updated_at", ExtArgs["result"]["notification_templates"]>
+
+  export type $notification_templatesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "notification_templates"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      type: string
+      subject: string
+      body: string
+      variables: string[]
+      created_at: Date | null
+      updated_at: Date | null
+    }, ExtArgs["result"]["notification_templates"]>
+    composites: {}
+  }
+
+  type notification_templatesGetPayload<S extends boolean | null | undefined | notification_templatesDefaultArgs> = $Result.GetResult<Prisma.$notification_templatesPayload, S>
+
+  type notification_templatesCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<notification_templatesFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: Notification_templatesCountAggregateInputType | true
+    }
+
+  export interface notification_templatesDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['notification_templates'], meta: { name: 'notification_templates' } }
+    /**
+     * Find zero or one Notification_templates that matches the filter.
+     * @param {notification_templatesFindUniqueArgs} args - Arguments to find a Notification_templates
+     * @example
+     * // Get one Notification_templates
+     * const notification_templates = await prisma.notification_templates.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends notification_templatesFindUniqueArgs>(args: SelectSubset<T, notification_templatesFindUniqueArgs<ExtArgs>>): Prisma__notification_templatesClient<$Result.GetResult<Prisma.$notification_templatesPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Notification_templates that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {notification_templatesFindUniqueOrThrowArgs} args - Arguments to find a Notification_templates
+     * @example
+     * // Get one Notification_templates
+     * const notification_templates = await prisma.notification_templates.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends notification_templatesFindUniqueOrThrowArgs>(args: SelectSubset<T, notification_templatesFindUniqueOrThrowArgs<ExtArgs>>): Prisma__notification_templatesClient<$Result.GetResult<Prisma.$notification_templatesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Notification_templates that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {notification_templatesFindFirstArgs} args - Arguments to find a Notification_templates
+     * @example
+     * // Get one Notification_templates
+     * const notification_templates = await prisma.notification_templates.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends notification_templatesFindFirstArgs>(args?: SelectSubset<T, notification_templatesFindFirstArgs<ExtArgs>>): Prisma__notification_templatesClient<$Result.GetResult<Prisma.$notification_templatesPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Notification_templates that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {notification_templatesFindFirstOrThrowArgs} args - Arguments to find a Notification_templates
+     * @example
+     * // Get one Notification_templates
+     * const notification_templates = await prisma.notification_templates.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends notification_templatesFindFirstOrThrowArgs>(args?: SelectSubset<T, notification_templatesFindFirstOrThrowArgs<ExtArgs>>): Prisma__notification_templatesClient<$Result.GetResult<Prisma.$notification_templatesPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Notification_templates that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {notification_templatesFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Notification_templates
+     * const notification_templates = await prisma.notification_templates.findMany()
+     * 
+     * // Get first 10 Notification_templates
+     * const notification_templates = await prisma.notification_templates.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const notification_templatesWithIdOnly = await prisma.notification_templates.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends notification_templatesFindManyArgs>(args?: SelectSubset<T, notification_templatesFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$notification_templatesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Notification_templates.
+     * @param {notification_templatesCreateArgs} args - Arguments to create a Notification_templates.
+     * @example
+     * // Create one Notification_templates
+     * const Notification_templates = await prisma.notification_templates.create({
+     *   data: {
+     *     // ... data to create a Notification_templates
+     *   }
+     * })
+     * 
+     */
+    create<T extends notification_templatesCreateArgs>(args: SelectSubset<T, notification_templatesCreateArgs<ExtArgs>>): Prisma__notification_templatesClient<$Result.GetResult<Prisma.$notification_templatesPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Notification_templates.
+     * @param {notification_templatesCreateManyArgs} args - Arguments to create many Notification_templates.
+     * @example
+     * // Create many Notification_templates
+     * const notification_templates = await prisma.notification_templates.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends notification_templatesCreateManyArgs>(args?: SelectSubset<T, notification_templatesCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Notification_templates and returns the data saved in the database.
+     * @param {notification_templatesCreateManyAndReturnArgs} args - Arguments to create many Notification_templates.
+     * @example
+     * // Create many Notification_templates
+     * const notification_templates = await prisma.notification_templates.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Notification_templates and only return the `id`
+     * const notification_templatesWithIdOnly = await prisma.notification_templates.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends notification_templatesCreateManyAndReturnArgs>(args?: SelectSubset<T, notification_templatesCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$notification_templatesPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Notification_templates.
+     * @param {notification_templatesDeleteArgs} args - Arguments to delete one Notification_templates.
+     * @example
+     * // Delete one Notification_templates
+     * const Notification_templates = await prisma.notification_templates.delete({
+     *   where: {
+     *     // ... filter to delete one Notification_templates
+     *   }
+     * })
+     * 
+     */
+    delete<T extends notification_templatesDeleteArgs>(args: SelectSubset<T, notification_templatesDeleteArgs<ExtArgs>>): Prisma__notification_templatesClient<$Result.GetResult<Prisma.$notification_templatesPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Notification_templates.
+     * @param {notification_templatesUpdateArgs} args - Arguments to update one Notification_templates.
+     * @example
+     * // Update one Notification_templates
+     * const notification_templates = await prisma.notification_templates.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends notification_templatesUpdateArgs>(args: SelectSubset<T, notification_templatesUpdateArgs<ExtArgs>>): Prisma__notification_templatesClient<$Result.GetResult<Prisma.$notification_templatesPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Notification_templates.
+     * @param {notification_templatesDeleteManyArgs} args - Arguments to filter Notification_templates to delete.
+     * @example
+     * // Delete a few Notification_templates
+     * const { count } = await prisma.notification_templates.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends notification_templatesDeleteManyArgs>(args?: SelectSubset<T, notification_templatesDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Notification_templates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {notification_templatesUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Notification_templates
+     * const notification_templates = await prisma.notification_templates.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends notification_templatesUpdateManyArgs>(args: SelectSubset<T, notification_templatesUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Notification_templates and returns the data updated in the database.
+     * @param {notification_templatesUpdateManyAndReturnArgs} args - Arguments to update many Notification_templates.
+     * @example
+     * // Update many Notification_templates
+     * const notification_templates = await prisma.notification_templates.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Notification_templates and only return the `id`
+     * const notification_templatesWithIdOnly = await prisma.notification_templates.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends notification_templatesUpdateManyAndReturnArgs>(args: SelectSubset<T, notification_templatesUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$notification_templatesPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Notification_templates.
+     * @param {notification_templatesUpsertArgs} args - Arguments to update or create a Notification_templates.
+     * @example
+     * // Update or create a Notification_templates
+     * const notification_templates = await prisma.notification_templates.upsert({
+     *   create: {
+     *     // ... data to create a Notification_templates
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Notification_templates we want to update
+     *   }
+     * })
+     */
+    upsert<T extends notification_templatesUpsertArgs>(args: SelectSubset<T, notification_templatesUpsertArgs<ExtArgs>>): Prisma__notification_templatesClient<$Result.GetResult<Prisma.$notification_templatesPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Notification_templates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {notification_templatesCountArgs} args - Arguments to filter Notification_templates to count.
+     * @example
+     * // Count the number of Notification_templates
+     * const count = await prisma.notification_templates.count({
+     *   where: {
+     *     // ... the filter for the Notification_templates we want to count
+     *   }
+     * })
+    **/
+    count<T extends notification_templatesCountArgs>(
+      args?: Subset<T, notification_templatesCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Notification_templatesCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Notification_templates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Notification_templatesAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Notification_templatesAggregateArgs>(args: Subset<T, Notification_templatesAggregateArgs>): Prisma.PrismaPromise<GetNotification_templatesAggregateType<T>>
+
+    /**
+     * Group by Notification_templates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {notification_templatesGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends notification_templatesGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: notification_templatesGroupByArgs['orderBy'] }
+        : { orderBy?: notification_templatesGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, notification_templatesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetNotification_templatesGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the notification_templates model
+   */
+  readonly fields: notification_templatesFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for notification_templates.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__notification_templatesClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the notification_templates model
+   */
+  interface notification_templatesFieldRefs {
+    readonly id: FieldRef<"notification_templates", 'String'>
+    readonly type: FieldRef<"notification_templates", 'String'>
+    readonly subject: FieldRef<"notification_templates", 'String'>
+    readonly body: FieldRef<"notification_templates", 'String'>
+    readonly variables: FieldRef<"notification_templates", 'String[]'>
+    readonly created_at: FieldRef<"notification_templates", 'DateTime'>
+    readonly updated_at: FieldRef<"notification_templates", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * notification_templates findUnique
+   */
+  export type notification_templatesFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the notification_templates
+     */
+    select?: notification_templatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the notification_templates
+     */
+    omit?: notification_templatesOmit<ExtArgs> | null
+    /**
+     * Filter, which notification_templates to fetch.
+     */
+    where: notification_templatesWhereUniqueInput
+  }
+
+  /**
+   * notification_templates findUniqueOrThrow
+   */
+  export type notification_templatesFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the notification_templates
+     */
+    select?: notification_templatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the notification_templates
+     */
+    omit?: notification_templatesOmit<ExtArgs> | null
+    /**
+     * Filter, which notification_templates to fetch.
+     */
+    where: notification_templatesWhereUniqueInput
+  }
+
+  /**
+   * notification_templates findFirst
+   */
+  export type notification_templatesFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the notification_templates
+     */
+    select?: notification_templatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the notification_templates
+     */
+    omit?: notification_templatesOmit<ExtArgs> | null
+    /**
+     * Filter, which notification_templates to fetch.
+     */
+    where?: notification_templatesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of notification_templates to fetch.
+     */
+    orderBy?: notification_templatesOrderByWithRelationInput | notification_templatesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for notification_templates.
+     */
+    cursor?: notification_templatesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` notification_templates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` notification_templates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of notification_templates.
+     */
+    distinct?: Notification_templatesScalarFieldEnum | Notification_templatesScalarFieldEnum[]
+  }
+
+  /**
+   * notification_templates findFirstOrThrow
+   */
+  export type notification_templatesFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the notification_templates
+     */
+    select?: notification_templatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the notification_templates
+     */
+    omit?: notification_templatesOmit<ExtArgs> | null
+    /**
+     * Filter, which notification_templates to fetch.
+     */
+    where?: notification_templatesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of notification_templates to fetch.
+     */
+    orderBy?: notification_templatesOrderByWithRelationInput | notification_templatesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for notification_templates.
+     */
+    cursor?: notification_templatesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` notification_templates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` notification_templates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of notification_templates.
+     */
+    distinct?: Notification_templatesScalarFieldEnum | Notification_templatesScalarFieldEnum[]
+  }
+
+  /**
+   * notification_templates findMany
+   */
+  export type notification_templatesFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the notification_templates
+     */
+    select?: notification_templatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the notification_templates
+     */
+    omit?: notification_templatesOmit<ExtArgs> | null
+    /**
+     * Filter, which notification_templates to fetch.
+     */
+    where?: notification_templatesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of notification_templates to fetch.
+     */
+    orderBy?: notification_templatesOrderByWithRelationInput | notification_templatesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing notification_templates.
+     */
+    cursor?: notification_templatesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` notification_templates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` notification_templates.
+     */
+    skip?: number
+    distinct?: Notification_templatesScalarFieldEnum | Notification_templatesScalarFieldEnum[]
+  }
+
+  /**
+   * notification_templates create
+   */
+  export type notification_templatesCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the notification_templates
+     */
+    select?: notification_templatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the notification_templates
+     */
+    omit?: notification_templatesOmit<ExtArgs> | null
+    /**
+     * The data needed to create a notification_templates.
+     */
+    data: XOR<notification_templatesCreateInput, notification_templatesUncheckedCreateInput>
+  }
+
+  /**
+   * notification_templates createMany
+   */
+  export type notification_templatesCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many notification_templates.
+     */
+    data: notification_templatesCreateManyInput | notification_templatesCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * notification_templates createManyAndReturn
+   */
+  export type notification_templatesCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the notification_templates
+     */
+    select?: notification_templatesSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the notification_templates
+     */
+    omit?: notification_templatesOmit<ExtArgs> | null
+    /**
+     * The data used to create many notification_templates.
+     */
+    data: notification_templatesCreateManyInput | notification_templatesCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * notification_templates update
+   */
+  export type notification_templatesUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the notification_templates
+     */
+    select?: notification_templatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the notification_templates
+     */
+    omit?: notification_templatesOmit<ExtArgs> | null
+    /**
+     * The data needed to update a notification_templates.
+     */
+    data: XOR<notification_templatesUpdateInput, notification_templatesUncheckedUpdateInput>
+    /**
+     * Choose, which notification_templates to update.
+     */
+    where: notification_templatesWhereUniqueInput
+  }
+
+  /**
+   * notification_templates updateMany
+   */
+  export type notification_templatesUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update notification_templates.
+     */
+    data: XOR<notification_templatesUpdateManyMutationInput, notification_templatesUncheckedUpdateManyInput>
+    /**
+     * Filter which notification_templates to update
+     */
+    where?: notification_templatesWhereInput
+    /**
+     * Limit how many notification_templates to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * notification_templates updateManyAndReturn
+   */
+  export type notification_templatesUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the notification_templates
+     */
+    select?: notification_templatesSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the notification_templates
+     */
+    omit?: notification_templatesOmit<ExtArgs> | null
+    /**
+     * The data used to update notification_templates.
+     */
+    data: XOR<notification_templatesUpdateManyMutationInput, notification_templatesUncheckedUpdateManyInput>
+    /**
+     * Filter which notification_templates to update
+     */
+    where?: notification_templatesWhereInput
+    /**
+     * Limit how many notification_templates to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * notification_templates upsert
+   */
+  export type notification_templatesUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the notification_templates
+     */
+    select?: notification_templatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the notification_templates
+     */
+    omit?: notification_templatesOmit<ExtArgs> | null
+    /**
+     * The filter to search for the notification_templates to update in case it exists.
+     */
+    where: notification_templatesWhereUniqueInput
+    /**
+     * In case the notification_templates found by the `where` argument doesn't exist, create a new notification_templates with this data.
+     */
+    create: XOR<notification_templatesCreateInput, notification_templatesUncheckedCreateInput>
+    /**
+     * In case the notification_templates was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<notification_templatesUpdateInput, notification_templatesUncheckedUpdateInput>
+  }
+
+  /**
+   * notification_templates delete
+   */
+  export type notification_templatesDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the notification_templates
+     */
+    select?: notification_templatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the notification_templates
+     */
+    omit?: notification_templatesOmit<ExtArgs> | null
+    /**
+     * Filter which notification_templates to delete.
+     */
+    where: notification_templatesWhereUniqueInput
+  }
+
+  /**
+   * notification_templates deleteMany
+   */
+  export type notification_templatesDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which notification_templates to delete
+     */
+    where?: notification_templatesWhereInput
+    /**
+     * Limit how many notification_templates to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * notification_templates without action
+   */
+  export type notification_templatesDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the notification_templates
+     */
+    select?: notification_templatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the notification_templates
+     */
+    omit?: notification_templatesOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model debug_logs
    */
 
@@ -18349,7 +24323,8 @@ export namespace Prisma {
     company: 'company',
     bio: 'bio',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    status: 'status'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -18371,7 +24346,11 @@ export namespace Prisma {
     demo_video_url: 'demo_video_url',
     screenshots: 'screenshots',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    status: 'status',
+    approval_date: 'approval_date',
+    approved_by: 'approved_by',
+    rejection_reason: 'rejection_reason'
   };
 
   export type AgentScalarFieldEnum = (typeof AgentScalarFieldEnum)[keyof typeof AgentScalarFieldEnum]
@@ -18458,6 +24437,75 @@ export namespace Prisma {
   };
 
   export type ContactsScalarFieldEnum = (typeof ContactsScalarFieldEnum)[keyof typeof ContactsScalarFieldEnum]
+
+
+  export const Admin_activity_logScalarFieldEnum: {
+    id: 'id',
+    admin_id: 'admin_id',
+    action: 'action',
+    entity_type: 'entity_type',
+    entity_id: 'entity_id',
+    details: 'details',
+    created_at: 'created_at'
+  };
+
+  export type Admin_activity_logScalarFieldEnum = (typeof Admin_activity_logScalarFieldEnum)[keyof typeof Admin_activity_logScalarFieldEnum]
+
+
+  export const Agent_categoriesScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    slug: 'slug',
+    description: 'description',
+    icon: 'icon',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
+
+  export type Agent_categoriesScalarFieldEnum = (typeof Agent_categoriesScalarFieldEnum)[keyof typeof Agent_categoriesScalarFieldEnum]
+
+
+  export const Agent_reportsScalarFieldEnum: {
+    id: 'id',
+    agent_id: 'agent_id',
+    reporter_id: 'reporter_id',
+    reason: 'reason',
+    description: 'description',
+    status: 'status',
+    admin_notes: 'admin_notes',
+    resolution: 'resolution',
+    created_at: 'created_at',
+    updated_at: 'updated_at',
+    reviewed_by: 'reviewed_by',
+    reviewed_at: 'reviewed_at'
+  };
+
+  export type Agent_reportsScalarFieldEnum = (typeof Agent_reportsScalarFieldEnum)[keyof typeof Agent_reportsScalarFieldEnum]
+
+
+  export const System_settingsScalarFieldEnum: {
+    id: 'id',
+    setting_key: 'setting_key',
+    setting_value: 'setting_value',
+    created_at: 'created_at',
+    updated_at: 'updated_at',
+    description: 'description'
+  };
+
+  export type System_settingsScalarFieldEnum = (typeof System_settingsScalarFieldEnum)[keyof typeof System_settingsScalarFieldEnum]
+
+
+  export const Notification_templatesScalarFieldEnum: {
+    id: 'id',
+    type: 'type',
+    subject: 'subject',
+    body: 'body',
+    variables: 'variables',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
+
+  export type Notification_templatesScalarFieldEnum = (typeof Notification_templatesScalarFieldEnum)[keyof typeof Notification_templatesScalarFieldEnum]
 
 
   export const Debug_logsScalarFieldEnum: {
@@ -18683,6 +24731,7 @@ export namespace Prisma {
     bio?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeNullableFilter<"User"> | Date | string | null
     updatedAt?: DateTimeNullableFilter<"User"> | Date | string | null
+    status?: StringNullableFilter<"User"> | string | null
     agent_conversions?: Agent_conversionsListRelationFilter
     agent_recommendations_agent_recommendations_creator_idTousers?: Agent_recommendationsListRelationFilter
     agent_recommendations_agent_recommendations_enterprise_idTousers?: Agent_recommendationsListRelationFilter
@@ -18696,6 +24745,9 @@ export namespace Prisma {
     enterprises?: XOR<EnterprisesNullableScalarRelationFilter, enterprisesWhereInput> | null
     favorites?: FavoritesListRelationFilter
     purchased_agents?: Purchased_agentsListRelationFilter
+    admin_activity_log?: Admin_activity_logListRelationFilter
+    agent_reports_reporter?: Agent_reportsListRelationFilter
+    agent_reports_admin?: Agent_reportsListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -18708,6 +24760,7 @@ export namespace Prisma {
     bio?: SortOrderInput | SortOrder
     createdAt?: SortOrderInput | SortOrder
     updatedAt?: SortOrderInput | SortOrder
+    status?: SortOrderInput | SortOrder
     agent_conversions?: agent_conversionsOrderByRelationAggregateInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsOrderByRelationAggregateInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsOrderByRelationAggregateInput
@@ -18721,6 +24774,9 @@ export namespace Prisma {
     enterprises?: enterprisesOrderByWithRelationInput
     favorites?: favoritesOrderByRelationAggregateInput
     purchased_agents?: purchased_agentsOrderByRelationAggregateInput
+    admin_activity_log?: admin_activity_logOrderByRelationAggregateInput
+    agent_reports_reporter?: agent_reportsOrderByRelationAggregateInput
+    agent_reports_admin?: agent_reportsOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -18736,6 +24792,7 @@ export namespace Prisma {
     bio?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeNullableFilter<"User"> | Date | string | null
     updatedAt?: DateTimeNullableFilter<"User"> | Date | string | null
+    status?: StringNullableFilter<"User"> | string | null
     agent_conversions?: Agent_conversionsListRelationFilter
     agent_recommendations_agent_recommendations_creator_idTousers?: Agent_recommendationsListRelationFilter
     agent_recommendations_agent_recommendations_enterprise_idTousers?: Agent_recommendationsListRelationFilter
@@ -18749,6 +24806,9 @@ export namespace Prisma {
     enterprises?: XOR<EnterprisesNullableScalarRelationFilter, enterprisesWhereInput> | null
     favorites?: FavoritesListRelationFilter
     purchased_agents?: Purchased_agentsListRelationFilter
+    admin_activity_log?: Admin_activity_logListRelationFilter
+    agent_reports_reporter?: Agent_reportsListRelationFilter
+    agent_reports_admin?: Agent_reportsListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -18761,6 +24821,7 @@ export namespace Prisma {
     bio?: SortOrderInput | SortOrder
     createdAt?: SortOrderInput | SortOrder
     updatedAt?: SortOrderInput | SortOrder
+    status?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -18779,6 +24840,7 @@ export namespace Prisma {
     bio?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     updatedAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+    status?: StringNullableWithAggregatesFilter<"User"> | string | null
   }
 
   export type AgentWhereInput = {
@@ -18801,6 +24863,10 @@ export namespace Prisma {
     screenshots?: StringNullableListFilter<"Agent">
     createdAt?: DateTimeNullableFilter<"Agent"> | Date | string | null
     updatedAt?: DateTimeNullableFilter<"Agent"> | Date | string | null
+    status?: StringFilter<"Agent"> | string
+    approval_date?: DateTimeNullableFilter<"Agent"> | Date | string | null
+    approved_by?: UuidNullableFilter<"Agent"> | string | null
+    rejection_reason?: StringNullableFilter<"Agent"> | string | null
     agent_conversions?: Agent_conversionsListRelationFilter
     agent_recommendations?: Agent_recommendationsListRelationFilter
     agent_revenue?: Agent_revenueListRelationFilter
@@ -18809,6 +24875,7 @@ export namespace Prisma {
     contacts?: ContactsListRelationFilter
     favorites?: FavoritesListRelationFilter
     purchased_agents?: Purchased_agentsListRelationFilter
+    agent_reports?: Agent_reportsListRelationFilter
   }
 
   export type AgentOrderByWithRelationInput = {
@@ -18828,6 +24895,10 @@ export namespace Prisma {
     screenshots?: SortOrder
     createdAt?: SortOrderInput | SortOrder
     updatedAt?: SortOrderInput | SortOrder
+    status?: SortOrder
+    approval_date?: SortOrderInput | SortOrder
+    approved_by?: SortOrderInput | SortOrder
+    rejection_reason?: SortOrderInput | SortOrder
     agent_conversions?: agent_conversionsOrderByRelationAggregateInput
     agent_recommendations?: agent_recommendationsOrderByRelationAggregateInput
     agent_revenue?: agent_revenueOrderByRelationAggregateInput
@@ -18836,6 +24907,7 @@ export namespace Prisma {
     contacts?: contactsOrderByRelationAggregateInput
     favorites?: favoritesOrderByRelationAggregateInput
     purchased_agents?: purchased_agentsOrderByRelationAggregateInput
+    agent_reports?: agent_reportsOrderByRelationAggregateInput
   }
 
   export type AgentWhereUniqueInput = Prisma.AtLeast<{
@@ -18858,6 +24930,10 @@ export namespace Prisma {
     screenshots?: StringNullableListFilter<"Agent">
     createdAt?: DateTimeNullableFilter<"Agent"> | Date | string | null
     updatedAt?: DateTimeNullableFilter<"Agent"> | Date | string | null
+    status?: StringFilter<"Agent"> | string
+    approval_date?: DateTimeNullableFilter<"Agent"> | Date | string | null
+    approved_by?: UuidNullableFilter<"Agent"> | string | null
+    rejection_reason?: StringNullableFilter<"Agent"> | string | null
     agent_conversions?: Agent_conversionsListRelationFilter
     agent_recommendations?: Agent_recommendationsListRelationFilter
     agent_revenue?: Agent_revenueListRelationFilter
@@ -18866,6 +24942,7 @@ export namespace Prisma {
     contacts?: ContactsListRelationFilter
     favorites?: FavoritesListRelationFilter
     purchased_agents?: Purchased_agentsListRelationFilter
+    agent_reports?: Agent_reportsListRelationFilter
   }, "id" | "slug">
 
   export type AgentOrderByWithAggregationInput = {
@@ -18885,6 +24962,10 @@ export namespace Prisma {
     screenshots?: SortOrder
     createdAt?: SortOrderInput | SortOrder
     updatedAt?: SortOrderInput | SortOrder
+    status?: SortOrder
+    approval_date?: SortOrderInput | SortOrder
+    approved_by?: SortOrderInput | SortOrder
+    rejection_reason?: SortOrderInput | SortOrder
     _count?: AgentCountOrderByAggregateInput
     _max?: AgentMaxOrderByAggregateInput
     _min?: AgentMinOrderByAggregateInput
@@ -18910,6 +24991,10 @@ export namespace Prisma {
     screenshots?: StringNullableListFilter<"Agent">
     createdAt?: DateTimeNullableWithAggregatesFilter<"Agent"> | Date | string | null
     updatedAt?: DateTimeNullableWithAggregatesFilter<"Agent"> | Date | string | null
+    status?: StringWithAggregatesFilter<"Agent"> | string
+    approval_date?: DateTimeNullableWithAggregatesFilter<"Agent"> | Date | string | null
+    approved_by?: UuidNullableWithAggregatesFilter<"Agent"> | string | null
+    rejection_reason?: StringNullableWithAggregatesFilter<"Agent"> | string | null
   }
 
   export type agent_conversionsWhereInput = {
@@ -19366,6 +25451,348 @@ export namespace Prisma {
     updated_at?: DateTimeNullableWithAggregatesFilter<"contacts"> | Date | string | null
   }
 
+  export type admin_activity_logWhereInput = {
+    AND?: admin_activity_logWhereInput | admin_activity_logWhereInput[]
+    OR?: admin_activity_logWhereInput[]
+    NOT?: admin_activity_logWhereInput | admin_activity_logWhereInput[]
+    id?: UuidFilter<"admin_activity_log"> | string
+    admin_id?: UuidFilter<"admin_activity_log"> | string
+    action?: StringFilter<"admin_activity_log"> | string
+    entity_type?: StringFilter<"admin_activity_log"> | string
+    entity_id?: UuidFilter<"admin_activity_log"> | string
+    details?: JsonNullableFilter<"admin_activity_log">
+    created_at?: DateTimeNullableFilter<"admin_activity_log"> | Date | string | null
+    admin?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type admin_activity_logOrderByWithRelationInput = {
+    id?: SortOrder
+    admin_id?: SortOrder
+    action?: SortOrder
+    entity_type?: SortOrder
+    entity_id?: SortOrder
+    details?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    admin?: UserOrderByWithRelationInput
+  }
+
+  export type admin_activity_logWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: admin_activity_logWhereInput | admin_activity_logWhereInput[]
+    OR?: admin_activity_logWhereInput[]
+    NOT?: admin_activity_logWhereInput | admin_activity_logWhereInput[]
+    admin_id?: UuidFilter<"admin_activity_log"> | string
+    action?: StringFilter<"admin_activity_log"> | string
+    entity_type?: StringFilter<"admin_activity_log"> | string
+    entity_id?: UuidFilter<"admin_activity_log"> | string
+    details?: JsonNullableFilter<"admin_activity_log">
+    created_at?: DateTimeNullableFilter<"admin_activity_log"> | Date | string | null
+    admin?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type admin_activity_logOrderByWithAggregationInput = {
+    id?: SortOrder
+    admin_id?: SortOrder
+    action?: SortOrder
+    entity_type?: SortOrder
+    entity_id?: SortOrder
+    details?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    _count?: admin_activity_logCountOrderByAggregateInput
+    _max?: admin_activity_logMaxOrderByAggregateInput
+    _min?: admin_activity_logMinOrderByAggregateInput
+  }
+
+  export type admin_activity_logScalarWhereWithAggregatesInput = {
+    AND?: admin_activity_logScalarWhereWithAggregatesInput | admin_activity_logScalarWhereWithAggregatesInput[]
+    OR?: admin_activity_logScalarWhereWithAggregatesInput[]
+    NOT?: admin_activity_logScalarWhereWithAggregatesInput | admin_activity_logScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"admin_activity_log"> | string
+    admin_id?: UuidWithAggregatesFilter<"admin_activity_log"> | string
+    action?: StringWithAggregatesFilter<"admin_activity_log"> | string
+    entity_type?: StringWithAggregatesFilter<"admin_activity_log"> | string
+    entity_id?: UuidWithAggregatesFilter<"admin_activity_log"> | string
+    details?: JsonNullableWithAggregatesFilter<"admin_activity_log">
+    created_at?: DateTimeNullableWithAggregatesFilter<"admin_activity_log"> | Date | string | null
+  }
+
+  export type agent_categoriesWhereInput = {
+    AND?: agent_categoriesWhereInput | agent_categoriesWhereInput[]
+    OR?: agent_categoriesWhereInput[]
+    NOT?: agent_categoriesWhereInput | agent_categoriesWhereInput[]
+    id?: UuidFilter<"agent_categories"> | string
+    name?: StringFilter<"agent_categories"> | string
+    slug?: StringFilter<"agent_categories"> | string
+    description?: StringNullableFilter<"agent_categories"> | string | null
+    icon?: StringNullableFilter<"agent_categories"> | string | null
+    created_at?: DateTimeNullableFilter<"agent_categories"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"agent_categories"> | Date | string | null
+  }
+
+  export type agent_categoriesOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    description?: SortOrderInput | SortOrder
+    icon?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
+  }
+
+  export type agent_categoriesWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    name?: string
+    slug?: string
+    AND?: agent_categoriesWhereInput | agent_categoriesWhereInput[]
+    OR?: agent_categoriesWhereInput[]
+    NOT?: agent_categoriesWhereInput | agent_categoriesWhereInput[]
+    description?: StringNullableFilter<"agent_categories"> | string | null
+    icon?: StringNullableFilter<"agent_categories"> | string | null
+    created_at?: DateTimeNullableFilter<"agent_categories"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"agent_categories"> | Date | string | null
+  }, "id" | "name" | "slug">
+
+  export type agent_categoriesOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    description?: SortOrderInput | SortOrder
+    icon?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
+    _count?: agent_categoriesCountOrderByAggregateInput
+    _max?: agent_categoriesMaxOrderByAggregateInput
+    _min?: agent_categoriesMinOrderByAggregateInput
+  }
+
+  export type agent_categoriesScalarWhereWithAggregatesInput = {
+    AND?: agent_categoriesScalarWhereWithAggregatesInput | agent_categoriesScalarWhereWithAggregatesInput[]
+    OR?: agent_categoriesScalarWhereWithAggregatesInput[]
+    NOT?: agent_categoriesScalarWhereWithAggregatesInput | agent_categoriesScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"agent_categories"> | string
+    name?: StringWithAggregatesFilter<"agent_categories"> | string
+    slug?: StringWithAggregatesFilter<"agent_categories"> | string
+    description?: StringNullableWithAggregatesFilter<"agent_categories"> | string | null
+    icon?: StringNullableWithAggregatesFilter<"agent_categories"> | string | null
+    created_at?: DateTimeNullableWithAggregatesFilter<"agent_categories"> | Date | string | null
+    updated_at?: DateTimeNullableWithAggregatesFilter<"agent_categories"> | Date | string | null
+  }
+
+  export type agent_reportsWhereInput = {
+    AND?: agent_reportsWhereInput | agent_reportsWhereInput[]
+    OR?: agent_reportsWhereInput[]
+    NOT?: agent_reportsWhereInput | agent_reportsWhereInput[]
+    id?: UuidFilter<"agent_reports"> | string
+    agent_id?: UuidFilter<"agent_reports"> | string
+    reporter_id?: UuidFilter<"agent_reports"> | string
+    reason?: StringFilter<"agent_reports"> | string
+    description?: StringNullableFilter<"agent_reports"> | string | null
+    status?: StringFilter<"agent_reports"> | string
+    admin_notes?: StringNullableFilter<"agent_reports"> | string | null
+    resolution?: StringNullableFilter<"agent_reports"> | string | null
+    created_at?: DateTimeNullableFilter<"agent_reports"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"agent_reports"> | Date | string | null
+    reviewed_by?: UuidNullableFilter<"agent_reports"> | string | null
+    reviewed_at?: DateTimeNullableFilter<"agent_reports"> | Date | string | null
+    agent?: XOR<AgentScalarRelationFilter, AgentWhereInput>
+    reporter?: XOR<UserScalarRelationFilter, UserWhereInput>
+    admin?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type agent_reportsOrderByWithRelationInput = {
+    id?: SortOrder
+    agent_id?: SortOrder
+    reporter_id?: SortOrder
+    reason?: SortOrder
+    description?: SortOrderInput | SortOrder
+    status?: SortOrder
+    admin_notes?: SortOrderInput | SortOrder
+    resolution?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
+    reviewed_by?: SortOrderInput | SortOrder
+    reviewed_at?: SortOrderInput | SortOrder
+    agent?: AgentOrderByWithRelationInput
+    reporter?: UserOrderByWithRelationInput
+    admin?: UserOrderByWithRelationInput
+  }
+
+  export type agent_reportsWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: agent_reportsWhereInput | agent_reportsWhereInput[]
+    OR?: agent_reportsWhereInput[]
+    NOT?: agent_reportsWhereInput | agent_reportsWhereInput[]
+    agent_id?: UuidFilter<"agent_reports"> | string
+    reporter_id?: UuidFilter<"agent_reports"> | string
+    reason?: StringFilter<"agent_reports"> | string
+    description?: StringNullableFilter<"agent_reports"> | string | null
+    status?: StringFilter<"agent_reports"> | string
+    admin_notes?: StringNullableFilter<"agent_reports"> | string | null
+    resolution?: StringNullableFilter<"agent_reports"> | string | null
+    created_at?: DateTimeNullableFilter<"agent_reports"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"agent_reports"> | Date | string | null
+    reviewed_by?: UuidNullableFilter<"agent_reports"> | string | null
+    reviewed_at?: DateTimeNullableFilter<"agent_reports"> | Date | string | null
+    agent?: XOR<AgentScalarRelationFilter, AgentWhereInput>
+    reporter?: XOR<UserScalarRelationFilter, UserWhereInput>
+    admin?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id">
+
+  export type agent_reportsOrderByWithAggregationInput = {
+    id?: SortOrder
+    agent_id?: SortOrder
+    reporter_id?: SortOrder
+    reason?: SortOrder
+    description?: SortOrderInput | SortOrder
+    status?: SortOrder
+    admin_notes?: SortOrderInput | SortOrder
+    resolution?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
+    reviewed_by?: SortOrderInput | SortOrder
+    reviewed_at?: SortOrderInput | SortOrder
+    _count?: agent_reportsCountOrderByAggregateInput
+    _max?: agent_reportsMaxOrderByAggregateInput
+    _min?: agent_reportsMinOrderByAggregateInput
+  }
+
+  export type agent_reportsScalarWhereWithAggregatesInput = {
+    AND?: agent_reportsScalarWhereWithAggregatesInput | agent_reportsScalarWhereWithAggregatesInput[]
+    OR?: agent_reportsScalarWhereWithAggregatesInput[]
+    NOT?: agent_reportsScalarWhereWithAggregatesInput | agent_reportsScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"agent_reports"> | string
+    agent_id?: UuidWithAggregatesFilter<"agent_reports"> | string
+    reporter_id?: UuidWithAggregatesFilter<"agent_reports"> | string
+    reason?: StringWithAggregatesFilter<"agent_reports"> | string
+    description?: StringNullableWithAggregatesFilter<"agent_reports"> | string | null
+    status?: StringWithAggregatesFilter<"agent_reports"> | string
+    admin_notes?: StringNullableWithAggregatesFilter<"agent_reports"> | string | null
+    resolution?: StringNullableWithAggregatesFilter<"agent_reports"> | string | null
+    created_at?: DateTimeNullableWithAggregatesFilter<"agent_reports"> | Date | string | null
+    updated_at?: DateTimeNullableWithAggregatesFilter<"agent_reports"> | Date | string | null
+    reviewed_by?: UuidNullableWithAggregatesFilter<"agent_reports"> | string | null
+    reviewed_at?: DateTimeNullableWithAggregatesFilter<"agent_reports"> | Date | string | null
+  }
+
+  export type system_settingsWhereInput = {
+    AND?: system_settingsWhereInput | system_settingsWhereInput[]
+    OR?: system_settingsWhereInput[]
+    NOT?: system_settingsWhereInput | system_settingsWhereInput[]
+    id?: UuidFilter<"system_settings"> | string
+    setting_key?: StringFilter<"system_settings"> | string
+    setting_value?: JsonFilter<"system_settings">
+    created_at?: DateTimeNullableFilter<"system_settings"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"system_settings"> | Date | string | null
+    description?: StringNullableFilter<"system_settings"> | string | null
+  }
+
+  export type system_settingsOrderByWithRelationInput = {
+    id?: SortOrder
+    setting_key?: SortOrder
+    setting_value?: SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+  }
+
+  export type system_settingsWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    setting_key?: string
+    AND?: system_settingsWhereInput | system_settingsWhereInput[]
+    OR?: system_settingsWhereInput[]
+    NOT?: system_settingsWhereInput | system_settingsWhereInput[]
+    setting_value?: JsonFilter<"system_settings">
+    created_at?: DateTimeNullableFilter<"system_settings"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"system_settings"> | Date | string | null
+    description?: StringNullableFilter<"system_settings"> | string | null
+  }, "id" | "setting_key">
+
+  export type system_settingsOrderByWithAggregationInput = {
+    id?: SortOrder
+    setting_key?: SortOrder
+    setting_value?: SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    _count?: system_settingsCountOrderByAggregateInput
+    _max?: system_settingsMaxOrderByAggregateInput
+    _min?: system_settingsMinOrderByAggregateInput
+  }
+
+  export type system_settingsScalarWhereWithAggregatesInput = {
+    AND?: system_settingsScalarWhereWithAggregatesInput | system_settingsScalarWhereWithAggregatesInput[]
+    OR?: system_settingsScalarWhereWithAggregatesInput[]
+    NOT?: system_settingsScalarWhereWithAggregatesInput | system_settingsScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"system_settings"> | string
+    setting_key?: StringWithAggregatesFilter<"system_settings"> | string
+    setting_value?: JsonWithAggregatesFilter<"system_settings">
+    created_at?: DateTimeNullableWithAggregatesFilter<"system_settings"> | Date | string | null
+    updated_at?: DateTimeNullableWithAggregatesFilter<"system_settings"> | Date | string | null
+    description?: StringNullableWithAggregatesFilter<"system_settings"> | string | null
+  }
+
+  export type notification_templatesWhereInput = {
+    AND?: notification_templatesWhereInput | notification_templatesWhereInput[]
+    OR?: notification_templatesWhereInput[]
+    NOT?: notification_templatesWhereInput | notification_templatesWhereInput[]
+    id?: UuidFilter<"notification_templates"> | string
+    type?: StringFilter<"notification_templates"> | string
+    subject?: StringFilter<"notification_templates"> | string
+    body?: StringFilter<"notification_templates"> | string
+    variables?: StringNullableListFilter<"notification_templates">
+    created_at?: DateTimeNullableFilter<"notification_templates"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"notification_templates"> | Date | string | null
+  }
+
+  export type notification_templatesOrderByWithRelationInput = {
+    id?: SortOrder
+    type?: SortOrder
+    subject?: SortOrder
+    body?: SortOrder
+    variables?: SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
+  }
+
+  export type notification_templatesWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    type?: string
+    AND?: notification_templatesWhereInput | notification_templatesWhereInput[]
+    OR?: notification_templatesWhereInput[]
+    NOT?: notification_templatesWhereInput | notification_templatesWhereInput[]
+    subject?: StringFilter<"notification_templates"> | string
+    body?: StringFilter<"notification_templates"> | string
+    variables?: StringNullableListFilter<"notification_templates">
+    created_at?: DateTimeNullableFilter<"notification_templates"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"notification_templates"> | Date | string | null
+  }, "id" | "type">
+
+  export type notification_templatesOrderByWithAggregationInput = {
+    id?: SortOrder
+    type?: SortOrder
+    subject?: SortOrder
+    body?: SortOrder
+    variables?: SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
+    _count?: notification_templatesCountOrderByAggregateInput
+    _max?: notification_templatesMaxOrderByAggregateInput
+    _min?: notification_templatesMinOrderByAggregateInput
+  }
+
+  export type notification_templatesScalarWhereWithAggregatesInput = {
+    AND?: notification_templatesScalarWhereWithAggregatesInput | notification_templatesScalarWhereWithAggregatesInput[]
+    OR?: notification_templatesScalarWhereWithAggregatesInput[]
+    NOT?: notification_templatesScalarWhereWithAggregatesInput | notification_templatesScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"notification_templates"> | string
+    type?: StringWithAggregatesFilter<"notification_templates"> | string
+    subject?: StringWithAggregatesFilter<"notification_templates"> | string
+    body?: StringWithAggregatesFilter<"notification_templates"> | string
+    variables?: StringNullableListFilter<"notification_templates">
+    created_at?: DateTimeNullableWithAggregatesFilter<"notification_templates"> | Date | string | null
+    updated_at?: DateTimeNullableWithAggregatesFilter<"notification_templates"> | Date | string | null
+  }
+
   export type debug_logsWhereInput = {
     AND?: debug_logsWhereInput | debug_logsWhereInput[]
     OR?: debug_logsWhereInput[]
@@ -19694,12 +26121,13 @@ export namespace Prisma {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
@@ -19713,18 +26141,22 @@ export namespace Prisma {
     enterprises?: enterprisesCreateNestedOneWithoutUsersInput
     favorites?: favoritesCreateNestedManyWithoutUsersInput
     purchased_agents?: purchased_agentsCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateInput = {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsUncheckedCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
@@ -19738,6 +26170,9 @@ export namespace Prisma {
     enterprises?: enterprisesUncheckedCreateNestedOneWithoutUsersInput
     favorites?: favoritesUncheckedCreateNestedManyWithoutUsersInput
     purchased_agents?: purchased_agentsUncheckedCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logUncheckedCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsUncheckedCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserUpdateInput = {
@@ -19750,6 +26185,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
@@ -19763,6 +26199,9 @@ export namespace Prisma {
     enterprises?: enterprisesUpdateOneWithoutUsersNestedInput
     favorites?: favoritesUpdateManyWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -19775,6 +26214,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUncheckedUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
@@ -19788,18 +26228,22 @@ export namespace Prisma {
     enterprises?: enterprisesUncheckedUpdateOneWithoutUsersNestedInput
     favorites?: favoritesUncheckedUpdateManyWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUncheckedUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUncheckedUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUncheckedUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type UserCreateManyInput = {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -19812,6 +26256,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -19824,6 +26269,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AgentCreateInput = {
@@ -19842,6 +26288,10 @@ export namespace Prisma {
     screenshots?: AgentCreatescreenshotsInput | string[]
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string
+    approval_date?: Date | string | null
+    approved_by?: string | null
+    rejection_reason?: string | null
     agent_conversions?: agent_conversionsCreateNestedManyWithoutAgentsInput
     agent_recommendations?: agent_recommendationsCreateNestedManyWithoutAgentsInput
     agent_revenue?: agent_revenueCreateNestedManyWithoutAgentsInput
@@ -19850,6 +26300,7 @@ export namespace Prisma {
     contacts?: contactsCreateNestedManyWithoutAgentsInput
     favorites?: favoritesCreateNestedManyWithoutAgentsInput
     purchased_agents?: purchased_agentsCreateNestedManyWithoutAgentsInput
+    agent_reports?: agent_reportsCreateNestedManyWithoutAgentInput
   }
 
   export type AgentUncheckedCreateInput = {
@@ -19869,6 +26320,10 @@ export namespace Prisma {
     screenshots?: AgentCreatescreenshotsInput | string[]
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string
+    approval_date?: Date | string | null
+    approved_by?: string | null
+    rejection_reason?: string | null
     agent_conversions?: agent_conversionsUncheckedCreateNestedManyWithoutAgentsInput
     agent_recommendations?: agent_recommendationsUncheckedCreateNestedManyWithoutAgentsInput
     agent_revenue?: agent_revenueUncheckedCreateNestedManyWithoutAgentsInput
@@ -19876,6 +26331,7 @@ export namespace Prisma {
     contacts?: contactsUncheckedCreateNestedManyWithoutAgentsInput
     favorites?: favoritesUncheckedCreateNestedManyWithoutAgentsInput
     purchased_agents?: purchased_agentsUncheckedCreateNestedManyWithoutAgentsInput
+    agent_reports?: agent_reportsUncheckedCreateNestedManyWithoutAgentInput
   }
 
   export type AgentUpdateInput = {
@@ -19894,6 +26350,10 @@ export namespace Prisma {
     screenshots?: AgentUpdatescreenshotsInput | string[]
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableStringFieldUpdateOperationsInput | string | null
+    rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUpdateManyWithoutAgentsNestedInput
     agent_recommendations?: agent_recommendationsUpdateManyWithoutAgentsNestedInput
     agent_revenue?: agent_revenueUpdateManyWithoutAgentsNestedInput
@@ -19902,6 +26362,7 @@ export namespace Prisma {
     contacts?: contactsUpdateManyWithoutAgentsNestedInput
     favorites?: favoritesUpdateManyWithoutAgentsNestedInput
     purchased_agents?: purchased_agentsUpdateManyWithoutAgentsNestedInput
+    agent_reports?: agent_reportsUpdateManyWithoutAgentNestedInput
   }
 
   export type AgentUncheckedUpdateInput = {
@@ -19921,6 +26382,10 @@ export namespace Prisma {
     screenshots?: AgentUpdatescreenshotsInput | string[]
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableStringFieldUpdateOperationsInput | string | null
+    rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUncheckedUpdateManyWithoutAgentsNestedInput
     agent_recommendations?: agent_recommendationsUncheckedUpdateManyWithoutAgentsNestedInput
     agent_revenue?: agent_revenueUncheckedUpdateManyWithoutAgentsNestedInput
@@ -19928,6 +26393,7 @@ export namespace Prisma {
     contacts?: contactsUncheckedUpdateManyWithoutAgentsNestedInput
     favorites?: favoritesUncheckedUpdateManyWithoutAgentsNestedInput
     purchased_agents?: purchased_agentsUncheckedUpdateManyWithoutAgentsNestedInput
+    agent_reports?: agent_reportsUncheckedUpdateManyWithoutAgentNestedInput
   }
 
   export type AgentCreateManyInput = {
@@ -19947,6 +26413,10 @@ export namespace Prisma {
     screenshots?: AgentCreatescreenshotsInput | string[]
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string
+    approval_date?: Date | string | null
+    approved_by?: string | null
+    rejection_reason?: string | null
   }
 
   export type AgentUpdateManyMutationInput = {
@@ -19965,6 +26435,10 @@ export namespace Prisma {
     screenshots?: AgentUpdatescreenshotsInput | string[]
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableStringFieldUpdateOperationsInput | string | null
+    rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AgentUncheckedUpdateManyInput = {
@@ -19984,6 +26458,10 @@ export namespace Prisma {
     screenshots?: AgentUpdatescreenshotsInput | string[]
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableStringFieldUpdateOperationsInput | string | null
+    rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type agent_conversionsCreateInput = {
@@ -20409,6 +26887,380 @@ export namespace Prisma {
     creator_id?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type admin_activity_logCreateInput = {
+    id?: string
+    action: string
+    entity_type: string
+    entity_id: string
+    details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string | null
+    admin: UserCreateNestedOneWithoutAdmin_activity_logInput
+  }
+
+  export type admin_activity_logUncheckedCreateInput = {
+    id?: string
+    admin_id: string
+    action: string
+    entity_type: string
+    entity_id: string
+    details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string | null
+  }
+
+  export type admin_activity_logUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    entity_type?: StringFieldUpdateOperationsInput | string
+    entity_id?: StringFieldUpdateOperationsInput | string
+    details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    admin?: UserUpdateOneRequiredWithoutAdmin_activity_logNestedInput
+  }
+
+  export type admin_activity_logUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    admin_id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    entity_type?: StringFieldUpdateOperationsInput | string
+    entity_id?: StringFieldUpdateOperationsInput | string
+    details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type admin_activity_logCreateManyInput = {
+    id?: string
+    admin_id: string
+    action: string
+    entity_type: string
+    entity_id: string
+    details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string | null
+  }
+
+  export type admin_activity_logUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    entity_type?: StringFieldUpdateOperationsInput | string
+    entity_id?: StringFieldUpdateOperationsInput | string
+    details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type admin_activity_logUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    admin_id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    entity_type?: StringFieldUpdateOperationsInput | string
+    entity_id?: StringFieldUpdateOperationsInput | string
+    details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type agent_categoriesCreateInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    icon?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+  }
+
+  export type agent_categoriesUncheckedCreateInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    icon?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+  }
+
+  export type agent_categoriesUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type agent_categoriesUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type agent_categoriesCreateManyInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    icon?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+  }
+
+  export type agent_categoriesUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type agent_categoriesUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type agent_reportsCreateInput = {
+    id?: string
+    reason: string
+    description?: string | null
+    status?: string
+    admin_notes?: string | null
+    resolution?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+    reviewed_at?: Date | string | null
+    agent: AgentCreateNestedOneWithoutAgent_reportsInput
+    reporter: UserCreateNestedOneWithoutAgent_reports_reporterInput
+    admin?: UserCreateNestedOneWithoutAgent_reports_adminInput
+  }
+
+  export type agent_reportsUncheckedCreateInput = {
+    id?: string
+    agent_id: string
+    reporter_id: string
+    reason: string
+    description?: string | null
+    status?: string
+    admin_notes?: string | null
+    resolution?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+    reviewed_by?: string | null
+    reviewed_at?: Date | string | null
+  }
+
+  export type agent_reportsUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    admin_notes?: NullableStringFieldUpdateOperationsInput | string | null
+    resolution?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    agent?: AgentUpdateOneRequiredWithoutAgent_reportsNestedInput
+    reporter?: UserUpdateOneRequiredWithoutAgent_reports_reporterNestedInput
+    admin?: UserUpdateOneWithoutAgent_reports_adminNestedInput
+  }
+
+  export type agent_reportsUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agent_id?: StringFieldUpdateOperationsInput | string
+    reporter_id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    admin_notes?: NullableStringFieldUpdateOperationsInput | string | null
+    resolution?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewed_by?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type agent_reportsCreateManyInput = {
+    id?: string
+    agent_id: string
+    reporter_id: string
+    reason: string
+    description?: string | null
+    status?: string
+    admin_notes?: string | null
+    resolution?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+    reviewed_by?: string | null
+    reviewed_at?: Date | string | null
+  }
+
+  export type agent_reportsUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    admin_notes?: NullableStringFieldUpdateOperationsInput | string | null
+    resolution?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type agent_reportsUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agent_id?: StringFieldUpdateOperationsInput | string
+    reporter_id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    admin_notes?: NullableStringFieldUpdateOperationsInput | string | null
+    resolution?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewed_by?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type system_settingsCreateInput = {
+    id?: string
+    setting_key: string
+    setting_value: JsonNullValueInput | InputJsonValue
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+    description?: string | null
+  }
+
+  export type system_settingsUncheckedCreateInput = {
+    id?: string
+    setting_key: string
+    setting_value: JsonNullValueInput | InputJsonValue
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+    description?: string | null
+  }
+
+  export type system_settingsUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    setting_key?: StringFieldUpdateOperationsInput | string
+    setting_value?: JsonNullValueInput | InputJsonValue
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type system_settingsUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    setting_key?: StringFieldUpdateOperationsInput | string
+    setting_value?: JsonNullValueInput | InputJsonValue
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type system_settingsCreateManyInput = {
+    id?: string
+    setting_key: string
+    setting_value: JsonNullValueInput | InputJsonValue
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+    description?: string | null
+  }
+
+  export type system_settingsUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    setting_key?: StringFieldUpdateOperationsInput | string
+    setting_value?: JsonNullValueInput | InputJsonValue
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type system_settingsUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    setting_key?: StringFieldUpdateOperationsInput | string
+    setting_value?: JsonNullValueInput | InputJsonValue
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type notification_templatesCreateInput = {
+    id?: string
+    type: string
+    subject: string
+    body: string
+    variables?: notification_templatesCreatevariablesInput | string[]
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+  }
+
+  export type notification_templatesUncheckedCreateInput = {
+    id?: string
+    type: string
+    subject: string
+    body: string
+    variables?: notification_templatesCreatevariablesInput | string[]
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+  }
+
+  export type notification_templatesUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    variables?: notification_templatesUpdatevariablesInput | string[]
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type notification_templatesUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    variables?: notification_templatesUpdatevariablesInput | string[]
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type notification_templatesCreateManyInput = {
+    id?: string
+    type: string
+    subject: string
+    body: string
+    variables?: notification_templatesCreatevariablesInput | string[]
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+  }
+
+  export type notification_templatesUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    variables?: notification_templatesUpdatevariablesInput | string[]
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type notification_templatesUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    variables?: notification_templatesUpdatevariablesInput | string[]
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -20861,6 +27713,18 @@ export namespace Prisma {
     none?: purchased_agentsWhereInput
   }
 
+  export type Admin_activity_logListRelationFilter = {
+    every?: admin_activity_logWhereInput
+    some?: admin_activity_logWhereInput
+    none?: admin_activity_logWhereInput
+  }
+
+  export type Agent_reportsListRelationFilter = {
+    every?: agent_reportsWhereInput
+    some?: agent_reportsWhereInput
+    none?: agent_reportsWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -20906,6 +27770,14 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type admin_activity_logOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type agent_reportsOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
@@ -20916,6 +27788,7 @@ export namespace Prisma {
     bio?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -20928,6 +27801,7 @@ export namespace Prisma {
     bio?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -20940,6 +27814,7 @@ export namespace Prisma {
     bio?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
   }
 
   export type UuidWithAggregatesFilter<$PrismaModel = never> = {
@@ -21043,6 +27918,18 @@ export namespace Prisma {
     isEmpty?: boolean
   }
 
+  export type UuidNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedUuidNullableFilter<$PrismaModel> | string | null
+  }
+
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
@@ -21065,6 +27952,10 @@ export namespace Prisma {
     screenshots?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
+    approval_date?: SortOrder
+    approved_by?: SortOrder
+    rejection_reason?: SortOrder
   }
 
   export type AgentMaxOrderByAggregateInput = {
@@ -21081,6 +27972,10 @@ export namespace Prisma {
     demo_video_url?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
+    approval_date?: SortOrder
+    approved_by?: SortOrder
+    rejection_reason?: SortOrder
   }
 
   export type AgentMinOrderByAggregateInput = {
@@ -21097,6 +27992,10 @@ export namespace Prisma {
     demo_video_url?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
+    approval_date?: SortOrder
+    approved_by?: SortOrder
+    rejection_reason?: SortOrder
   }
   export type JsonWithAggregatesFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -21131,6 +28030,21 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedBoolNullableFilter<$PrismaModel>
     _max?: NestedBoolNullableFilter<$PrismaModel>
+  }
+
+  export type UuidNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedUuidNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type IntNullableFilter<$PrismaModel = never> = {
@@ -21453,25 +28367,31 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
-  export type debug_logsCountOrderByAggregateInput = {
+  export type admin_activity_logCountOrderByAggregateInput = {
     id?: SortOrder
-    level?: SortOrder
-    message?: SortOrder
-    data?: SortOrder
+    admin_id?: SortOrder
+    action?: SortOrder
+    entity_type?: SortOrder
+    entity_id?: SortOrder
+    details?: SortOrder
     created_at?: SortOrder
   }
 
-  export type debug_logsMaxOrderByAggregateInput = {
+  export type admin_activity_logMaxOrderByAggregateInput = {
     id?: SortOrder
-    level?: SortOrder
-    message?: SortOrder
+    admin_id?: SortOrder
+    action?: SortOrder
+    entity_type?: SortOrder
+    entity_id?: SortOrder
     created_at?: SortOrder
   }
 
-  export type debug_logsMinOrderByAggregateInput = {
+  export type admin_activity_logMinOrderByAggregateInput = {
     id?: SortOrder
-    level?: SortOrder
-    message?: SortOrder
+    admin_id?: SortOrder
+    action?: SortOrder
+    entity_type?: SortOrder
+    entity_id?: SortOrder
     created_at?: SortOrder
   }
   export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
@@ -21499,6 +28419,161 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedJsonNullableFilter<$PrismaModel>
     _max?: NestedJsonNullableFilter<$PrismaModel>
+  }
+
+  export type agent_categoriesCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    description?: SortOrder
+    icon?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type agent_categoriesMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    description?: SortOrder
+    icon?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type agent_categoriesMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    description?: SortOrder
+    icon?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
+  export type agent_reportsCountOrderByAggregateInput = {
+    id?: SortOrder
+    agent_id?: SortOrder
+    reporter_id?: SortOrder
+    reason?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    admin_notes?: SortOrder
+    resolution?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    reviewed_by?: SortOrder
+    reviewed_at?: SortOrder
+  }
+
+  export type agent_reportsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    agent_id?: SortOrder
+    reporter_id?: SortOrder
+    reason?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    admin_notes?: SortOrder
+    resolution?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    reviewed_by?: SortOrder
+    reviewed_at?: SortOrder
+  }
+
+  export type agent_reportsMinOrderByAggregateInput = {
+    id?: SortOrder
+    agent_id?: SortOrder
+    reporter_id?: SortOrder
+    reason?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    admin_notes?: SortOrder
+    resolution?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    reviewed_by?: SortOrder
+    reviewed_at?: SortOrder
+  }
+
+  export type system_settingsCountOrderByAggregateInput = {
+    id?: SortOrder
+    setting_key?: SortOrder
+    setting_value?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    description?: SortOrder
+  }
+
+  export type system_settingsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    setting_key?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    description?: SortOrder
+  }
+
+  export type system_settingsMinOrderByAggregateInput = {
+    id?: SortOrder
+    setting_key?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    description?: SortOrder
+  }
+
+  export type notification_templatesCountOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    subject?: SortOrder
+    body?: SortOrder
+    variables?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type notification_templatesMaxOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    subject?: SortOrder
+    body?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type notification_templatesMinOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    subject?: SortOrder
+    body?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type debug_logsCountOrderByAggregateInput = {
+    id?: SortOrder
+    level?: SortOrder
+    message?: SortOrder
+    data?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type debug_logsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    level?: SortOrder
+    message?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type debug_logsMinOrderByAggregateInput = {
+    id?: SortOrder
+    level?: SortOrder
+    message?: SortOrder
+    created_at?: SortOrder
   }
 
   export type DecimalNullableFilter<$PrismaModel = never> = {
@@ -21769,6 +28844,27 @@ export namespace Prisma {
     connect?: purchased_agentsWhereUniqueInput | purchased_agentsWhereUniqueInput[]
   }
 
+  export type admin_activity_logCreateNestedManyWithoutAdminInput = {
+    create?: XOR<admin_activity_logCreateWithoutAdminInput, admin_activity_logUncheckedCreateWithoutAdminInput> | admin_activity_logCreateWithoutAdminInput[] | admin_activity_logUncheckedCreateWithoutAdminInput[]
+    connectOrCreate?: admin_activity_logCreateOrConnectWithoutAdminInput | admin_activity_logCreateOrConnectWithoutAdminInput[]
+    createMany?: admin_activity_logCreateManyAdminInputEnvelope
+    connect?: admin_activity_logWhereUniqueInput | admin_activity_logWhereUniqueInput[]
+  }
+
+  export type agent_reportsCreateNestedManyWithoutReporterInput = {
+    create?: XOR<agent_reportsCreateWithoutReporterInput, agent_reportsUncheckedCreateWithoutReporterInput> | agent_reportsCreateWithoutReporterInput[] | agent_reportsUncheckedCreateWithoutReporterInput[]
+    connectOrCreate?: agent_reportsCreateOrConnectWithoutReporterInput | agent_reportsCreateOrConnectWithoutReporterInput[]
+    createMany?: agent_reportsCreateManyReporterInputEnvelope
+    connect?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+  }
+
+  export type agent_reportsCreateNestedManyWithoutAdminInput = {
+    create?: XOR<agent_reportsCreateWithoutAdminInput, agent_reportsUncheckedCreateWithoutAdminInput> | agent_reportsCreateWithoutAdminInput[] | agent_reportsUncheckedCreateWithoutAdminInput[]
+    connectOrCreate?: agent_reportsCreateOrConnectWithoutAdminInput | agent_reportsCreateOrConnectWithoutAdminInput[]
+    createMany?: agent_reportsCreateManyAdminInputEnvelope
+    connect?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+  }
+
   export type agent_conversionsUncheckedCreateNestedManyWithoutUsersInput = {
     create?: XOR<agent_conversionsCreateWithoutUsersInput, agent_conversionsUncheckedCreateWithoutUsersInput> | agent_conversionsCreateWithoutUsersInput[] | agent_conversionsUncheckedCreateWithoutUsersInput[]
     connectOrCreate?: agent_conversionsCreateOrConnectWithoutUsersInput | agent_conversionsCreateOrConnectWithoutUsersInput[]
@@ -21857,6 +28953,27 @@ export namespace Prisma {
     connectOrCreate?: purchased_agentsCreateOrConnectWithoutUsersInput | purchased_agentsCreateOrConnectWithoutUsersInput[]
     createMany?: purchased_agentsCreateManyUsersInputEnvelope
     connect?: purchased_agentsWhereUniqueInput | purchased_agentsWhereUniqueInput[]
+  }
+
+  export type admin_activity_logUncheckedCreateNestedManyWithoutAdminInput = {
+    create?: XOR<admin_activity_logCreateWithoutAdminInput, admin_activity_logUncheckedCreateWithoutAdminInput> | admin_activity_logCreateWithoutAdminInput[] | admin_activity_logUncheckedCreateWithoutAdminInput[]
+    connectOrCreate?: admin_activity_logCreateOrConnectWithoutAdminInput | admin_activity_logCreateOrConnectWithoutAdminInput[]
+    createMany?: admin_activity_logCreateManyAdminInputEnvelope
+    connect?: admin_activity_logWhereUniqueInput | admin_activity_logWhereUniqueInput[]
+  }
+
+  export type agent_reportsUncheckedCreateNestedManyWithoutReporterInput = {
+    create?: XOR<agent_reportsCreateWithoutReporterInput, agent_reportsUncheckedCreateWithoutReporterInput> | agent_reportsCreateWithoutReporterInput[] | agent_reportsUncheckedCreateWithoutReporterInput[]
+    connectOrCreate?: agent_reportsCreateOrConnectWithoutReporterInput | agent_reportsCreateOrConnectWithoutReporterInput[]
+    createMany?: agent_reportsCreateManyReporterInputEnvelope
+    connect?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+  }
+
+  export type agent_reportsUncheckedCreateNestedManyWithoutAdminInput = {
+    create?: XOR<agent_reportsCreateWithoutAdminInput, agent_reportsUncheckedCreateWithoutAdminInput> | agent_reportsCreateWithoutAdminInput[] | agent_reportsUncheckedCreateWithoutAdminInput[]
+    connectOrCreate?: agent_reportsCreateOrConnectWithoutAdminInput | agent_reportsCreateOrConnectWithoutAdminInput[]
+    createMany?: agent_reportsCreateManyAdminInputEnvelope
+    connect?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -22049,6 +29166,48 @@ export namespace Prisma {
     deleteMany?: purchased_agentsScalarWhereInput | purchased_agentsScalarWhereInput[]
   }
 
+  export type admin_activity_logUpdateManyWithoutAdminNestedInput = {
+    create?: XOR<admin_activity_logCreateWithoutAdminInput, admin_activity_logUncheckedCreateWithoutAdminInput> | admin_activity_logCreateWithoutAdminInput[] | admin_activity_logUncheckedCreateWithoutAdminInput[]
+    connectOrCreate?: admin_activity_logCreateOrConnectWithoutAdminInput | admin_activity_logCreateOrConnectWithoutAdminInput[]
+    upsert?: admin_activity_logUpsertWithWhereUniqueWithoutAdminInput | admin_activity_logUpsertWithWhereUniqueWithoutAdminInput[]
+    createMany?: admin_activity_logCreateManyAdminInputEnvelope
+    set?: admin_activity_logWhereUniqueInput | admin_activity_logWhereUniqueInput[]
+    disconnect?: admin_activity_logWhereUniqueInput | admin_activity_logWhereUniqueInput[]
+    delete?: admin_activity_logWhereUniqueInput | admin_activity_logWhereUniqueInput[]
+    connect?: admin_activity_logWhereUniqueInput | admin_activity_logWhereUniqueInput[]
+    update?: admin_activity_logUpdateWithWhereUniqueWithoutAdminInput | admin_activity_logUpdateWithWhereUniqueWithoutAdminInput[]
+    updateMany?: admin_activity_logUpdateManyWithWhereWithoutAdminInput | admin_activity_logUpdateManyWithWhereWithoutAdminInput[]
+    deleteMany?: admin_activity_logScalarWhereInput | admin_activity_logScalarWhereInput[]
+  }
+
+  export type agent_reportsUpdateManyWithoutReporterNestedInput = {
+    create?: XOR<agent_reportsCreateWithoutReporterInput, agent_reportsUncheckedCreateWithoutReporterInput> | agent_reportsCreateWithoutReporterInput[] | agent_reportsUncheckedCreateWithoutReporterInput[]
+    connectOrCreate?: agent_reportsCreateOrConnectWithoutReporterInput | agent_reportsCreateOrConnectWithoutReporterInput[]
+    upsert?: agent_reportsUpsertWithWhereUniqueWithoutReporterInput | agent_reportsUpsertWithWhereUniqueWithoutReporterInput[]
+    createMany?: agent_reportsCreateManyReporterInputEnvelope
+    set?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+    disconnect?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+    delete?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+    connect?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+    update?: agent_reportsUpdateWithWhereUniqueWithoutReporterInput | agent_reportsUpdateWithWhereUniqueWithoutReporterInput[]
+    updateMany?: agent_reportsUpdateManyWithWhereWithoutReporterInput | agent_reportsUpdateManyWithWhereWithoutReporterInput[]
+    deleteMany?: agent_reportsScalarWhereInput | agent_reportsScalarWhereInput[]
+  }
+
+  export type agent_reportsUpdateManyWithoutAdminNestedInput = {
+    create?: XOR<agent_reportsCreateWithoutAdminInput, agent_reportsUncheckedCreateWithoutAdminInput> | agent_reportsCreateWithoutAdminInput[] | agent_reportsUncheckedCreateWithoutAdminInput[]
+    connectOrCreate?: agent_reportsCreateOrConnectWithoutAdminInput | agent_reportsCreateOrConnectWithoutAdminInput[]
+    upsert?: agent_reportsUpsertWithWhereUniqueWithoutAdminInput | agent_reportsUpsertWithWhereUniqueWithoutAdminInput[]
+    createMany?: agent_reportsCreateManyAdminInputEnvelope
+    set?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+    disconnect?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+    delete?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+    connect?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+    update?: agent_reportsUpdateWithWhereUniqueWithoutAdminInput | agent_reportsUpdateWithWhereUniqueWithoutAdminInput[]
+    updateMany?: agent_reportsUpdateManyWithWhereWithoutAdminInput | agent_reportsUpdateManyWithWhereWithoutAdminInput[]
+    deleteMany?: agent_reportsScalarWhereInput | agent_reportsScalarWhereInput[]
+  }
+
   export type agent_conversionsUncheckedUpdateManyWithoutUsersNestedInput = {
     create?: XOR<agent_conversionsCreateWithoutUsersInput, agent_conversionsUncheckedCreateWithoutUsersInput> | agent_conversionsCreateWithoutUsersInput[] | agent_conversionsUncheckedCreateWithoutUsersInput[]
     connectOrCreate?: agent_conversionsCreateOrConnectWithoutUsersInput | agent_conversionsCreateOrConnectWithoutUsersInput[]
@@ -22227,6 +29386,48 @@ export namespace Prisma {
     deleteMany?: purchased_agentsScalarWhereInput | purchased_agentsScalarWhereInput[]
   }
 
+  export type admin_activity_logUncheckedUpdateManyWithoutAdminNestedInput = {
+    create?: XOR<admin_activity_logCreateWithoutAdminInput, admin_activity_logUncheckedCreateWithoutAdminInput> | admin_activity_logCreateWithoutAdminInput[] | admin_activity_logUncheckedCreateWithoutAdminInput[]
+    connectOrCreate?: admin_activity_logCreateOrConnectWithoutAdminInput | admin_activity_logCreateOrConnectWithoutAdminInput[]
+    upsert?: admin_activity_logUpsertWithWhereUniqueWithoutAdminInput | admin_activity_logUpsertWithWhereUniqueWithoutAdminInput[]
+    createMany?: admin_activity_logCreateManyAdminInputEnvelope
+    set?: admin_activity_logWhereUniqueInput | admin_activity_logWhereUniqueInput[]
+    disconnect?: admin_activity_logWhereUniqueInput | admin_activity_logWhereUniqueInput[]
+    delete?: admin_activity_logWhereUniqueInput | admin_activity_logWhereUniqueInput[]
+    connect?: admin_activity_logWhereUniqueInput | admin_activity_logWhereUniqueInput[]
+    update?: admin_activity_logUpdateWithWhereUniqueWithoutAdminInput | admin_activity_logUpdateWithWhereUniqueWithoutAdminInput[]
+    updateMany?: admin_activity_logUpdateManyWithWhereWithoutAdminInput | admin_activity_logUpdateManyWithWhereWithoutAdminInput[]
+    deleteMany?: admin_activity_logScalarWhereInput | admin_activity_logScalarWhereInput[]
+  }
+
+  export type agent_reportsUncheckedUpdateManyWithoutReporterNestedInput = {
+    create?: XOR<agent_reportsCreateWithoutReporterInput, agent_reportsUncheckedCreateWithoutReporterInput> | agent_reportsCreateWithoutReporterInput[] | agent_reportsUncheckedCreateWithoutReporterInput[]
+    connectOrCreate?: agent_reportsCreateOrConnectWithoutReporterInput | agent_reportsCreateOrConnectWithoutReporterInput[]
+    upsert?: agent_reportsUpsertWithWhereUniqueWithoutReporterInput | agent_reportsUpsertWithWhereUniqueWithoutReporterInput[]
+    createMany?: agent_reportsCreateManyReporterInputEnvelope
+    set?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+    disconnect?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+    delete?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+    connect?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+    update?: agent_reportsUpdateWithWhereUniqueWithoutReporterInput | agent_reportsUpdateWithWhereUniqueWithoutReporterInput[]
+    updateMany?: agent_reportsUpdateManyWithWhereWithoutReporterInput | agent_reportsUpdateManyWithWhereWithoutReporterInput[]
+    deleteMany?: agent_reportsScalarWhereInput | agent_reportsScalarWhereInput[]
+  }
+
+  export type agent_reportsUncheckedUpdateManyWithoutAdminNestedInput = {
+    create?: XOR<agent_reportsCreateWithoutAdminInput, agent_reportsUncheckedCreateWithoutAdminInput> | agent_reportsCreateWithoutAdminInput[] | agent_reportsUncheckedCreateWithoutAdminInput[]
+    connectOrCreate?: agent_reportsCreateOrConnectWithoutAdminInput | agent_reportsCreateOrConnectWithoutAdminInput[]
+    upsert?: agent_reportsUpsertWithWhereUniqueWithoutAdminInput | agent_reportsUpsertWithWhereUniqueWithoutAdminInput[]
+    createMany?: agent_reportsCreateManyAdminInputEnvelope
+    set?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+    disconnect?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+    delete?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+    connect?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+    update?: agent_reportsUpdateWithWhereUniqueWithoutAdminInput | agent_reportsUpdateWithWhereUniqueWithoutAdminInput[]
+    updateMany?: agent_reportsUpdateManyWithWhereWithoutAdminInput | agent_reportsUpdateManyWithWhereWithoutAdminInput[]
+    deleteMany?: agent_reportsScalarWhereInput | agent_reportsScalarWhereInput[]
+  }
+
   export type AgentCreateintegrationsInput = {
     set: string[]
   }
@@ -22290,6 +29491,13 @@ export namespace Prisma {
     connect?: purchased_agentsWhereUniqueInput | purchased_agentsWhereUniqueInput[]
   }
 
+  export type agent_reportsCreateNestedManyWithoutAgentInput = {
+    create?: XOR<agent_reportsCreateWithoutAgentInput, agent_reportsUncheckedCreateWithoutAgentInput> | agent_reportsCreateWithoutAgentInput[] | agent_reportsUncheckedCreateWithoutAgentInput[]
+    connectOrCreate?: agent_reportsCreateOrConnectWithoutAgentInput | agent_reportsCreateOrConnectWithoutAgentInput[]
+    createMany?: agent_reportsCreateManyAgentInputEnvelope
+    connect?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+  }
+
   export type agent_conversionsUncheckedCreateNestedManyWithoutAgentsInput = {
     create?: XOR<agent_conversionsCreateWithoutAgentsInput, agent_conversionsUncheckedCreateWithoutAgentsInput> | agent_conversionsCreateWithoutAgentsInput[] | agent_conversionsUncheckedCreateWithoutAgentsInput[]
     connectOrCreate?: agent_conversionsCreateOrConnectWithoutAgentsInput | agent_conversionsCreateOrConnectWithoutAgentsInput[]
@@ -22337,6 +29545,13 @@ export namespace Prisma {
     connectOrCreate?: purchased_agentsCreateOrConnectWithoutAgentsInput | purchased_agentsCreateOrConnectWithoutAgentsInput[]
     createMany?: purchased_agentsCreateManyAgentsInputEnvelope
     connect?: purchased_agentsWhereUniqueInput | purchased_agentsWhereUniqueInput[]
+  }
+
+  export type agent_reportsUncheckedCreateNestedManyWithoutAgentInput = {
+    create?: XOR<agent_reportsCreateWithoutAgentInput, agent_reportsUncheckedCreateWithoutAgentInput> | agent_reportsCreateWithoutAgentInput[] | agent_reportsUncheckedCreateWithoutAgentInput[]
+    connectOrCreate?: agent_reportsCreateOrConnectWithoutAgentInput | agent_reportsCreateOrConnectWithoutAgentInput[]
+    createMany?: agent_reportsCreateManyAgentInputEnvelope
+    connect?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
   }
 
   export type NullableBoolFieldUpdateOperationsInput = {
@@ -22459,6 +29674,20 @@ export namespace Prisma {
     deleteMany?: purchased_agentsScalarWhereInput | purchased_agentsScalarWhereInput[]
   }
 
+  export type agent_reportsUpdateManyWithoutAgentNestedInput = {
+    create?: XOR<agent_reportsCreateWithoutAgentInput, agent_reportsUncheckedCreateWithoutAgentInput> | agent_reportsCreateWithoutAgentInput[] | agent_reportsUncheckedCreateWithoutAgentInput[]
+    connectOrCreate?: agent_reportsCreateOrConnectWithoutAgentInput | agent_reportsCreateOrConnectWithoutAgentInput[]
+    upsert?: agent_reportsUpsertWithWhereUniqueWithoutAgentInput | agent_reportsUpsertWithWhereUniqueWithoutAgentInput[]
+    createMany?: agent_reportsCreateManyAgentInputEnvelope
+    set?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+    disconnect?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+    delete?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+    connect?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+    update?: agent_reportsUpdateWithWhereUniqueWithoutAgentInput | agent_reportsUpdateWithWhereUniqueWithoutAgentInput[]
+    updateMany?: agent_reportsUpdateManyWithWhereWithoutAgentInput | agent_reportsUpdateManyWithWhereWithoutAgentInput[]
+    deleteMany?: agent_reportsScalarWhereInput | agent_reportsScalarWhereInput[]
+  }
+
   export type agent_conversionsUncheckedUpdateManyWithoutAgentsNestedInput = {
     create?: XOR<agent_conversionsCreateWithoutAgentsInput, agent_conversionsUncheckedCreateWithoutAgentsInput> | agent_conversionsCreateWithoutAgentsInput[] | agent_conversionsUncheckedCreateWithoutAgentsInput[]
     connectOrCreate?: agent_conversionsCreateOrConnectWithoutAgentsInput | agent_conversionsCreateOrConnectWithoutAgentsInput[]
@@ -22555,6 +29784,20 @@ export namespace Prisma {
     update?: purchased_agentsUpdateWithWhereUniqueWithoutAgentsInput | purchased_agentsUpdateWithWhereUniqueWithoutAgentsInput[]
     updateMany?: purchased_agentsUpdateManyWithWhereWithoutAgentsInput | purchased_agentsUpdateManyWithWhereWithoutAgentsInput[]
     deleteMany?: purchased_agentsScalarWhereInput | purchased_agentsScalarWhereInput[]
+  }
+
+  export type agent_reportsUncheckedUpdateManyWithoutAgentNestedInput = {
+    create?: XOR<agent_reportsCreateWithoutAgentInput, agent_reportsUncheckedCreateWithoutAgentInput> | agent_reportsCreateWithoutAgentInput[] | agent_reportsUncheckedCreateWithoutAgentInput[]
+    connectOrCreate?: agent_reportsCreateOrConnectWithoutAgentInput | agent_reportsCreateOrConnectWithoutAgentInput[]
+    upsert?: agent_reportsUpsertWithWhereUniqueWithoutAgentInput | agent_reportsUpsertWithWhereUniqueWithoutAgentInput[]
+    createMany?: agent_reportsCreateManyAgentInputEnvelope
+    set?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+    disconnect?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+    delete?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+    connect?: agent_reportsWhereUniqueInput | agent_reportsWhereUniqueInput[]
+    update?: agent_reportsUpdateWithWhereUniqueWithoutAgentInput | agent_reportsUpdateWithWhereUniqueWithoutAgentInput[]
+    updateMany?: agent_reportsUpdateManyWithWhereWithoutAgentInput | agent_reportsUpdateManyWithWhereWithoutAgentInput[]
+    deleteMany?: agent_reportsScalarWhereInput | agent_reportsScalarWhereInput[]
   }
 
   export type AgentCreateNestedOneWithoutAgent_conversionsInput = {
@@ -22867,6 +30110,73 @@ export namespace Prisma {
     deleteMany?: enterprise_contactsScalarWhereInput | enterprise_contactsScalarWhereInput[]
   }
 
+  export type UserCreateNestedOneWithoutAdmin_activity_logInput = {
+    create?: XOR<UserCreateWithoutAdmin_activity_logInput, UserUncheckedCreateWithoutAdmin_activity_logInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAdmin_activity_logInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutAdmin_activity_logNestedInput = {
+    create?: XOR<UserCreateWithoutAdmin_activity_logInput, UserUncheckedCreateWithoutAdmin_activity_logInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAdmin_activity_logInput
+    upsert?: UserUpsertWithoutAdmin_activity_logInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAdmin_activity_logInput, UserUpdateWithoutAdmin_activity_logInput>, UserUncheckedUpdateWithoutAdmin_activity_logInput>
+  }
+
+  export type AgentCreateNestedOneWithoutAgent_reportsInput = {
+    create?: XOR<AgentCreateWithoutAgent_reportsInput, AgentUncheckedCreateWithoutAgent_reportsInput>
+    connectOrCreate?: AgentCreateOrConnectWithoutAgent_reportsInput
+    connect?: AgentWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAgent_reports_reporterInput = {
+    create?: XOR<UserCreateWithoutAgent_reports_reporterInput, UserUncheckedCreateWithoutAgent_reports_reporterInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAgent_reports_reporterInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAgent_reports_adminInput = {
+    create?: XOR<UserCreateWithoutAgent_reports_adminInput, UserUncheckedCreateWithoutAgent_reports_adminInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAgent_reports_adminInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type AgentUpdateOneRequiredWithoutAgent_reportsNestedInput = {
+    create?: XOR<AgentCreateWithoutAgent_reportsInput, AgentUncheckedCreateWithoutAgent_reportsInput>
+    connectOrCreate?: AgentCreateOrConnectWithoutAgent_reportsInput
+    upsert?: AgentUpsertWithoutAgent_reportsInput
+    connect?: AgentWhereUniqueInput
+    update?: XOR<XOR<AgentUpdateToOneWithWhereWithoutAgent_reportsInput, AgentUpdateWithoutAgent_reportsInput>, AgentUncheckedUpdateWithoutAgent_reportsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutAgent_reports_reporterNestedInput = {
+    create?: XOR<UserCreateWithoutAgent_reports_reporterInput, UserUncheckedCreateWithoutAgent_reports_reporterInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAgent_reports_reporterInput
+    upsert?: UserUpsertWithoutAgent_reports_reporterInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAgent_reports_reporterInput, UserUpdateWithoutAgent_reports_reporterInput>, UserUncheckedUpdateWithoutAgent_reports_reporterInput>
+  }
+
+  export type UserUpdateOneWithoutAgent_reports_adminNestedInput = {
+    create?: XOR<UserCreateWithoutAgent_reports_adminInput, UserUncheckedCreateWithoutAgent_reports_adminInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAgent_reports_adminInput
+    upsert?: UserUpsertWithoutAgent_reports_adminInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAgent_reports_adminInput, UserUpdateWithoutAgent_reports_adminInput>, UserUncheckedUpdateWithoutAgent_reports_adminInput>
+  }
+
+  export type notification_templatesCreatevariablesInput = {
+    set: string[]
+  }
+
+  export type notification_templatesUpdatevariablesInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
   export type contactsCreateNestedOneWithoutEnterprise_contactsInput = {
     create?: XOR<contactsCreateWithoutEnterprise_contactsInput, contactsUncheckedCreateWithoutEnterprise_contactsInput>
     connectOrCreate?: contactsCreateOrConnectWithoutEnterprise_contactsInput
@@ -23097,6 +30407,17 @@ export namespace Prisma {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
     not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
   }
+
+  export type NestedUuidNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedUuidNullableFilter<$PrismaModel> | string | null
+  }
   export type NestedJsonFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
@@ -23127,6 +30448,20 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedBoolNullableFilter<$PrismaModel>
     _max?: NestedBoolNullableFilter<$PrismaModel>
+  }
+
+  export type NestedUuidNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedUuidNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -23379,6 +30714,10 @@ export namespace Prisma {
     screenshots?: AgentCreatescreenshotsInput | string[]
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string
+    approval_date?: Date | string | null
+    approved_by?: string | null
+    rejection_reason?: string | null
     agent_conversions?: agent_conversionsCreateNestedManyWithoutAgentsInput
     agent_recommendations?: agent_recommendationsCreateNestedManyWithoutAgentsInput
     agent_revenue?: agent_revenueCreateNestedManyWithoutAgentsInput
@@ -23386,6 +30725,7 @@ export namespace Prisma {
     contacts?: contactsCreateNestedManyWithoutAgentsInput
     favorites?: favoritesCreateNestedManyWithoutAgentsInput
     purchased_agents?: purchased_agentsCreateNestedManyWithoutAgentsInput
+    agent_reports?: agent_reportsCreateNestedManyWithoutAgentInput
   }
 
   export type AgentUncheckedCreateWithoutCreatorInput = {
@@ -23404,6 +30744,10 @@ export namespace Prisma {
     screenshots?: AgentCreatescreenshotsInput | string[]
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string
+    approval_date?: Date | string | null
+    approved_by?: string | null
+    rejection_reason?: string | null
     agent_conversions?: agent_conversionsUncheckedCreateNestedManyWithoutAgentsInput
     agent_recommendations?: agent_recommendationsUncheckedCreateNestedManyWithoutAgentsInput
     agent_revenue?: agent_revenueUncheckedCreateNestedManyWithoutAgentsInput
@@ -23411,6 +30755,7 @@ export namespace Prisma {
     contacts?: contactsUncheckedCreateNestedManyWithoutAgentsInput
     favorites?: favoritesUncheckedCreateNestedManyWithoutAgentsInput
     purchased_agents?: purchased_agentsUncheckedCreateNestedManyWithoutAgentsInput
+    agent_reports?: agent_reportsUncheckedCreateNestedManyWithoutAgentInput
   }
 
   export type AgentCreateOrConnectWithoutCreatorInput = {
@@ -23612,6 +30957,110 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type admin_activity_logCreateWithoutAdminInput = {
+    id?: string
+    action: string
+    entity_type: string
+    entity_id: string
+    details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string | null
+  }
+
+  export type admin_activity_logUncheckedCreateWithoutAdminInput = {
+    id?: string
+    action: string
+    entity_type: string
+    entity_id: string
+    details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string | null
+  }
+
+  export type admin_activity_logCreateOrConnectWithoutAdminInput = {
+    where: admin_activity_logWhereUniqueInput
+    create: XOR<admin_activity_logCreateWithoutAdminInput, admin_activity_logUncheckedCreateWithoutAdminInput>
+  }
+
+  export type admin_activity_logCreateManyAdminInputEnvelope = {
+    data: admin_activity_logCreateManyAdminInput | admin_activity_logCreateManyAdminInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type agent_reportsCreateWithoutReporterInput = {
+    id?: string
+    reason: string
+    description?: string | null
+    status?: string
+    admin_notes?: string | null
+    resolution?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+    reviewed_at?: Date | string | null
+    agent: AgentCreateNestedOneWithoutAgent_reportsInput
+    admin?: UserCreateNestedOneWithoutAgent_reports_adminInput
+  }
+
+  export type agent_reportsUncheckedCreateWithoutReporterInput = {
+    id?: string
+    agent_id: string
+    reason: string
+    description?: string | null
+    status?: string
+    admin_notes?: string | null
+    resolution?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+    reviewed_by?: string | null
+    reviewed_at?: Date | string | null
+  }
+
+  export type agent_reportsCreateOrConnectWithoutReporterInput = {
+    where: agent_reportsWhereUniqueInput
+    create: XOR<agent_reportsCreateWithoutReporterInput, agent_reportsUncheckedCreateWithoutReporterInput>
+  }
+
+  export type agent_reportsCreateManyReporterInputEnvelope = {
+    data: agent_reportsCreateManyReporterInput | agent_reportsCreateManyReporterInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type agent_reportsCreateWithoutAdminInput = {
+    id?: string
+    reason: string
+    description?: string | null
+    status?: string
+    admin_notes?: string | null
+    resolution?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+    reviewed_at?: Date | string | null
+    agent: AgentCreateNestedOneWithoutAgent_reportsInput
+    reporter: UserCreateNestedOneWithoutAgent_reports_reporterInput
+  }
+
+  export type agent_reportsUncheckedCreateWithoutAdminInput = {
+    id?: string
+    agent_id: string
+    reporter_id: string
+    reason: string
+    description?: string | null
+    status?: string
+    admin_notes?: string | null
+    resolution?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+    reviewed_at?: Date | string | null
+  }
+
+  export type agent_reportsCreateOrConnectWithoutAdminInput = {
+    where: agent_reportsWhereUniqueInput
+    create: XOR<agent_reportsCreateWithoutAdminInput, agent_reportsUncheckedCreateWithoutAdminInput>
+  }
+
+  export type agent_reportsCreateManyAdminInputEnvelope = {
+    data: agent_reportsCreateManyAdminInput | agent_reportsCreateManyAdminInput[]
+    skipDuplicates?: boolean
+  }
+
   export type agent_conversionsUpsertWithWhereUniqueWithoutUsersInput = {
     where: agent_conversionsWhereUniqueInput
     update: XOR<agent_conversionsUpdateWithoutUsersInput, agent_conversionsUncheckedUpdateWithoutUsersInput>
@@ -23775,6 +31224,10 @@ export namespace Prisma {
     screenshots?: StringNullableListFilter<"Agent">
     createdAt?: DateTimeNullableFilter<"Agent"> | Date | string | null
     updatedAt?: DateTimeNullableFilter<"Agent"> | Date | string | null
+    status?: StringFilter<"Agent"> | string
+    approval_date?: DateTimeNullableFilter<"Agent"> | Date | string | null
+    approved_by?: UuidNullableFilter<"Agent"> | string | null
+    rejection_reason?: StringNullableFilter<"Agent"> | string | null
   }
 
   export type community_post_likesUpsertWithWhereUniqueWithoutUsersInput = {
@@ -23964,6 +31417,85 @@ export namespace Prisma {
     created_at?: DateTimeNullableFilter<"purchased_agents"> | Date | string | null
   }
 
+  export type admin_activity_logUpsertWithWhereUniqueWithoutAdminInput = {
+    where: admin_activity_logWhereUniqueInput
+    update: XOR<admin_activity_logUpdateWithoutAdminInput, admin_activity_logUncheckedUpdateWithoutAdminInput>
+    create: XOR<admin_activity_logCreateWithoutAdminInput, admin_activity_logUncheckedCreateWithoutAdminInput>
+  }
+
+  export type admin_activity_logUpdateWithWhereUniqueWithoutAdminInput = {
+    where: admin_activity_logWhereUniqueInput
+    data: XOR<admin_activity_logUpdateWithoutAdminInput, admin_activity_logUncheckedUpdateWithoutAdminInput>
+  }
+
+  export type admin_activity_logUpdateManyWithWhereWithoutAdminInput = {
+    where: admin_activity_logScalarWhereInput
+    data: XOR<admin_activity_logUpdateManyMutationInput, admin_activity_logUncheckedUpdateManyWithoutAdminInput>
+  }
+
+  export type admin_activity_logScalarWhereInput = {
+    AND?: admin_activity_logScalarWhereInput | admin_activity_logScalarWhereInput[]
+    OR?: admin_activity_logScalarWhereInput[]
+    NOT?: admin_activity_logScalarWhereInput | admin_activity_logScalarWhereInput[]
+    id?: UuidFilter<"admin_activity_log"> | string
+    admin_id?: UuidFilter<"admin_activity_log"> | string
+    action?: StringFilter<"admin_activity_log"> | string
+    entity_type?: StringFilter<"admin_activity_log"> | string
+    entity_id?: UuidFilter<"admin_activity_log"> | string
+    details?: JsonNullableFilter<"admin_activity_log">
+    created_at?: DateTimeNullableFilter<"admin_activity_log"> | Date | string | null
+  }
+
+  export type agent_reportsUpsertWithWhereUniqueWithoutReporterInput = {
+    where: agent_reportsWhereUniqueInput
+    update: XOR<agent_reportsUpdateWithoutReporterInput, agent_reportsUncheckedUpdateWithoutReporterInput>
+    create: XOR<agent_reportsCreateWithoutReporterInput, agent_reportsUncheckedCreateWithoutReporterInput>
+  }
+
+  export type agent_reportsUpdateWithWhereUniqueWithoutReporterInput = {
+    where: agent_reportsWhereUniqueInput
+    data: XOR<agent_reportsUpdateWithoutReporterInput, agent_reportsUncheckedUpdateWithoutReporterInput>
+  }
+
+  export type agent_reportsUpdateManyWithWhereWithoutReporterInput = {
+    where: agent_reportsScalarWhereInput
+    data: XOR<agent_reportsUpdateManyMutationInput, agent_reportsUncheckedUpdateManyWithoutReporterInput>
+  }
+
+  export type agent_reportsScalarWhereInput = {
+    AND?: agent_reportsScalarWhereInput | agent_reportsScalarWhereInput[]
+    OR?: agent_reportsScalarWhereInput[]
+    NOT?: agent_reportsScalarWhereInput | agent_reportsScalarWhereInput[]
+    id?: UuidFilter<"agent_reports"> | string
+    agent_id?: UuidFilter<"agent_reports"> | string
+    reporter_id?: UuidFilter<"agent_reports"> | string
+    reason?: StringFilter<"agent_reports"> | string
+    description?: StringNullableFilter<"agent_reports"> | string | null
+    status?: StringFilter<"agent_reports"> | string
+    admin_notes?: StringNullableFilter<"agent_reports"> | string | null
+    resolution?: StringNullableFilter<"agent_reports"> | string | null
+    created_at?: DateTimeNullableFilter<"agent_reports"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"agent_reports"> | Date | string | null
+    reviewed_by?: UuidNullableFilter<"agent_reports"> | string | null
+    reviewed_at?: DateTimeNullableFilter<"agent_reports"> | Date | string | null
+  }
+
+  export type agent_reportsUpsertWithWhereUniqueWithoutAdminInput = {
+    where: agent_reportsWhereUniqueInput
+    update: XOR<agent_reportsUpdateWithoutAdminInput, agent_reportsUncheckedUpdateWithoutAdminInput>
+    create: XOR<agent_reportsCreateWithoutAdminInput, agent_reportsUncheckedCreateWithoutAdminInput>
+  }
+
+  export type agent_reportsUpdateWithWhereUniqueWithoutAdminInput = {
+    where: agent_reportsWhereUniqueInput
+    data: XOR<agent_reportsUpdateWithoutAdminInput, agent_reportsUncheckedUpdateWithoutAdminInput>
+  }
+
+  export type agent_reportsUpdateManyWithWhereWithoutAdminInput = {
+    where: agent_reportsScalarWhereInput
+    data: XOR<agent_reportsUpdateManyMutationInput, agent_reportsUncheckedUpdateManyWithoutAdminInput>
+  }
+
   export type agent_conversionsCreateWithoutAgentsInput = {
     id?: string
     count?: number | null
@@ -24070,12 +31602,13 @@ export namespace Prisma {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
@@ -24088,18 +31621,22 @@ export namespace Prisma {
     enterprises?: enterprisesCreateNestedOneWithoutUsersInput
     favorites?: favoritesCreateNestedManyWithoutUsersInput
     purchased_agents?: purchased_agentsCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutAgentsInput = {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsUncheckedCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
@@ -24112,6 +31649,9 @@ export namespace Prisma {
     enterprises?: enterprisesUncheckedCreateNestedOneWithoutUsersInput
     favorites?: favoritesUncheckedCreateNestedManyWithoutUsersInput
     purchased_agents?: purchased_agentsUncheckedCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logUncheckedCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsUncheckedCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutAgentsInput = {
@@ -24196,6 +31736,44 @@ export namespace Prisma {
 
   export type purchased_agentsCreateManyAgentsInputEnvelope = {
     data: purchased_agentsCreateManyAgentsInput | purchased_agentsCreateManyAgentsInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type agent_reportsCreateWithoutAgentInput = {
+    id?: string
+    reason: string
+    description?: string | null
+    status?: string
+    admin_notes?: string | null
+    resolution?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+    reviewed_at?: Date | string | null
+    reporter: UserCreateNestedOneWithoutAgent_reports_reporterInput
+    admin?: UserCreateNestedOneWithoutAgent_reports_adminInput
+  }
+
+  export type agent_reportsUncheckedCreateWithoutAgentInput = {
+    id?: string
+    reporter_id: string
+    reason: string
+    description?: string | null
+    status?: string
+    admin_notes?: string | null
+    resolution?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+    reviewed_by?: string | null
+    reviewed_at?: Date | string | null
+  }
+
+  export type agent_reportsCreateOrConnectWithoutAgentInput = {
+    where: agent_reportsWhereUniqueInput
+    create: XOR<agent_reportsCreateWithoutAgentInput, agent_reportsUncheckedCreateWithoutAgentInput>
+  }
+
+  export type agent_reportsCreateManyAgentInputEnvelope = {
+    data: agent_reportsCreateManyAgentInput | agent_reportsCreateManyAgentInput[]
     skipDuplicates?: boolean
   }
 
@@ -24284,6 +31862,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
@@ -24296,6 +31875,9 @@ export namespace Prisma {
     enterprises?: enterprisesUpdateOneWithoutUsersNestedInput
     favorites?: favoritesUpdateManyWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAgentsInput = {
@@ -24308,6 +31890,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUncheckedUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
@@ -24320,6 +31903,9 @@ export namespace Prisma {
     enterprises?: enterprisesUncheckedUpdateOneWithoutUsersNestedInput
     favorites?: favoritesUncheckedUpdateManyWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUncheckedUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUncheckedUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUncheckedUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type contactsUpsertWithWhereUniqueWithoutAgentsInput = {
@@ -24370,6 +31956,22 @@ export namespace Prisma {
     data: XOR<purchased_agentsUpdateManyMutationInput, purchased_agentsUncheckedUpdateManyWithoutAgentsInput>
   }
 
+  export type agent_reportsUpsertWithWhereUniqueWithoutAgentInput = {
+    where: agent_reportsWhereUniqueInput
+    update: XOR<agent_reportsUpdateWithoutAgentInput, agent_reportsUncheckedUpdateWithoutAgentInput>
+    create: XOR<agent_reportsCreateWithoutAgentInput, agent_reportsUncheckedCreateWithoutAgentInput>
+  }
+
+  export type agent_reportsUpdateWithWhereUniqueWithoutAgentInput = {
+    where: agent_reportsWhereUniqueInput
+    data: XOR<agent_reportsUpdateWithoutAgentInput, agent_reportsUncheckedUpdateWithoutAgentInput>
+  }
+
+  export type agent_reportsUpdateManyWithWhereWithoutAgentInput = {
+    where: agent_reportsScalarWhereInput
+    data: XOR<agent_reportsUpdateManyMutationInput, agent_reportsUncheckedUpdateManyWithoutAgentInput>
+  }
+
   export type AgentCreateWithoutAgent_conversionsInput = {
     id?: string
     name: string
@@ -24386,6 +31988,10 @@ export namespace Prisma {
     screenshots?: AgentCreatescreenshotsInput | string[]
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string
+    approval_date?: Date | string | null
+    approved_by?: string | null
+    rejection_reason?: string | null
     agent_recommendations?: agent_recommendationsCreateNestedManyWithoutAgentsInput
     agent_revenue?: agent_revenueCreateNestedManyWithoutAgentsInput
     agent_views?: agent_viewsCreateNestedManyWithoutAgentsInput
@@ -24393,6 +31999,7 @@ export namespace Prisma {
     contacts?: contactsCreateNestedManyWithoutAgentsInput
     favorites?: favoritesCreateNestedManyWithoutAgentsInput
     purchased_agents?: purchased_agentsCreateNestedManyWithoutAgentsInput
+    agent_reports?: agent_reportsCreateNestedManyWithoutAgentInput
   }
 
   export type AgentUncheckedCreateWithoutAgent_conversionsInput = {
@@ -24412,12 +32019,17 @@ export namespace Prisma {
     screenshots?: AgentCreatescreenshotsInput | string[]
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string
+    approval_date?: Date | string | null
+    approved_by?: string | null
+    rejection_reason?: string | null
     agent_recommendations?: agent_recommendationsUncheckedCreateNestedManyWithoutAgentsInput
     agent_revenue?: agent_revenueUncheckedCreateNestedManyWithoutAgentsInput
     agent_views?: agent_viewsUncheckedCreateNestedManyWithoutAgentsInput
     contacts?: contactsUncheckedCreateNestedManyWithoutAgentsInput
     favorites?: favoritesUncheckedCreateNestedManyWithoutAgentsInput
     purchased_agents?: purchased_agentsUncheckedCreateNestedManyWithoutAgentsInput
+    agent_reports?: agent_reportsUncheckedCreateNestedManyWithoutAgentInput
   }
 
   export type AgentCreateOrConnectWithoutAgent_conversionsInput = {
@@ -24429,12 +32041,13 @@ export namespace Prisma {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
     agent_revenue?: agent_revenueCreateNestedManyWithoutUsersInput
@@ -24447,18 +32060,22 @@ export namespace Prisma {
     enterprises?: enterprisesCreateNestedOneWithoutUsersInput
     favorites?: favoritesCreateNestedManyWithoutUsersInput
     purchased_agents?: purchased_agentsCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutAgent_conversionsInput = {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
     agent_revenue?: agent_revenueUncheckedCreateNestedManyWithoutUsersInput
@@ -24471,6 +32088,9 @@ export namespace Prisma {
     enterprises?: enterprisesUncheckedCreateNestedOneWithoutUsersInput
     favorites?: favoritesUncheckedCreateNestedManyWithoutUsersInput
     purchased_agents?: purchased_agentsUncheckedCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logUncheckedCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsUncheckedCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutAgent_conversionsInput = {
@@ -24505,6 +32125,10 @@ export namespace Prisma {
     screenshots?: AgentUpdatescreenshotsInput | string[]
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableStringFieldUpdateOperationsInput | string | null
+    rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
     agent_recommendations?: agent_recommendationsUpdateManyWithoutAgentsNestedInput
     agent_revenue?: agent_revenueUpdateManyWithoutAgentsNestedInput
     agent_views?: agent_viewsUpdateManyWithoutAgentsNestedInput
@@ -24512,6 +32136,7 @@ export namespace Prisma {
     contacts?: contactsUpdateManyWithoutAgentsNestedInput
     favorites?: favoritesUpdateManyWithoutAgentsNestedInput
     purchased_agents?: purchased_agentsUpdateManyWithoutAgentsNestedInput
+    agent_reports?: agent_reportsUpdateManyWithoutAgentNestedInput
   }
 
   export type AgentUncheckedUpdateWithoutAgent_conversionsInput = {
@@ -24531,12 +32156,17 @@ export namespace Prisma {
     screenshots?: AgentUpdatescreenshotsInput | string[]
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableStringFieldUpdateOperationsInput | string | null
+    rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
     agent_recommendations?: agent_recommendationsUncheckedUpdateManyWithoutAgentsNestedInput
     agent_revenue?: agent_revenueUncheckedUpdateManyWithoutAgentsNestedInput
     agent_views?: agent_viewsUncheckedUpdateManyWithoutAgentsNestedInput
     contacts?: contactsUncheckedUpdateManyWithoutAgentsNestedInput
     favorites?: favoritesUncheckedUpdateManyWithoutAgentsNestedInput
     purchased_agents?: purchased_agentsUncheckedUpdateManyWithoutAgentsNestedInput
+    agent_reports?: agent_reportsUncheckedUpdateManyWithoutAgentNestedInput
   }
 
   export type UserUpsertWithoutAgent_conversionsInput = {
@@ -24560,6 +32190,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
     agent_revenue?: agent_revenueUpdateManyWithoutUsersNestedInput
@@ -24572,6 +32203,9 @@ export namespace Prisma {
     enterprises?: enterprisesUpdateOneWithoutUsersNestedInput
     favorites?: favoritesUpdateManyWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAgent_conversionsInput = {
@@ -24584,6 +32218,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
     agent_revenue?: agent_revenueUncheckedUpdateManyWithoutUsersNestedInput
@@ -24596,6 +32231,9 @@ export namespace Prisma {
     enterprises?: enterprisesUncheckedUpdateOneWithoutUsersNestedInput
     favorites?: favoritesUncheckedUpdateManyWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUncheckedUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUncheckedUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUncheckedUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type AgentCreateWithoutAgent_recommendationsInput = {
@@ -24614,6 +32252,10 @@ export namespace Prisma {
     screenshots?: AgentCreatescreenshotsInput | string[]
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string
+    approval_date?: Date | string | null
+    approved_by?: string | null
+    rejection_reason?: string | null
     agent_conversions?: agent_conversionsCreateNestedManyWithoutAgentsInput
     agent_revenue?: agent_revenueCreateNestedManyWithoutAgentsInput
     agent_views?: agent_viewsCreateNestedManyWithoutAgentsInput
@@ -24621,6 +32263,7 @@ export namespace Prisma {
     contacts?: contactsCreateNestedManyWithoutAgentsInput
     favorites?: favoritesCreateNestedManyWithoutAgentsInput
     purchased_agents?: purchased_agentsCreateNestedManyWithoutAgentsInput
+    agent_reports?: agent_reportsCreateNestedManyWithoutAgentInput
   }
 
   export type AgentUncheckedCreateWithoutAgent_recommendationsInput = {
@@ -24640,12 +32283,17 @@ export namespace Prisma {
     screenshots?: AgentCreatescreenshotsInput | string[]
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string
+    approval_date?: Date | string | null
+    approved_by?: string | null
+    rejection_reason?: string | null
     agent_conversions?: agent_conversionsUncheckedCreateNestedManyWithoutAgentsInput
     agent_revenue?: agent_revenueUncheckedCreateNestedManyWithoutAgentsInput
     agent_views?: agent_viewsUncheckedCreateNestedManyWithoutAgentsInput
     contacts?: contactsUncheckedCreateNestedManyWithoutAgentsInput
     favorites?: favoritesUncheckedCreateNestedManyWithoutAgentsInput
     purchased_agents?: purchased_agentsUncheckedCreateNestedManyWithoutAgentsInput
+    agent_reports?: agent_reportsUncheckedCreateNestedManyWithoutAgentInput
   }
 
   export type AgentCreateOrConnectWithoutAgent_recommendationsInput = {
@@ -24657,12 +32305,13 @@ export namespace Prisma {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
     agent_revenue?: agent_revenueCreateNestedManyWithoutUsersInput
@@ -24675,18 +32324,22 @@ export namespace Prisma {
     enterprises?: enterprisesCreateNestedOneWithoutUsersInput
     favorites?: favoritesCreateNestedManyWithoutUsersInput
     purchased_agents?: purchased_agentsCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutAgent_recommendations_agent_recommendations_creator_idTousersInput = {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsUncheckedCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
     agent_revenue?: agent_revenueUncheckedCreateNestedManyWithoutUsersInput
@@ -24699,6 +32352,9 @@ export namespace Prisma {
     enterprises?: enterprisesUncheckedCreateNestedOneWithoutUsersInput
     favorites?: favoritesUncheckedCreateNestedManyWithoutUsersInput
     purchased_agents?: purchased_agentsUncheckedCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logUncheckedCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsUncheckedCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutAgent_recommendations_agent_recommendations_creator_idTousersInput = {
@@ -24710,12 +32366,13 @@ export namespace Prisma {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_revenue?: agent_revenueCreateNestedManyWithoutUsersInput
@@ -24728,18 +32385,22 @@ export namespace Prisma {
     enterprises?: enterprisesCreateNestedOneWithoutUsersInput
     favorites?: favoritesCreateNestedManyWithoutUsersInput
     purchased_agents?: purchased_agentsCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutAgent_recommendations_agent_recommendations_enterprise_idTousersInput = {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsUncheckedCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_revenue?: agent_revenueUncheckedCreateNestedManyWithoutUsersInput
@@ -24752,6 +32413,9 @@ export namespace Prisma {
     enterprises?: enterprisesUncheckedCreateNestedOneWithoutUsersInput
     favorites?: favoritesUncheckedCreateNestedManyWithoutUsersInput
     purchased_agents?: purchased_agentsUncheckedCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logUncheckedCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsUncheckedCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutAgent_recommendations_agent_recommendations_enterprise_idTousersInput = {
@@ -24786,6 +32450,10 @@ export namespace Prisma {
     screenshots?: AgentUpdatescreenshotsInput | string[]
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableStringFieldUpdateOperationsInput | string | null
+    rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUpdateManyWithoutAgentsNestedInput
     agent_revenue?: agent_revenueUpdateManyWithoutAgentsNestedInput
     agent_views?: agent_viewsUpdateManyWithoutAgentsNestedInput
@@ -24793,6 +32461,7 @@ export namespace Prisma {
     contacts?: contactsUpdateManyWithoutAgentsNestedInput
     favorites?: favoritesUpdateManyWithoutAgentsNestedInput
     purchased_agents?: purchased_agentsUpdateManyWithoutAgentsNestedInput
+    agent_reports?: agent_reportsUpdateManyWithoutAgentNestedInput
   }
 
   export type AgentUncheckedUpdateWithoutAgent_recommendationsInput = {
@@ -24812,12 +32481,17 @@ export namespace Prisma {
     screenshots?: AgentUpdatescreenshotsInput | string[]
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableStringFieldUpdateOperationsInput | string | null
+    rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUncheckedUpdateManyWithoutAgentsNestedInput
     agent_revenue?: agent_revenueUncheckedUpdateManyWithoutAgentsNestedInput
     agent_views?: agent_viewsUncheckedUpdateManyWithoutAgentsNestedInput
     contacts?: contactsUncheckedUpdateManyWithoutAgentsNestedInput
     favorites?: favoritesUncheckedUpdateManyWithoutAgentsNestedInput
     purchased_agents?: purchased_agentsUncheckedUpdateManyWithoutAgentsNestedInput
+    agent_reports?: agent_reportsUncheckedUpdateManyWithoutAgentNestedInput
   }
 
   export type UserUpsertWithoutAgent_recommendations_agent_recommendations_creator_idTousersInput = {
@@ -24841,6 +32515,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
     agent_revenue?: agent_revenueUpdateManyWithoutUsersNestedInput
@@ -24853,6 +32528,9 @@ export namespace Prisma {
     enterprises?: enterprisesUpdateOneWithoutUsersNestedInput
     favorites?: favoritesUpdateManyWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAgent_recommendations_agent_recommendations_creator_idTousersInput = {
@@ -24865,6 +32543,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUncheckedUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
     agent_revenue?: agent_revenueUncheckedUpdateManyWithoutUsersNestedInput
@@ -24877,6 +32556,9 @@ export namespace Prisma {
     enterprises?: enterprisesUncheckedUpdateOneWithoutUsersNestedInput
     favorites?: favoritesUncheckedUpdateManyWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUncheckedUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUncheckedUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUncheckedUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUpsertWithoutAgent_recommendations_agent_recommendations_enterprise_idTousersInput = {
@@ -24900,6 +32582,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_revenue?: agent_revenueUpdateManyWithoutUsersNestedInput
@@ -24912,6 +32595,9 @@ export namespace Prisma {
     enterprises?: enterprisesUpdateOneWithoutUsersNestedInput
     favorites?: favoritesUpdateManyWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAgent_recommendations_agent_recommendations_enterprise_idTousersInput = {
@@ -24924,6 +32610,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUncheckedUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_revenue?: agent_revenueUncheckedUpdateManyWithoutUsersNestedInput
@@ -24936,6 +32623,9 @@ export namespace Prisma {
     enterprises?: enterprisesUncheckedUpdateOneWithoutUsersNestedInput
     favorites?: favoritesUncheckedUpdateManyWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUncheckedUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUncheckedUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUncheckedUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type AgentCreateWithoutAgent_revenueInput = {
@@ -24954,6 +32644,10 @@ export namespace Prisma {
     screenshots?: AgentCreatescreenshotsInput | string[]
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string
+    approval_date?: Date | string | null
+    approved_by?: string | null
+    rejection_reason?: string | null
     agent_conversions?: agent_conversionsCreateNestedManyWithoutAgentsInput
     agent_recommendations?: agent_recommendationsCreateNestedManyWithoutAgentsInput
     agent_views?: agent_viewsCreateNestedManyWithoutAgentsInput
@@ -24961,6 +32655,7 @@ export namespace Prisma {
     contacts?: contactsCreateNestedManyWithoutAgentsInput
     favorites?: favoritesCreateNestedManyWithoutAgentsInput
     purchased_agents?: purchased_agentsCreateNestedManyWithoutAgentsInput
+    agent_reports?: agent_reportsCreateNestedManyWithoutAgentInput
   }
 
   export type AgentUncheckedCreateWithoutAgent_revenueInput = {
@@ -24980,12 +32675,17 @@ export namespace Prisma {
     screenshots?: AgentCreatescreenshotsInput | string[]
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string
+    approval_date?: Date | string | null
+    approved_by?: string | null
+    rejection_reason?: string | null
     agent_conversions?: agent_conversionsUncheckedCreateNestedManyWithoutAgentsInput
     agent_recommendations?: agent_recommendationsUncheckedCreateNestedManyWithoutAgentsInput
     agent_views?: agent_viewsUncheckedCreateNestedManyWithoutAgentsInput
     contacts?: contactsUncheckedCreateNestedManyWithoutAgentsInput
     favorites?: favoritesUncheckedCreateNestedManyWithoutAgentsInput
     purchased_agents?: purchased_agentsUncheckedCreateNestedManyWithoutAgentsInput
+    agent_reports?: agent_reportsUncheckedCreateNestedManyWithoutAgentInput
   }
 
   export type AgentCreateOrConnectWithoutAgent_revenueInput = {
@@ -24997,12 +32697,13 @@ export namespace Prisma {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
@@ -25015,18 +32716,22 @@ export namespace Prisma {
     enterprises?: enterprisesCreateNestedOneWithoutUsersInput
     favorites?: favoritesCreateNestedManyWithoutUsersInput
     purchased_agents?: purchased_agentsCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutAgent_revenueInput = {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsUncheckedCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
@@ -25039,6 +32744,9 @@ export namespace Prisma {
     enterprises?: enterprisesUncheckedCreateNestedOneWithoutUsersInput
     favorites?: favoritesUncheckedCreateNestedManyWithoutUsersInput
     purchased_agents?: purchased_agentsUncheckedCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logUncheckedCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsUncheckedCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutAgent_revenueInput = {
@@ -25073,6 +32781,10 @@ export namespace Prisma {
     screenshots?: AgentUpdatescreenshotsInput | string[]
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableStringFieldUpdateOperationsInput | string | null
+    rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUpdateManyWithoutAgentsNestedInput
     agent_recommendations?: agent_recommendationsUpdateManyWithoutAgentsNestedInput
     agent_views?: agent_viewsUpdateManyWithoutAgentsNestedInput
@@ -25080,6 +32792,7 @@ export namespace Prisma {
     contacts?: contactsUpdateManyWithoutAgentsNestedInput
     favorites?: favoritesUpdateManyWithoutAgentsNestedInput
     purchased_agents?: purchased_agentsUpdateManyWithoutAgentsNestedInput
+    agent_reports?: agent_reportsUpdateManyWithoutAgentNestedInput
   }
 
   export type AgentUncheckedUpdateWithoutAgent_revenueInput = {
@@ -25099,12 +32812,17 @@ export namespace Prisma {
     screenshots?: AgentUpdatescreenshotsInput | string[]
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableStringFieldUpdateOperationsInput | string | null
+    rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUncheckedUpdateManyWithoutAgentsNestedInput
     agent_recommendations?: agent_recommendationsUncheckedUpdateManyWithoutAgentsNestedInput
     agent_views?: agent_viewsUncheckedUpdateManyWithoutAgentsNestedInput
     contacts?: contactsUncheckedUpdateManyWithoutAgentsNestedInput
     favorites?: favoritesUncheckedUpdateManyWithoutAgentsNestedInput
     purchased_agents?: purchased_agentsUncheckedUpdateManyWithoutAgentsNestedInput
+    agent_reports?: agent_reportsUncheckedUpdateManyWithoutAgentNestedInput
   }
 
   export type UserUpsertWithoutAgent_revenueInput = {
@@ -25128,6 +32846,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
@@ -25140,6 +32859,9 @@ export namespace Prisma {
     enterprises?: enterprisesUpdateOneWithoutUsersNestedInput
     favorites?: favoritesUpdateManyWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAgent_revenueInput = {
@@ -25152,6 +32874,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUncheckedUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
@@ -25164,6 +32887,9 @@ export namespace Prisma {
     enterprises?: enterprisesUncheckedUpdateOneWithoutUsersNestedInput
     favorites?: favoritesUncheckedUpdateManyWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUncheckedUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUncheckedUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUncheckedUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type AgentCreateWithoutAgent_viewsInput = {
@@ -25182,6 +32908,10 @@ export namespace Prisma {
     screenshots?: AgentCreatescreenshotsInput | string[]
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string
+    approval_date?: Date | string | null
+    approved_by?: string | null
+    rejection_reason?: string | null
     agent_conversions?: agent_conversionsCreateNestedManyWithoutAgentsInput
     agent_recommendations?: agent_recommendationsCreateNestedManyWithoutAgentsInput
     agent_revenue?: agent_revenueCreateNestedManyWithoutAgentsInput
@@ -25189,6 +32919,7 @@ export namespace Prisma {
     contacts?: contactsCreateNestedManyWithoutAgentsInput
     favorites?: favoritesCreateNestedManyWithoutAgentsInput
     purchased_agents?: purchased_agentsCreateNestedManyWithoutAgentsInput
+    agent_reports?: agent_reportsCreateNestedManyWithoutAgentInput
   }
 
   export type AgentUncheckedCreateWithoutAgent_viewsInput = {
@@ -25208,12 +32939,17 @@ export namespace Prisma {
     screenshots?: AgentCreatescreenshotsInput | string[]
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string
+    approval_date?: Date | string | null
+    approved_by?: string | null
+    rejection_reason?: string | null
     agent_conversions?: agent_conversionsUncheckedCreateNestedManyWithoutAgentsInput
     agent_recommendations?: agent_recommendationsUncheckedCreateNestedManyWithoutAgentsInput
     agent_revenue?: agent_revenueUncheckedCreateNestedManyWithoutAgentsInput
     contacts?: contactsUncheckedCreateNestedManyWithoutAgentsInput
     favorites?: favoritesUncheckedCreateNestedManyWithoutAgentsInput
     purchased_agents?: purchased_agentsUncheckedCreateNestedManyWithoutAgentsInput
+    agent_reports?: agent_reportsUncheckedCreateNestedManyWithoutAgentInput
   }
 
   export type AgentCreateOrConnectWithoutAgent_viewsInput = {
@@ -25225,12 +32961,13 @@ export namespace Prisma {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
@@ -25243,18 +32980,22 @@ export namespace Prisma {
     enterprises?: enterprisesCreateNestedOneWithoutUsersInput
     favorites?: favoritesCreateNestedManyWithoutUsersInput
     purchased_agents?: purchased_agentsCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutAgent_viewsInput = {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsUncheckedCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
@@ -25267,6 +33008,9 @@ export namespace Prisma {
     enterprises?: enterprisesUncheckedCreateNestedOneWithoutUsersInput
     favorites?: favoritesUncheckedCreateNestedManyWithoutUsersInput
     purchased_agents?: purchased_agentsUncheckedCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logUncheckedCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsUncheckedCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutAgent_viewsInput = {
@@ -25301,6 +33045,10 @@ export namespace Prisma {
     screenshots?: AgentUpdatescreenshotsInput | string[]
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableStringFieldUpdateOperationsInput | string | null
+    rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUpdateManyWithoutAgentsNestedInput
     agent_recommendations?: agent_recommendationsUpdateManyWithoutAgentsNestedInput
     agent_revenue?: agent_revenueUpdateManyWithoutAgentsNestedInput
@@ -25308,6 +33056,7 @@ export namespace Prisma {
     contacts?: contactsUpdateManyWithoutAgentsNestedInput
     favorites?: favoritesUpdateManyWithoutAgentsNestedInput
     purchased_agents?: purchased_agentsUpdateManyWithoutAgentsNestedInput
+    agent_reports?: agent_reportsUpdateManyWithoutAgentNestedInput
   }
 
   export type AgentUncheckedUpdateWithoutAgent_viewsInput = {
@@ -25327,12 +33076,17 @@ export namespace Prisma {
     screenshots?: AgentUpdatescreenshotsInput | string[]
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableStringFieldUpdateOperationsInput | string | null
+    rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUncheckedUpdateManyWithoutAgentsNestedInput
     agent_recommendations?: agent_recommendationsUncheckedUpdateManyWithoutAgentsNestedInput
     agent_revenue?: agent_revenueUncheckedUpdateManyWithoutAgentsNestedInput
     contacts?: contactsUncheckedUpdateManyWithoutAgentsNestedInput
     favorites?: favoritesUncheckedUpdateManyWithoutAgentsNestedInput
     purchased_agents?: purchased_agentsUncheckedUpdateManyWithoutAgentsNestedInput
+    agent_reports?: agent_reportsUncheckedUpdateManyWithoutAgentNestedInput
   }
 
   export type UserUpsertWithoutAgent_viewsInput = {
@@ -25356,6 +33110,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
@@ -25368,6 +33123,9 @@ export namespace Prisma {
     enterprises?: enterprisesUpdateOneWithoutUsersNestedInput
     favorites?: favoritesUpdateManyWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAgent_viewsInput = {
@@ -25380,6 +33138,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUncheckedUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
@@ -25392,6 +33151,9 @@ export namespace Prisma {
     enterprises?: enterprisesUncheckedUpdateOneWithoutUsersNestedInput
     favorites?: favoritesUncheckedUpdateManyWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUncheckedUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUncheckedUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUncheckedUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type community_postsCreateWithoutCommunity_post_likesInput = {
@@ -25421,12 +33183,13 @@ export namespace Prisma {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
@@ -25439,18 +33202,22 @@ export namespace Prisma {
     enterprises?: enterprisesCreateNestedOneWithoutUsersInput
     favorites?: favoritesCreateNestedManyWithoutUsersInput
     purchased_agents?: purchased_agentsCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutCommunity_post_likesInput = {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsUncheckedCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
@@ -25463,6 +33230,9 @@ export namespace Prisma {
     enterprises?: enterprisesUncheckedCreateNestedOneWithoutUsersInput
     favorites?: favoritesUncheckedCreateNestedManyWithoutUsersInput
     purchased_agents?: purchased_agentsUncheckedCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logUncheckedCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsUncheckedCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutCommunity_post_likesInput = {
@@ -25520,6 +33290,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
@@ -25532,6 +33303,9 @@ export namespace Prisma {
     enterprises?: enterprisesUpdateOneWithoutUsersNestedInput
     favorites?: favoritesUpdateManyWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommunity_post_likesInput = {
@@ -25544,6 +33318,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUncheckedUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
@@ -25556,6 +33331,9 @@ export namespace Prisma {
     enterprises?: enterprisesUncheckedUpdateOneWithoutUsersNestedInput
     favorites?: favoritesUncheckedUpdateManyWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUncheckedUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUncheckedUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUncheckedUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type community_post_likesCreateWithoutCommunity_postsInput = {
@@ -25584,12 +33362,13 @@ export namespace Prisma {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
@@ -25602,18 +33381,22 @@ export namespace Prisma {
     enterprises?: enterprisesCreateNestedOneWithoutUsersInput
     favorites?: favoritesCreateNestedManyWithoutUsersInput
     purchased_agents?: purchased_agentsCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutCommunity_postsInput = {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsUncheckedCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
@@ -25626,6 +33409,9 @@ export namespace Prisma {
     enterprises?: enterprisesUncheckedCreateNestedOneWithoutUsersInput
     favorites?: favoritesUncheckedCreateNestedManyWithoutUsersInput
     purchased_agents?: purchased_agentsUncheckedCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logUncheckedCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsUncheckedCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutCommunity_postsInput = {
@@ -25670,6 +33456,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
@@ -25682,6 +33469,9 @@ export namespace Prisma {
     enterprises?: enterprisesUpdateOneWithoutUsersNestedInput
     favorites?: favoritesUpdateManyWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommunity_postsInput = {
@@ -25694,6 +33484,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUncheckedUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
@@ -25706,6 +33497,9 @@ export namespace Prisma {
     enterprises?: enterprisesUncheckedUpdateOneWithoutUsersNestedInput
     favorites?: favoritesUncheckedUpdateManyWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUncheckedUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUncheckedUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUncheckedUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type AgentCreateWithoutContactsInput = {
@@ -25724,6 +33518,10 @@ export namespace Prisma {
     screenshots?: AgentCreatescreenshotsInput | string[]
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string
+    approval_date?: Date | string | null
+    approved_by?: string | null
+    rejection_reason?: string | null
     agent_conversions?: agent_conversionsCreateNestedManyWithoutAgentsInput
     agent_recommendations?: agent_recommendationsCreateNestedManyWithoutAgentsInput
     agent_revenue?: agent_revenueCreateNestedManyWithoutAgentsInput
@@ -25731,6 +33529,7 @@ export namespace Prisma {
     creator: UserCreateNestedOneWithoutAgentsInput
     favorites?: favoritesCreateNestedManyWithoutAgentsInput
     purchased_agents?: purchased_agentsCreateNestedManyWithoutAgentsInput
+    agent_reports?: agent_reportsCreateNestedManyWithoutAgentInput
   }
 
   export type AgentUncheckedCreateWithoutContactsInput = {
@@ -25750,12 +33549,17 @@ export namespace Prisma {
     screenshots?: AgentCreatescreenshotsInput | string[]
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string
+    approval_date?: Date | string | null
+    approved_by?: string | null
+    rejection_reason?: string | null
     agent_conversions?: agent_conversionsUncheckedCreateNestedManyWithoutAgentsInput
     agent_recommendations?: agent_recommendationsUncheckedCreateNestedManyWithoutAgentsInput
     agent_revenue?: agent_revenueUncheckedCreateNestedManyWithoutAgentsInput
     agent_views?: agent_viewsUncheckedCreateNestedManyWithoutAgentsInput
     favorites?: favoritesUncheckedCreateNestedManyWithoutAgentsInput
     purchased_agents?: purchased_agentsUncheckedCreateNestedManyWithoutAgentsInput
+    agent_reports?: agent_reportsUncheckedCreateNestedManyWithoutAgentInput
   }
 
   export type AgentCreateOrConnectWithoutContactsInput = {
@@ -25767,12 +33571,13 @@ export namespace Prisma {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
@@ -25785,18 +33590,22 @@ export namespace Prisma {
     enterprises?: enterprisesCreateNestedOneWithoutUsersInput
     favorites?: favoritesCreateNestedManyWithoutUsersInput
     purchased_agents?: purchased_agentsCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutContacts_contacts_creator_idTousersInput = {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsUncheckedCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
@@ -25809,6 +33618,9 @@ export namespace Prisma {
     enterprises?: enterprisesUncheckedCreateNestedOneWithoutUsersInput
     favorites?: favoritesUncheckedCreateNestedManyWithoutUsersInput
     purchased_agents?: purchased_agentsUncheckedCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logUncheckedCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsUncheckedCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutContacts_contacts_creator_idTousersInput = {
@@ -25820,12 +33632,13 @@ export namespace Prisma {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
@@ -25838,18 +33651,22 @@ export namespace Prisma {
     enterprises?: enterprisesCreateNestedOneWithoutUsersInput
     favorites?: favoritesCreateNestedManyWithoutUsersInput
     purchased_agents?: purchased_agentsCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutContacts_contacts_enterprise_idTousersInput = {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsUncheckedCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
@@ -25862,6 +33679,9 @@ export namespace Prisma {
     enterprises?: enterprisesUncheckedCreateNestedOneWithoutUsersInput
     favorites?: favoritesUncheckedCreateNestedManyWithoutUsersInput
     purchased_agents?: purchased_agentsUncheckedCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logUncheckedCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsUncheckedCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutContacts_contacts_enterprise_idTousersInput = {
@@ -25928,6 +33748,10 @@ export namespace Prisma {
     screenshots?: AgentUpdatescreenshotsInput | string[]
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableStringFieldUpdateOperationsInput | string | null
+    rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUpdateManyWithoutAgentsNestedInput
     agent_recommendations?: agent_recommendationsUpdateManyWithoutAgentsNestedInput
     agent_revenue?: agent_revenueUpdateManyWithoutAgentsNestedInput
@@ -25935,6 +33759,7 @@ export namespace Prisma {
     creator?: UserUpdateOneRequiredWithoutAgentsNestedInput
     favorites?: favoritesUpdateManyWithoutAgentsNestedInput
     purchased_agents?: purchased_agentsUpdateManyWithoutAgentsNestedInput
+    agent_reports?: agent_reportsUpdateManyWithoutAgentNestedInput
   }
 
   export type AgentUncheckedUpdateWithoutContactsInput = {
@@ -25954,12 +33779,17 @@ export namespace Prisma {
     screenshots?: AgentUpdatescreenshotsInput | string[]
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableStringFieldUpdateOperationsInput | string | null
+    rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUncheckedUpdateManyWithoutAgentsNestedInput
     agent_recommendations?: agent_recommendationsUncheckedUpdateManyWithoutAgentsNestedInput
     agent_revenue?: agent_revenueUncheckedUpdateManyWithoutAgentsNestedInput
     agent_views?: agent_viewsUncheckedUpdateManyWithoutAgentsNestedInput
     favorites?: favoritesUncheckedUpdateManyWithoutAgentsNestedInput
     purchased_agents?: purchased_agentsUncheckedUpdateManyWithoutAgentsNestedInput
+    agent_reports?: agent_reportsUncheckedUpdateManyWithoutAgentNestedInput
   }
 
   export type UserUpsertWithoutContacts_contacts_creator_idTousersInput = {
@@ -25983,6 +33813,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
@@ -25995,6 +33826,9 @@ export namespace Prisma {
     enterprises?: enterprisesUpdateOneWithoutUsersNestedInput
     favorites?: favoritesUpdateManyWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutContacts_contacts_creator_idTousersInput = {
@@ -26007,6 +33841,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUncheckedUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
@@ -26019,6 +33854,9 @@ export namespace Prisma {
     enterprises?: enterprisesUncheckedUpdateOneWithoutUsersNestedInput
     favorites?: favoritesUncheckedUpdateManyWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUncheckedUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUncheckedUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUncheckedUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUpsertWithoutContacts_contacts_enterprise_idTousersInput = {
@@ -26042,6 +33880,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
@@ -26054,6 +33893,9 @@ export namespace Prisma {
     enterprises?: enterprisesUpdateOneWithoutUsersNestedInput
     favorites?: favoritesUpdateManyWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutContacts_contacts_enterprise_idTousersInput = {
@@ -26066,6 +33908,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUncheckedUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
@@ -26078,6 +33921,9 @@ export namespace Prisma {
     enterprises?: enterprisesUncheckedUpdateOneWithoutUsersNestedInput
     favorites?: favoritesUncheckedUpdateManyWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUncheckedUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUncheckedUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUncheckedUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type enterprise_contactsUpsertWithWhereUniqueWithoutContactsInput = {
@@ -26109,6 +33955,526 @@ export namespace Prisma {
     needs?: StringNullableFilter<"enterprise_contacts"> | string | null
     created_at?: DateTimeNullableFilter<"enterprise_contacts"> | Date | string | null
     updated_at?: DateTimeNullableFilter<"enterprise_contacts"> | Date | string | null
+  }
+
+  export type UserCreateWithoutAdmin_activity_logInput = {
+    id?: string
+    email: string
+    name: string
+    role?: string
+    avatar?: string | null
+    company?: string | null
+    bio?: string | null
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
+    status?: string | null
+    agent_conversions?: agent_conversionsCreateNestedManyWithoutUsersInput
+    agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
+    agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
+    agent_revenue?: agent_revenueCreateNestedManyWithoutUsersInput
+    agent_views?: agent_viewsCreateNestedManyWithoutUsersInput
+    agents?: AgentCreateNestedManyWithoutCreatorInput
+    community_post_likes?: community_post_likesCreateNestedManyWithoutUsersInput
+    community_posts?: community_postsCreateNestedManyWithoutUsersInput
+    contacts_contacts_creator_idTousers?: contactsCreateNestedManyWithoutUsers_contacts_creator_idTousersInput
+    contacts_contacts_enterprise_idTousers?: contactsCreateNestedManyWithoutUsers_contacts_enterprise_idTousersInput
+    enterprises?: enterprisesCreateNestedOneWithoutUsersInput
+    favorites?: favoritesCreateNestedManyWithoutUsersInput
+    purchased_agents?: purchased_agentsCreateNestedManyWithoutUsersInput
+    agent_reports_reporter?: agent_reportsCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsCreateNestedManyWithoutAdminInput
+  }
+
+  export type UserUncheckedCreateWithoutAdmin_activity_logInput = {
+    id?: string
+    email: string
+    name: string
+    role?: string
+    avatar?: string | null
+    company?: string | null
+    bio?: string | null
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
+    status?: string | null
+    agent_conversions?: agent_conversionsUncheckedCreateNestedManyWithoutUsersInput
+    agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
+    agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
+    agent_revenue?: agent_revenueUncheckedCreateNestedManyWithoutUsersInput
+    agent_views?: agent_viewsUncheckedCreateNestedManyWithoutUsersInput
+    agents?: AgentUncheckedCreateNestedManyWithoutCreatorInput
+    community_post_likes?: community_post_likesUncheckedCreateNestedManyWithoutUsersInput
+    community_posts?: community_postsUncheckedCreateNestedManyWithoutUsersInput
+    contacts_contacts_creator_idTousers?: contactsUncheckedCreateNestedManyWithoutUsers_contacts_creator_idTousersInput
+    contacts_contacts_enterprise_idTousers?: contactsUncheckedCreateNestedManyWithoutUsers_contacts_enterprise_idTousersInput
+    enterprises?: enterprisesUncheckedCreateNestedOneWithoutUsersInput
+    favorites?: favoritesUncheckedCreateNestedManyWithoutUsersInput
+    purchased_agents?: purchased_agentsUncheckedCreateNestedManyWithoutUsersInput
+    agent_reports_reporter?: agent_reportsUncheckedCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsUncheckedCreateNestedManyWithoutAdminInput
+  }
+
+  export type UserCreateOrConnectWithoutAdmin_activity_logInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAdmin_activity_logInput, UserUncheckedCreateWithoutAdmin_activity_logInput>
+  }
+
+  export type UserUpsertWithoutAdmin_activity_logInput = {
+    update: XOR<UserUpdateWithoutAdmin_activity_logInput, UserUncheckedUpdateWithoutAdmin_activity_logInput>
+    create: XOR<UserCreateWithoutAdmin_activity_logInput, UserUncheckedCreateWithoutAdmin_activity_logInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAdmin_activity_logInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAdmin_activity_logInput, UserUncheckedUpdateWithoutAdmin_activity_logInput>
+  }
+
+  export type UserUpdateWithoutAdmin_activity_logInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    agent_conversions?: agent_conversionsUpdateManyWithoutUsersNestedInput
+    agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
+    agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
+    agent_revenue?: agent_revenueUpdateManyWithoutUsersNestedInput
+    agent_views?: agent_viewsUpdateManyWithoutUsersNestedInput
+    agents?: AgentUpdateManyWithoutCreatorNestedInput
+    community_post_likes?: community_post_likesUpdateManyWithoutUsersNestedInput
+    community_posts?: community_postsUpdateManyWithoutUsersNestedInput
+    contacts_contacts_creator_idTousers?: contactsUpdateManyWithoutUsers_contacts_creator_idTousersNestedInput
+    contacts_contacts_enterprise_idTousers?: contactsUpdateManyWithoutUsers_contacts_enterprise_idTousersNestedInput
+    enterprises?: enterprisesUpdateOneWithoutUsersNestedInput
+    favorites?: favoritesUpdateManyWithoutUsersNestedInput
+    purchased_agents?: purchased_agentsUpdateManyWithoutUsersNestedInput
+    agent_reports_reporter?: agent_reportsUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUpdateManyWithoutAdminNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAdmin_activity_logInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    agent_conversions?: agent_conversionsUncheckedUpdateManyWithoutUsersNestedInput
+    agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
+    agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
+    agent_revenue?: agent_revenueUncheckedUpdateManyWithoutUsersNestedInput
+    agent_views?: agent_viewsUncheckedUpdateManyWithoutUsersNestedInput
+    agents?: AgentUncheckedUpdateManyWithoutCreatorNestedInput
+    community_post_likes?: community_post_likesUncheckedUpdateManyWithoutUsersNestedInput
+    community_posts?: community_postsUncheckedUpdateManyWithoutUsersNestedInput
+    contacts_contacts_creator_idTousers?: contactsUncheckedUpdateManyWithoutUsers_contacts_creator_idTousersNestedInput
+    contacts_contacts_enterprise_idTousers?: contactsUncheckedUpdateManyWithoutUsers_contacts_enterprise_idTousersNestedInput
+    enterprises?: enterprisesUncheckedUpdateOneWithoutUsersNestedInput
+    favorites?: favoritesUncheckedUpdateManyWithoutUsersNestedInput
+    purchased_agents?: purchased_agentsUncheckedUpdateManyWithoutUsersNestedInput
+    agent_reports_reporter?: agent_reportsUncheckedUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUncheckedUpdateManyWithoutAdminNestedInput
+  }
+
+  export type AgentCreateWithoutAgent_reportsInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    short_description?: string | null
+    category?: string | null
+    pricing: JsonNullValueInput | InputJsonValue
+    featured?: boolean | null
+    logo_url?: string | null
+    integrations?: AgentCreateintegrationsInput | string[]
+    demo_url?: string | null
+    demo_video_url?: string | null
+    screenshots?: AgentCreatescreenshotsInput | string[]
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
+    status?: string
+    approval_date?: Date | string | null
+    approved_by?: string | null
+    rejection_reason?: string | null
+    agent_conversions?: agent_conversionsCreateNestedManyWithoutAgentsInput
+    agent_recommendations?: agent_recommendationsCreateNestedManyWithoutAgentsInput
+    agent_revenue?: agent_revenueCreateNestedManyWithoutAgentsInput
+    agent_views?: agent_viewsCreateNestedManyWithoutAgentsInput
+    creator: UserCreateNestedOneWithoutAgentsInput
+    contacts?: contactsCreateNestedManyWithoutAgentsInput
+    favorites?: favoritesCreateNestedManyWithoutAgentsInput
+    purchased_agents?: purchased_agentsCreateNestedManyWithoutAgentsInput
+  }
+
+  export type AgentUncheckedCreateWithoutAgent_reportsInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    short_description?: string | null
+    category?: string | null
+    creatorId: string
+    pricing: JsonNullValueInput | InputJsonValue
+    featured?: boolean | null
+    logo_url?: string | null
+    integrations?: AgentCreateintegrationsInput | string[]
+    demo_url?: string | null
+    demo_video_url?: string | null
+    screenshots?: AgentCreatescreenshotsInput | string[]
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
+    status?: string
+    approval_date?: Date | string | null
+    approved_by?: string | null
+    rejection_reason?: string | null
+    agent_conversions?: agent_conversionsUncheckedCreateNestedManyWithoutAgentsInput
+    agent_recommendations?: agent_recommendationsUncheckedCreateNestedManyWithoutAgentsInput
+    agent_revenue?: agent_revenueUncheckedCreateNestedManyWithoutAgentsInput
+    agent_views?: agent_viewsUncheckedCreateNestedManyWithoutAgentsInput
+    contacts?: contactsUncheckedCreateNestedManyWithoutAgentsInput
+    favorites?: favoritesUncheckedCreateNestedManyWithoutAgentsInput
+    purchased_agents?: purchased_agentsUncheckedCreateNestedManyWithoutAgentsInput
+  }
+
+  export type AgentCreateOrConnectWithoutAgent_reportsInput = {
+    where: AgentWhereUniqueInput
+    create: XOR<AgentCreateWithoutAgent_reportsInput, AgentUncheckedCreateWithoutAgent_reportsInput>
+  }
+
+  export type UserCreateWithoutAgent_reports_reporterInput = {
+    id?: string
+    email: string
+    name: string
+    role?: string
+    avatar?: string | null
+    company?: string | null
+    bio?: string | null
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
+    status?: string | null
+    agent_conversions?: agent_conversionsCreateNestedManyWithoutUsersInput
+    agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
+    agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
+    agent_revenue?: agent_revenueCreateNestedManyWithoutUsersInput
+    agent_views?: agent_viewsCreateNestedManyWithoutUsersInput
+    agents?: AgentCreateNestedManyWithoutCreatorInput
+    community_post_likes?: community_post_likesCreateNestedManyWithoutUsersInput
+    community_posts?: community_postsCreateNestedManyWithoutUsersInput
+    contacts_contacts_creator_idTousers?: contactsCreateNestedManyWithoutUsers_contacts_creator_idTousersInput
+    contacts_contacts_enterprise_idTousers?: contactsCreateNestedManyWithoutUsers_contacts_enterprise_idTousersInput
+    enterprises?: enterprisesCreateNestedOneWithoutUsersInput
+    favorites?: favoritesCreateNestedManyWithoutUsersInput
+    purchased_agents?: purchased_agentsCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logCreateNestedManyWithoutAdminInput
+    agent_reports_admin?: agent_reportsCreateNestedManyWithoutAdminInput
+  }
+
+  export type UserUncheckedCreateWithoutAgent_reports_reporterInput = {
+    id?: string
+    email: string
+    name: string
+    role?: string
+    avatar?: string | null
+    company?: string | null
+    bio?: string | null
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
+    status?: string | null
+    agent_conversions?: agent_conversionsUncheckedCreateNestedManyWithoutUsersInput
+    agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
+    agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
+    agent_revenue?: agent_revenueUncheckedCreateNestedManyWithoutUsersInput
+    agent_views?: agent_viewsUncheckedCreateNestedManyWithoutUsersInput
+    agents?: AgentUncheckedCreateNestedManyWithoutCreatorInput
+    community_post_likes?: community_post_likesUncheckedCreateNestedManyWithoutUsersInput
+    community_posts?: community_postsUncheckedCreateNestedManyWithoutUsersInput
+    contacts_contacts_creator_idTousers?: contactsUncheckedCreateNestedManyWithoutUsers_contacts_creator_idTousersInput
+    contacts_contacts_enterprise_idTousers?: contactsUncheckedCreateNestedManyWithoutUsers_contacts_enterprise_idTousersInput
+    enterprises?: enterprisesUncheckedCreateNestedOneWithoutUsersInput
+    favorites?: favoritesUncheckedCreateNestedManyWithoutUsersInput
+    purchased_agents?: purchased_agentsUncheckedCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logUncheckedCreateNestedManyWithoutAdminInput
+    agent_reports_admin?: agent_reportsUncheckedCreateNestedManyWithoutAdminInput
+  }
+
+  export type UserCreateOrConnectWithoutAgent_reports_reporterInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAgent_reports_reporterInput, UserUncheckedCreateWithoutAgent_reports_reporterInput>
+  }
+
+  export type UserCreateWithoutAgent_reports_adminInput = {
+    id?: string
+    email: string
+    name: string
+    role?: string
+    avatar?: string | null
+    company?: string | null
+    bio?: string | null
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
+    status?: string | null
+    agent_conversions?: agent_conversionsCreateNestedManyWithoutUsersInput
+    agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
+    agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
+    agent_revenue?: agent_revenueCreateNestedManyWithoutUsersInput
+    agent_views?: agent_viewsCreateNestedManyWithoutUsersInput
+    agents?: AgentCreateNestedManyWithoutCreatorInput
+    community_post_likes?: community_post_likesCreateNestedManyWithoutUsersInput
+    community_posts?: community_postsCreateNestedManyWithoutUsersInput
+    contacts_contacts_creator_idTousers?: contactsCreateNestedManyWithoutUsers_contacts_creator_idTousersInput
+    contacts_contacts_enterprise_idTousers?: contactsCreateNestedManyWithoutUsers_contacts_enterprise_idTousersInput
+    enterprises?: enterprisesCreateNestedOneWithoutUsersInput
+    favorites?: favoritesCreateNestedManyWithoutUsersInput
+    purchased_agents?: purchased_agentsCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsCreateNestedManyWithoutReporterInput
+  }
+
+  export type UserUncheckedCreateWithoutAgent_reports_adminInput = {
+    id?: string
+    email: string
+    name: string
+    role?: string
+    avatar?: string | null
+    company?: string | null
+    bio?: string | null
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
+    status?: string | null
+    agent_conversions?: agent_conversionsUncheckedCreateNestedManyWithoutUsersInput
+    agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
+    agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
+    agent_revenue?: agent_revenueUncheckedCreateNestedManyWithoutUsersInput
+    agent_views?: agent_viewsUncheckedCreateNestedManyWithoutUsersInput
+    agents?: AgentUncheckedCreateNestedManyWithoutCreatorInput
+    community_post_likes?: community_post_likesUncheckedCreateNestedManyWithoutUsersInput
+    community_posts?: community_postsUncheckedCreateNestedManyWithoutUsersInput
+    contacts_contacts_creator_idTousers?: contactsUncheckedCreateNestedManyWithoutUsers_contacts_creator_idTousersInput
+    contacts_contacts_enterprise_idTousers?: contactsUncheckedCreateNestedManyWithoutUsers_contacts_enterprise_idTousersInput
+    enterprises?: enterprisesUncheckedCreateNestedOneWithoutUsersInput
+    favorites?: favoritesUncheckedCreateNestedManyWithoutUsersInput
+    purchased_agents?: purchased_agentsUncheckedCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logUncheckedCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsUncheckedCreateNestedManyWithoutReporterInput
+  }
+
+  export type UserCreateOrConnectWithoutAgent_reports_adminInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAgent_reports_adminInput, UserUncheckedCreateWithoutAgent_reports_adminInput>
+  }
+
+  export type AgentUpsertWithoutAgent_reportsInput = {
+    update: XOR<AgentUpdateWithoutAgent_reportsInput, AgentUncheckedUpdateWithoutAgent_reportsInput>
+    create: XOR<AgentCreateWithoutAgent_reportsInput, AgentUncheckedCreateWithoutAgent_reportsInput>
+    where?: AgentWhereInput
+  }
+
+  export type AgentUpdateToOneWithWhereWithoutAgent_reportsInput = {
+    where?: AgentWhereInput
+    data: XOR<AgentUpdateWithoutAgent_reportsInput, AgentUncheckedUpdateWithoutAgent_reportsInput>
+  }
+
+  export type AgentUpdateWithoutAgent_reportsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    short_description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    pricing?: JsonNullValueInput | InputJsonValue
+    featured?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    logo_url?: NullableStringFieldUpdateOperationsInput | string | null
+    integrations?: AgentUpdateintegrationsInput | string[]
+    demo_url?: NullableStringFieldUpdateOperationsInput | string | null
+    demo_video_url?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshots?: AgentUpdatescreenshotsInput | string[]
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableStringFieldUpdateOperationsInput | string | null
+    rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
+    agent_conversions?: agent_conversionsUpdateManyWithoutAgentsNestedInput
+    agent_recommendations?: agent_recommendationsUpdateManyWithoutAgentsNestedInput
+    agent_revenue?: agent_revenueUpdateManyWithoutAgentsNestedInput
+    agent_views?: agent_viewsUpdateManyWithoutAgentsNestedInput
+    creator?: UserUpdateOneRequiredWithoutAgentsNestedInput
+    contacts?: contactsUpdateManyWithoutAgentsNestedInput
+    favorites?: favoritesUpdateManyWithoutAgentsNestedInput
+    purchased_agents?: purchased_agentsUpdateManyWithoutAgentsNestedInput
+  }
+
+  export type AgentUncheckedUpdateWithoutAgent_reportsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    short_description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    creatorId?: StringFieldUpdateOperationsInput | string
+    pricing?: JsonNullValueInput | InputJsonValue
+    featured?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    logo_url?: NullableStringFieldUpdateOperationsInput | string | null
+    integrations?: AgentUpdateintegrationsInput | string[]
+    demo_url?: NullableStringFieldUpdateOperationsInput | string | null
+    demo_video_url?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshots?: AgentUpdatescreenshotsInput | string[]
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableStringFieldUpdateOperationsInput | string | null
+    rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
+    agent_conversions?: agent_conversionsUncheckedUpdateManyWithoutAgentsNestedInput
+    agent_recommendations?: agent_recommendationsUncheckedUpdateManyWithoutAgentsNestedInput
+    agent_revenue?: agent_revenueUncheckedUpdateManyWithoutAgentsNestedInput
+    agent_views?: agent_viewsUncheckedUpdateManyWithoutAgentsNestedInput
+    contacts?: contactsUncheckedUpdateManyWithoutAgentsNestedInput
+    favorites?: favoritesUncheckedUpdateManyWithoutAgentsNestedInput
+    purchased_agents?: purchased_agentsUncheckedUpdateManyWithoutAgentsNestedInput
+  }
+
+  export type UserUpsertWithoutAgent_reports_reporterInput = {
+    update: XOR<UserUpdateWithoutAgent_reports_reporterInput, UserUncheckedUpdateWithoutAgent_reports_reporterInput>
+    create: XOR<UserCreateWithoutAgent_reports_reporterInput, UserUncheckedCreateWithoutAgent_reports_reporterInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAgent_reports_reporterInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAgent_reports_reporterInput, UserUncheckedUpdateWithoutAgent_reports_reporterInput>
+  }
+
+  export type UserUpdateWithoutAgent_reports_reporterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    agent_conversions?: agent_conversionsUpdateManyWithoutUsersNestedInput
+    agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
+    agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
+    agent_revenue?: agent_revenueUpdateManyWithoutUsersNestedInput
+    agent_views?: agent_viewsUpdateManyWithoutUsersNestedInput
+    agents?: AgentUpdateManyWithoutCreatorNestedInput
+    community_post_likes?: community_post_likesUpdateManyWithoutUsersNestedInput
+    community_posts?: community_postsUpdateManyWithoutUsersNestedInput
+    contacts_contacts_creator_idTousers?: contactsUpdateManyWithoutUsers_contacts_creator_idTousersNestedInput
+    contacts_contacts_enterprise_idTousers?: contactsUpdateManyWithoutUsers_contacts_enterprise_idTousersNestedInput
+    enterprises?: enterprisesUpdateOneWithoutUsersNestedInput
+    favorites?: favoritesUpdateManyWithoutUsersNestedInput
+    purchased_agents?: purchased_agentsUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUpdateManyWithoutAdminNestedInput
+    agent_reports_admin?: agent_reportsUpdateManyWithoutAdminNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAgent_reports_reporterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    agent_conversions?: agent_conversionsUncheckedUpdateManyWithoutUsersNestedInput
+    agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
+    agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
+    agent_revenue?: agent_revenueUncheckedUpdateManyWithoutUsersNestedInput
+    agent_views?: agent_viewsUncheckedUpdateManyWithoutUsersNestedInput
+    agents?: AgentUncheckedUpdateManyWithoutCreatorNestedInput
+    community_post_likes?: community_post_likesUncheckedUpdateManyWithoutUsersNestedInput
+    community_posts?: community_postsUncheckedUpdateManyWithoutUsersNestedInput
+    contacts_contacts_creator_idTousers?: contactsUncheckedUpdateManyWithoutUsers_contacts_creator_idTousersNestedInput
+    contacts_contacts_enterprise_idTousers?: contactsUncheckedUpdateManyWithoutUsers_contacts_enterprise_idTousersNestedInput
+    enterprises?: enterprisesUncheckedUpdateOneWithoutUsersNestedInput
+    favorites?: favoritesUncheckedUpdateManyWithoutUsersNestedInput
+    purchased_agents?: purchased_agentsUncheckedUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUncheckedUpdateManyWithoutAdminNestedInput
+    agent_reports_admin?: agent_reportsUncheckedUpdateManyWithoutAdminNestedInput
+  }
+
+  export type UserUpsertWithoutAgent_reports_adminInput = {
+    update: XOR<UserUpdateWithoutAgent_reports_adminInput, UserUncheckedUpdateWithoutAgent_reports_adminInput>
+    create: XOR<UserCreateWithoutAgent_reports_adminInput, UserUncheckedCreateWithoutAgent_reports_adminInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAgent_reports_adminInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAgent_reports_adminInput, UserUncheckedUpdateWithoutAgent_reports_adminInput>
+  }
+
+  export type UserUpdateWithoutAgent_reports_adminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    agent_conversions?: agent_conversionsUpdateManyWithoutUsersNestedInput
+    agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
+    agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
+    agent_revenue?: agent_revenueUpdateManyWithoutUsersNestedInput
+    agent_views?: agent_viewsUpdateManyWithoutUsersNestedInput
+    agents?: AgentUpdateManyWithoutCreatorNestedInput
+    community_post_likes?: community_post_likesUpdateManyWithoutUsersNestedInput
+    community_posts?: community_postsUpdateManyWithoutUsersNestedInput
+    contacts_contacts_creator_idTousers?: contactsUpdateManyWithoutUsers_contacts_creator_idTousersNestedInput
+    contacts_contacts_enterprise_idTousers?: contactsUpdateManyWithoutUsers_contacts_enterprise_idTousersNestedInput
+    enterprises?: enterprisesUpdateOneWithoutUsersNestedInput
+    favorites?: favoritesUpdateManyWithoutUsersNestedInput
+    purchased_agents?: purchased_agentsUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUpdateManyWithoutReporterNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAgent_reports_adminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    agent_conversions?: agent_conversionsUncheckedUpdateManyWithoutUsersNestedInput
+    agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
+    agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
+    agent_revenue?: agent_revenueUncheckedUpdateManyWithoutUsersNestedInput
+    agent_views?: agent_viewsUncheckedUpdateManyWithoutUsersNestedInput
+    agents?: AgentUncheckedUpdateManyWithoutCreatorNestedInput
+    community_post_likes?: community_post_likesUncheckedUpdateManyWithoutUsersNestedInput
+    community_posts?: community_postsUncheckedUpdateManyWithoutUsersNestedInput
+    contacts_contacts_creator_idTousers?: contactsUncheckedUpdateManyWithoutUsers_contacts_creator_idTousersNestedInput
+    contacts_contacts_enterprise_idTousers?: contactsUncheckedUpdateManyWithoutUsers_contacts_enterprise_idTousersNestedInput
+    enterprises?: enterprisesUncheckedUpdateOneWithoutUsersNestedInput
+    favorites?: favoritesUncheckedUpdateManyWithoutUsersNestedInput
+    purchased_agents?: purchased_agentsUncheckedUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUncheckedUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUncheckedUpdateManyWithoutReporterNestedInput
   }
 
   export type contactsCreateWithoutEnterprise_contactsInput = {
@@ -26175,12 +34541,13 @@ export namespace Prisma {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
@@ -26193,18 +34560,22 @@ export namespace Prisma {
     contacts_contacts_enterprise_idTousers?: contactsCreateNestedManyWithoutUsers_contacts_enterprise_idTousersInput
     favorites?: favoritesCreateNestedManyWithoutUsersInput
     purchased_agents?: purchased_agentsCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutEnterprisesInput = {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsUncheckedCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
@@ -26217,6 +34588,9 @@ export namespace Prisma {
     contacts_contacts_enterprise_idTousers?: contactsUncheckedCreateNestedManyWithoutUsers_contacts_enterprise_idTousersInput
     favorites?: favoritesUncheckedCreateNestedManyWithoutUsersInput
     purchased_agents?: purchased_agentsUncheckedCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logUncheckedCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsUncheckedCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutEnterprisesInput = {
@@ -26245,6 +34619,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
@@ -26257,6 +34632,9 @@ export namespace Prisma {
     contacts_contacts_enterprise_idTousers?: contactsUpdateManyWithoutUsers_contacts_enterprise_idTousersNestedInput
     favorites?: favoritesUpdateManyWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEnterprisesInput = {
@@ -26269,6 +34647,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUncheckedUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
@@ -26281,6 +34660,9 @@ export namespace Prisma {
     contacts_contacts_enterprise_idTousers?: contactsUncheckedUpdateManyWithoutUsers_contacts_enterprise_idTousersNestedInput
     favorites?: favoritesUncheckedUpdateManyWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUncheckedUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUncheckedUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUncheckedUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type AgentCreateWithoutFavoritesInput = {
@@ -26299,6 +34681,10 @@ export namespace Prisma {
     screenshots?: AgentCreatescreenshotsInput | string[]
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string
+    approval_date?: Date | string | null
+    approved_by?: string | null
+    rejection_reason?: string | null
     agent_conversions?: agent_conversionsCreateNestedManyWithoutAgentsInput
     agent_recommendations?: agent_recommendationsCreateNestedManyWithoutAgentsInput
     agent_revenue?: agent_revenueCreateNestedManyWithoutAgentsInput
@@ -26306,6 +34692,7 @@ export namespace Prisma {
     creator: UserCreateNestedOneWithoutAgentsInput
     contacts?: contactsCreateNestedManyWithoutAgentsInput
     purchased_agents?: purchased_agentsCreateNestedManyWithoutAgentsInput
+    agent_reports?: agent_reportsCreateNestedManyWithoutAgentInput
   }
 
   export type AgentUncheckedCreateWithoutFavoritesInput = {
@@ -26325,12 +34712,17 @@ export namespace Prisma {
     screenshots?: AgentCreatescreenshotsInput | string[]
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string
+    approval_date?: Date | string | null
+    approved_by?: string | null
+    rejection_reason?: string | null
     agent_conversions?: agent_conversionsUncheckedCreateNestedManyWithoutAgentsInput
     agent_recommendations?: agent_recommendationsUncheckedCreateNestedManyWithoutAgentsInput
     agent_revenue?: agent_revenueUncheckedCreateNestedManyWithoutAgentsInput
     agent_views?: agent_viewsUncheckedCreateNestedManyWithoutAgentsInput
     contacts?: contactsUncheckedCreateNestedManyWithoutAgentsInput
     purchased_agents?: purchased_agentsUncheckedCreateNestedManyWithoutAgentsInput
+    agent_reports?: agent_reportsUncheckedCreateNestedManyWithoutAgentInput
   }
 
   export type AgentCreateOrConnectWithoutFavoritesInput = {
@@ -26342,12 +34734,13 @@ export namespace Prisma {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
@@ -26360,18 +34753,22 @@ export namespace Prisma {
     contacts_contacts_enterprise_idTousers?: contactsCreateNestedManyWithoutUsers_contacts_enterprise_idTousersInput
     enterprises?: enterprisesCreateNestedOneWithoutUsersInput
     purchased_agents?: purchased_agentsCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutFavoritesInput = {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsUncheckedCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
@@ -26384,6 +34781,9 @@ export namespace Prisma {
     contacts_contacts_enterprise_idTousers?: contactsUncheckedCreateNestedManyWithoutUsers_contacts_enterprise_idTousersInput
     enterprises?: enterprisesUncheckedCreateNestedOneWithoutUsersInput
     purchased_agents?: purchased_agentsUncheckedCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logUncheckedCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsUncheckedCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutFavoritesInput = {
@@ -26418,6 +34818,10 @@ export namespace Prisma {
     screenshots?: AgentUpdatescreenshotsInput | string[]
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableStringFieldUpdateOperationsInput | string | null
+    rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUpdateManyWithoutAgentsNestedInput
     agent_recommendations?: agent_recommendationsUpdateManyWithoutAgentsNestedInput
     agent_revenue?: agent_revenueUpdateManyWithoutAgentsNestedInput
@@ -26425,6 +34829,7 @@ export namespace Prisma {
     creator?: UserUpdateOneRequiredWithoutAgentsNestedInput
     contacts?: contactsUpdateManyWithoutAgentsNestedInput
     purchased_agents?: purchased_agentsUpdateManyWithoutAgentsNestedInput
+    agent_reports?: agent_reportsUpdateManyWithoutAgentNestedInput
   }
 
   export type AgentUncheckedUpdateWithoutFavoritesInput = {
@@ -26444,12 +34849,17 @@ export namespace Prisma {
     screenshots?: AgentUpdatescreenshotsInput | string[]
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableStringFieldUpdateOperationsInput | string | null
+    rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUncheckedUpdateManyWithoutAgentsNestedInput
     agent_recommendations?: agent_recommendationsUncheckedUpdateManyWithoutAgentsNestedInput
     agent_revenue?: agent_revenueUncheckedUpdateManyWithoutAgentsNestedInput
     agent_views?: agent_viewsUncheckedUpdateManyWithoutAgentsNestedInput
     contacts?: contactsUncheckedUpdateManyWithoutAgentsNestedInput
     purchased_agents?: purchased_agentsUncheckedUpdateManyWithoutAgentsNestedInput
+    agent_reports?: agent_reportsUncheckedUpdateManyWithoutAgentNestedInput
   }
 
   export type UserUpsertWithoutFavoritesInput = {
@@ -26473,6 +34883,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
@@ -26485,6 +34896,9 @@ export namespace Prisma {
     contacts_contacts_enterprise_idTousers?: contactsUpdateManyWithoutUsers_contacts_enterprise_idTousersNestedInput
     enterprises?: enterprisesUpdateOneWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFavoritesInput = {
@@ -26497,6 +34911,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUncheckedUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
@@ -26509,6 +34924,9 @@ export namespace Prisma {
     contacts_contacts_enterprise_idTousers?: contactsUncheckedUpdateManyWithoutUsers_contacts_enterprise_idTousersNestedInput
     enterprises?: enterprisesUncheckedUpdateOneWithoutUsersNestedInput
     purchased_agents?: purchased_agentsUncheckedUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUncheckedUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUncheckedUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type AgentCreateWithoutPurchased_agentsInput = {
@@ -26527,6 +34945,10 @@ export namespace Prisma {
     screenshots?: AgentCreatescreenshotsInput | string[]
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string
+    approval_date?: Date | string | null
+    approved_by?: string | null
+    rejection_reason?: string | null
     agent_conversions?: agent_conversionsCreateNestedManyWithoutAgentsInput
     agent_recommendations?: agent_recommendationsCreateNestedManyWithoutAgentsInput
     agent_revenue?: agent_revenueCreateNestedManyWithoutAgentsInput
@@ -26534,6 +34956,7 @@ export namespace Prisma {
     creator: UserCreateNestedOneWithoutAgentsInput
     contacts?: contactsCreateNestedManyWithoutAgentsInput
     favorites?: favoritesCreateNestedManyWithoutAgentsInput
+    agent_reports?: agent_reportsCreateNestedManyWithoutAgentInput
   }
 
   export type AgentUncheckedCreateWithoutPurchased_agentsInput = {
@@ -26553,12 +34976,17 @@ export namespace Prisma {
     screenshots?: AgentCreatescreenshotsInput | string[]
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string
+    approval_date?: Date | string | null
+    approved_by?: string | null
+    rejection_reason?: string | null
     agent_conversions?: agent_conversionsUncheckedCreateNestedManyWithoutAgentsInput
     agent_recommendations?: agent_recommendationsUncheckedCreateNestedManyWithoutAgentsInput
     agent_revenue?: agent_revenueUncheckedCreateNestedManyWithoutAgentsInput
     agent_views?: agent_viewsUncheckedCreateNestedManyWithoutAgentsInput
     contacts?: contactsUncheckedCreateNestedManyWithoutAgentsInput
     favorites?: favoritesUncheckedCreateNestedManyWithoutAgentsInput
+    agent_reports?: agent_reportsUncheckedCreateNestedManyWithoutAgentInput
   }
 
   export type AgentCreateOrConnectWithoutPurchased_agentsInput = {
@@ -26570,12 +34998,13 @@ export namespace Prisma {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
@@ -26588,18 +35017,22 @@ export namespace Prisma {
     contacts_contacts_enterprise_idTousers?: contactsCreateNestedManyWithoutUsers_contacts_enterprise_idTousersInput
     enterprises?: enterprisesCreateNestedOneWithoutUsersInput
     favorites?: favoritesCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutPurchased_agentsInput = {
     id?: string
     email: string
     name: string
-    role: string
+    role?: string
     avatar?: string | null
     company?: string | null
     bio?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string | null
     agent_conversions?: agent_conversionsUncheckedCreateNestedManyWithoutUsersInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_creator_idTousersInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedCreateNestedManyWithoutUsers_agent_recommendations_enterprise_idTousersInput
@@ -26612,6 +35045,9 @@ export namespace Prisma {
     contacts_contacts_enterprise_idTousers?: contactsUncheckedCreateNestedManyWithoutUsers_contacts_enterprise_idTousersInput
     enterprises?: enterprisesUncheckedCreateNestedOneWithoutUsersInput
     favorites?: favoritesUncheckedCreateNestedManyWithoutUsersInput
+    admin_activity_log?: admin_activity_logUncheckedCreateNestedManyWithoutAdminInput
+    agent_reports_reporter?: agent_reportsUncheckedCreateNestedManyWithoutReporterInput
+    agent_reports_admin?: agent_reportsUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutPurchased_agentsInput = {
@@ -26646,6 +35082,10 @@ export namespace Prisma {
     screenshots?: AgentUpdatescreenshotsInput | string[]
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableStringFieldUpdateOperationsInput | string | null
+    rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUpdateManyWithoutAgentsNestedInput
     agent_recommendations?: agent_recommendationsUpdateManyWithoutAgentsNestedInput
     agent_revenue?: agent_revenueUpdateManyWithoutAgentsNestedInput
@@ -26653,6 +35093,7 @@ export namespace Prisma {
     creator?: UserUpdateOneRequiredWithoutAgentsNestedInput
     contacts?: contactsUpdateManyWithoutAgentsNestedInput
     favorites?: favoritesUpdateManyWithoutAgentsNestedInput
+    agent_reports?: agent_reportsUpdateManyWithoutAgentNestedInput
   }
 
   export type AgentUncheckedUpdateWithoutPurchased_agentsInput = {
@@ -26672,12 +35113,17 @@ export namespace Prisma {
     screenshots?: AgentUpdatescreenshotsInput | string[]
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableStringFieldUpdateOperationsInput | string | null
+    rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUncheckedUpdateManyWithoutAgentsNestedInput
     agent_recommendations?: agent_recommendationsUncheckedUpdateManyWithoutAgentsNestedInput
     agent_revenue?: agent_revenueUncheckedUpdateManyWithoutAgentsNestedInput
     agent_views?: agent_viewsUncheckedUpdateManyWithoutAgentsNestedInput
     contacts?: contactsUncheckedUpdateManyWithoutAgentsNestedInput
     favorites?: favoritesUncheckedUpdateManyWithoutAgentsNestedInput
+    agent_reports?: agent_reportsUncheckedUpdateManyWithoutAgentNestedInput
   }
 
   export type UserUpsertWithoutPurchased_agentsInput = {
@@ -26701,6 +35147,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
@@ -26713,6 +35160,9 @@ export namespace Prisma {
     contacts_contacts_enterprise_idTousers?: contactsUpdateManyWithoutUsers_contacts_enterprise_idTousersNestedInput
     enterprises?: enterprisesUpdateOneWithoutUsersNestedInput
     favorites?: favoritesUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPurchased_agentsInput = {
@@ -26725,6 +35175,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUncheckedUpdateManyWithoutUsersNestedInput
     agent_recommendations_agent_recommendations_creator_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_creator_idTousersNestedInput
     agent_recommendations_agent_recommendations_enterprise_idTousers?: agent_recommendationsUncheckedUpdateManyWithoutUsers_agent_recommendations_enterprise_idTousersNestedInput
@@ -26737,6 +35188,9 @@ export namespace Prisma {
     contacts_contacts_enterprise_idTousers?: contactsUncheckedUpdateManyWithoutUsers_contacts_enterprise_idTousersNestedInput
     enterprises?: enterprisesUncheckedUpdateOneWithoutUsersNestedInput
     favorites?: favoritesUncheckedUpdateManyWithoutUsersNestedInput
+    admin_activity_log?: admin_activity_logUncheckedUpdateManyWithoutAdminNestedInput
+    agent_reports_reporter?: agent_reportsUncheckedUpdateManyWithoutReporterNestedInput
+    agent_reports_admin?: agent_reportsUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type agent_conversionsCreateManyUsersInput = {
@@ -26795,6 +35249,10 @@ export namespace Prisma {
     screenshots?: AgentCreatescreenshotsInput | string[]
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
+    status?: string
+    approval_date?: Date | string | null
+    approved_by?: string | null
+    rejection_reason?: string | null
   }
 
   export type community_post_likesCreateManyUsersInput = {
@@ -26843,6 +35301,43 @@ export namespace Prisma {
     purchase_date?: Date | string | null
     status: string
     created_at?: Date | string | null
+  }
+
+  export type admin_activity_logCreateManyAdminInput = {
+    id?: string
+    action: string
+    entity_type: string
+    entity_id: string
+    details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string | null
+  }
+
+  export type agent_reportsCreateManyReporterInput = {
+    id?: string
+    agent_id: string
+    reason: string
+    description?: string | null
+    status?: string
+    admin_notes?: string | null
+    resolution?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+    reviewed_by?: string | null
+    reviewed_at?: Date | string | null
+  }
+
+  export type agent_reportsCreateManyAdminInput = {
+    id?: string
+    agent_id: string
+    reporter_id: string
+    reason: string
+    description?: string | null
+    status?: string
+    admin_notes?: string | null
+    resolution?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+    reviewed_at?: Date | string | null
   }
 
   export type agent_conversionsUpdateWithoutUsersInput = {
@@ -26981,6 +35476,10 @@ export namespace Prisma {
     screenshots?: AgentUpdatescreenshotsInput | string[]
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableStringFieldUpdateOperationsInput | string | null
+    rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUpdateManyWithoutAgentsNestedInput
     agent_recommendations?: agent_recommendationsUpdateManyWithoutAgentsNestedInput
     agent_revenue?: agent_revenueUpdateManyWithoutAgentsNestedInput
@@ -26988,6 +35487,7 @@ export namespace Prisma {
     contacts?: contactsUpdateManyWithoutAgentsNestedInput
     favorites?: favoritesUpdateManyWithoutAgentsNestedInput
     purchased_agents?: purchased_agentsUpdateManyWithoutAgentsNestedInput
+    agent_reports?: agent_reportsUpdateManyWithoutAgentNestedInput
   }
 
   export type AgentUncheckedUpdateWithoutCreatorInput = {
@@ -27006,6 +35506,10 @@ export namespace Prisma {
     screenshots?: AgentUpdatescreenshotsInput | string[]
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableStringFieldUpdateOperationsInput | string | null
+    rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
     agent_conversions?: agent_conversionsUncheckedUpdateManyWithoutAgentsNestedInput
     agent_recommendations?: agent_recommendationsUncheckedUpdateManyWithoutAgentsNestedInput
     agent_revenue?: agent_revenueUncheckedUpdateManyWithoutAgentsNestedInput
@@ -27013,6 +35517,7 @@ export namespace Prisma {
     contacts?: contactsUncheckedUpdateManyWithoutAgentsNestedInput
     favorites?: favoritesUncheckedUpdateManyWithoutAgentsNestedInput
     purchased_agents?: purchased_agentsUncheckedUpdateManyWithoutAgentsNestedInput
+    agent_reports?: agent_reportsUncheckedUpdateManyWithoutAgentNestedInput
   }
 
   export type AgentUncheckedUpdateManyWithoutCreatorInput = {
@@ -27031,6 +35536,10 @@ export namespace Prisma {
     screenshots?: AgentUpdatescreenshotsInput | string[]
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableStringFieldUpdateOperationsInput | string | null
+    rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type community_post_likesUpdateWithoutUsersInput = {
@@ -27183,6 +35692,117 @@ export namespace Prisma {
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type admin_activity_logUpdateWithoutAdminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    entity_type?: StringFieldUpdateOperationsInput | string
+    entity_id?: StringFieldUpdateOperationsInput | string
+    details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type admin_activity_logUncheckedUpdateWithoutAdminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    entity_type?: StringFieldUpdateOperationsInput | string
+    entity_id?: StringFieldUpdateOperationsInput | string
+    details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type admin_activity_logUncheckedUpdateManyWithoutAdminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    entity_type?: StringFieldUpdateOperationsInput | string
+    entity_id?: StringFieldUpdateOperationsInput | string
+    details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type agent_reportsUpdateWithoutReporterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    admin_notes?: NullableStringFieldUpdateOperationsInput | string | null
+    resolution?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    agent?: AgentUpdateOneRequiredWithoutAgent_reportsNestedInput
+    admin?: UserUpdateOneWithoutAgent_reports_adminNestedInput
+  }
+
+  export type agent_reportsUncheckedUpdateWithoutReporterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agent_id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    admin_notes?: NullableStringFieldUpdateOperationsInput | string | null
+    resolution?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewed_by?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type agent_reportsUncheckedUpdateManyWithoutReporterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agent_id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    admin_notes?: NullableStringFieldUpdateOperationsInput | string | null
+    resolution?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewed_by?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type agent_reportsUpdateWithoutAdminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    admin_notes?: NullableStringFieldUpdateOperationsInput | string | null
+    resolution?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    agent?: AgentUpdateOneRequiredWithoutAgent_reportsNestedInput
+    reporter?: UserUpdateOneRequiredWithoutAgent_reports_reporterNestedInput
+  }
+
+  export type agent_reportsUncheckedUpdateWithoutAdminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agent_id?: StringFieldUpdateOperationsInput | string
+    reporter_id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    admin_notes?: NullableStringFieldUpdateOperationsInput | string | null
+    resolution?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type agent_reportsUncheckedUpdateManyWithoutAdminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agent_id?: StringFieldUpdateOperationsInput | string
+    reporter_id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    admin_notes?: NullableStringFieldUpdateOperationsInput | string | null
+    resolution?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type agent_conversionsCreateManyAgentsInput = {
     id?: string
     creator_id: string
@@ -27236,6 +35856,20 @@ export namespace Prisma {
     purchase_date?: Date | string | null
     status: string
     created_at?: Date | string | null
+  }
+
+  export type agent_reportsCreateManyAgentInput = {
+    id?: string
+    reporter_id: string
+    reason: string
+    description?: string | null
+    status?: string
+    admin_notes?: string | null
+    resolution?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+    reviewed_by?: string | null
+    reviewed_at?: Date | string | null
   }
 
   export type agent_conversionsUpdateWithoutAgentsInput = {
@@ -27403,6 +36037,48 @@ export namespace Prisma {
     purchase_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type agent_reportsUpdateWithoutAgentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    admin_notes?: NullableStringFieldUpdateOperationsInput | string | null
+    resolution?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reporter?: UserUpdateOneRequiredWithoutAgent_reports_reporterNestedInput
+    admin?: UserUpdateOneWithoutAgent_reports_adminNestedInput
+  }
+
+  export type agent_reportsUncheckedUpdateWithoutAgentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reporter_id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    admin_notes?: NullableStringFieldUpdateOperationsInput | string | null
+    resolution?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewed_by?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type agent_reportsUncheckedUpdateManyWithoutAgentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reporter_id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    admin_notes?: NullableStringFieldUpdateOperationsInput | string | null
+    resolution?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewed_by?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type community_post_likesCreateManyCommunity_postsInput = {

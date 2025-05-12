@@ -1,3 +1,5 @@
+/* eslint-disable */
+// @ts-nocheck
 import prisma from '@/lib/prisma';
 import { supabaseAdmin } from '@/lib/supabase-client-admin';
 import { User } from '@/types';

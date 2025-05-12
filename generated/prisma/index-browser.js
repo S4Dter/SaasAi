@@ -129,7 +129,8 @@ exports.Prisma.UserScalarFieldEnum = {
   company: 'company',
   bio: 'bio',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  status: 'status'
 };
 
 exports.Prisma.AgentScalarFieldEnum = {
@@ -148,7 +149,11 @@ exports.Prisma.AgentScalarFieldEnum = {
   demo_video_url: 'demo_video_url',
   screenshots: 'screenshots',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  status: 'status',
+  approval_date: 'approval_date',
+  approved_by: 'approved_by',
+  rejection_reason: 'rejection_reason'
 };
 
 exports.Prisma.Agent_conversionsScalarFieldEnum = {
@@ -209,6 +214,60 @@ exports.Prisma.ContactsScalarFieldEnum = {
   creator_id: 'creator_id',
   message: 'message',
   status: 'status',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.Admin_activity_logScalarFieldEnum = {
+  id: 'id',
+  admin_id: 'admin_id',
+  action: 'action',
+  entity_type: 'entity_type',
+  entity_id: 'entity_id',
+  details: 'details',
+  created_at: 'created_at'
+};
+
+exports.Prisma.Agent_categoriesScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  description: 'description',
+  icon: 'icon',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.Agent_reportsScalarFieldEnum = {
+  id: 'id',
+  agent_id: 'agent_id',
+  reporter_id: 'reporter_id',
+  reason: 'reason',
+  description: 'description',
+  status: 'status',
+  admin_notes: 'admin_notes',
+  resolution: 'resolution',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  reviewed_by: 'reviewed_by',
+  reviewed_at: 'reviewed_at'
+};
+
+exports.Prisma.System_settingsScalarFieldEnum = {
+  id: 'id',
+  setting_key: 'setting_key',
+  setting_value: 'setting_value',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  description: 'description'
+};
+
+exports.Prisma.Notification_templatesScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  subject: 'subject',
+  body: 'body',
+  variables: 'variables',
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
@@ -302,6 +361,11 @@ exports.Prisma.ModelName = {
   community_post_likes: 'community_post_likes',
   community_posts: 'community_posts',
   contacts: 'contacts',
+  admin_activity_log: 'admin_activity_log',
+  agent_categories: 'agent_categories',
+  agent_reports: 'agent_reports',
+  system_settings: 'system_settings',
+  notification_templates: 'notification_templates',
   debug_logs: 'debug_logs',
   enterprise_contacts: 'enterprise_contacts',
   enterprises: 'enterprises',
