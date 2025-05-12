@@ -12,12 +12,13 @@ model User {
   id                                                               String                  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   email                                                            String                  @unique
   name                                                             String
-  role                                                             String
+  role                                                             String                  @default("enterprise") // "enterprise", "creator", "admin"
   avatar                                                           String?
   company                                                          String?
   bio                                                              String?
   createdAt                                                        DateTime?               @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt                                                        DateTime?               @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  status                                                           String?                 @default("active") // "active", "suspended", "pending"
   agent_conversions                                                agent_conversions[]
   agent_recommendations_agent_recommendations_creator_idTousers    agent_recommendations[] @relation("agent_recommendations_creator_idTousers")
   agent_recommendations_agent_recommendations_enterprise_idTousers agent_recommendations[] @relation("agent_recommendations_enterprise_idTousers")
@@ -31,6 +32,9 @@ model User {
   enterprises                                                      enterprises?
   favorites                                                        favorites[]
   purchased_agents                                                 purchased_agents[]
+  admin_activity_log                                               admin_activity_log[]
+  agent_reports_reporter                                           agent_reports[]         @relation("agent_reports_reporter")
+  agent_reports_admin                                              agent_reports[]         @relation("agent_reports_admin")
 
   @@index([company(ops: raw("gin_trgm_ops"))], map: "idx_users_company_trgm", type: Gin)
   @@index([name(ops: raw("gin_trgm_ops"))], map: "idx_users_name_trgm", type: Gin)
@@ -55,6 +59,10 @@ model Agent {
   screenshots           String[]
   createdAt             DateTime?               @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt             DateTime?               @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  status                String                  @default("pending") // "pending", "approved", "rejected", "archived"
+  approval_date         DateTime?               @db.Timestamptz(6)
+  approved_by           String?                 @db.Uuid
+  rejection_reason      String?
   agent_conversions     agent_conversions[]
   agent_recommendations agent_recommendations[]
   agent_revenue         agent_revenue[]
@@ -63,12 +71,14 @@ model Agent {
   contacts              contacts[]
   favorites             favorites[]
   purchased_agents      purchased_agents[]
+  agent_reports         agent_reports[]
 
   @@index([category], map: "idx_agents_category")
   @@index([creatorId], map: "idx_agents_creator_id")
   @@index([description(ops: raw("gin_trgm_ops"))], map: "idx_agents_description_trgm", type: Gin)
   @@index([featured], map: "idx_agents_featured")
   @@index([name(ops: raw("gin_trgm_ops"))], map: "idx_agents_name_trgm", type: Gin)
+  @@index([status], map: "idx_agents_status")
   @@map("agents")
 }
 
@@ -166,6 +176,80 @@ model contacts {
   @@index([agent_id], map: "idx_contacts_agent_id")
   @@index([creator_id], map: "idx_contacts_creator_id")
   @@index([enterprise_id], map: "idx_contacts_enterprise_id")
+}
+
+// Admin-specific tables
+model admin_activity_log {
+  id          String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  admin_id    String    @db.Uuid
+  action      String    // "user_update", "agent_approval", "category_create", etc.
+  entity_type String    // "user", "agent", "category", etc.
+  entity_id   String    @db.Uuid
+  details     Json?
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
+  admin       User      @relation(fields: [admin_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([admin_id], map: "idx_admin_activity_admin_id")
+  @@index([entity_type, entity_id], map: "idx_admin_activity_entity")
+  @@map("admin_activity_log")
+}
+
+model agent_categories {
+  id          String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name        String    @unique
+  slug        String    @unique
+  description String?
+  icon        String?
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime? @default(now()) @updatedAt @db.Timestamptz(6)
+
+  @@map("agent_categories")
+}
+
+model agent_reports {
+  id           String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  agent_id     String    @db.Uuid
+  reporter_id  String    @db.Uuid
+  reason       String
+  description  String?
+  status       String    @default("pending") // "pending", "reviewed", "dismissed", "actioned"
+  admin_notes  String?
+  resolution   String?
+  created_at   DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime? @default(now()) @updatedAt @db.Timestamptz(6)
+  reviewed_by  String?   @db.Uuid
+  reviewed_at  DateTime? @db.Timestamptz(6)
+  agent        Agent     @relation(fields: [agent_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  reporter     User      @relation("agent_reports_reporter", fields: [reporter_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  admin        User?     @relation("agent_reports_admin", fields: [reviewed_by], references: [id], onDelete: SetNull, onUpdate: NoAction)
+
+  @@index([agent_id], map: "idx_agent_reports_agent_id")
+  @@index([reporter_id], map: "idx_agent_reports_reporter_id")
+  @@index([status], map: "idx_agent_reports_status")
+  @@map("agent_reports")
+}
+
+model system_settings {
+  id           String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  setting_key  String    @unique
+  setting_value Json
+  created_at   DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime? @default(now()) @updatedAt @db.Timestamptz(6)
+  description  String?
+
+  @@map("system_settings")
+}
+
+model notification_templates {
+  id          String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  type        String    @unique // "agent_approved", "user_suspended", etc.
+  subject     String
+  body        String
+  variables   String[]
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime? @default(now()) @updatedAt @db.Timestamptz(6)
+
+  @@map("notification_templates")
 }
 
 model debug_logs {

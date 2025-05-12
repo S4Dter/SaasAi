@@ -21,6 +21,16 @@ export const ROUTES = {
       PROSPECTION: '/dashboard/creator/prospection',
       ADD_AGENT: '/dashboard/creator/add',
     },
+    ADMIN: {
+      ROOT: '/dashboard/admin',
+      USERS: '/dashboard/admin/users',
+      AGENTS: '/dashboard/admin/agents',
+      CATEGORIES: '/dashboard/admin/categories',
+      REPORTS: '/dashboard/admin/reports',
+      STATS: '/dashboard/admin/stats',
+      ACTIVITIES: '/dashboard/admin/activities',
+      SETTINGS: '/dashboard/admin/settings',
+    },
   },
   AUTH: {
     SIGNIN: '/signin',

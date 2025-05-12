@@ -1,6 +1,16 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import type { Database } from '@/types/supabase';
+
+/**
+ * Client Supabase avec accès administrateur
+ * À utiliser uniquement pour les opérations admin qui nécessitent des droits élevés
+ */
+export const supabaseAdmin = createClient<Database>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL || '',
+  process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+);
 
 /**
  * Crée un client Supabase côté serveur

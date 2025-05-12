@@ -13,6 +13,7 @@ const PROTECTED_ROUTE_PREFIXES = ['/dashboard', '/api/protected'];
 const ROLE_SPECIFIC_ROUTES = {
   creator: ['/dashboard/creator', '/creator'],
   enterprise: ['/dashboard/enterprise', '/enterprise'],
+  admin: ['/dashboard/admin'],
 };
 
 // Définir une liste des pages qui ont déjà leurs propres mécanismes de redirection
@@ -20,7 +21,8 @@ const ROLE_SPECIFIC_ROUTES = {
 const SELF_HANDLING_ROUTES = [
   '/dashboard', 
   '/dashboard/creator', 
-  '/dashboard/enterprise'
+  '/dashboard/enterprise',
+  '/dashboard/admin'
 ];
 
 export function middleware(request: NextRequest) {
@@ -123,15 +125,45 @@ export function middleware(request: NextRequest) {
     const isEnterpriseRoute = ROLE_SPECIFIC_ROUTES.enterprise.some(route =>
       pathname.startsWith(route)
     );
+    const isAdminRoute = ROLE_SPECIFIC_ROUTES.admin.some(route =>
+      pathname.startsWith(route)
+    );
 
+    // Routes réservées aux admin
+    if (isAdminRoute && userRole !== 'admin') {
+      console.log(`Redirection role mismatch: ${userRole} tente d'accéder à une route admin ${pathname}`);
+      
+      // Rediriger vers le dashboard correspondant au rôle
+      const dashboardPath = userRole === 'creator'
+        ? ROUTES.DASHBOARD.CREATOR.ROOT
+        : ROUTES.DASHBOARD.ENTERPRISE.ROOT;
+        
+      url.pathname = dashboardPath;
+      return NextResponse.redirect(url);
+    }
+
+    // Routes réservées aux créateurs
     if (isCreatorRoute && userRole !== 'creator') {
       console.log(`Redirection role mismatch: ${userRole} tente d'accéder à ${pathname}`);
+      
+      // Les admins peuvent accéder à toutes les routes
+      if (userRole === 'admin') {
+        return NextResponse.next();
+      }
+      
       url.pathname = ROUTES.DASHBOARD.ENTERPRISE.ROOT;
       return NextResponse.redirect(url);
     }
 
+    // Routes réservées aux entreprises
     if (isEnterpriseRoute && userRole !== 'enterprise') {
       console.log(`Redirection role mismatch: ${userRole} tente d'accéder à ${pathname}`);
+      
+      // Les admins peuvent accéder à toutes les routes
+      if (userRole === 'admin') {
+        return NextResponse.next();
+      }
+      
       url.pathname = ROUTES.DASHBOARD.CREATOR.ROOT;
       return NextResponse.redirect(url);
     }
@@ -139,9 +171,15 @@ export function middleware(request: NextRequest) {
 
   // 4. Page de redirection post-login
   if (pathname === '/redirect' && isAuthenticated) {
-    const dashboardPath = userRole === 'creator'
-      ? ROUTES.DASHBOARD.CREATOR.ROOT
-      : ROUTES.DASHBOARD.ENTERPRISE.ROOT;
+    let dashboardPath;
+    
+    if (userRole === 'admin') {
+      dashboardPath = ROUTES.DASHBOARD.ADMIN.ROOT;
+    } else if (userRole === 'creator') {
+      dashboardPath = ROUTES.DASHBOARD.CREATOR.ROOT;
+    } else {
+      dashboardPath = ROUTES.DASHBOARD.ENTERPRISE.ROOT;
+    }
     
     console.log(`Redirection via /redirect vers ${dashboardPath}`);
     url.pathname = dashboardPath;
