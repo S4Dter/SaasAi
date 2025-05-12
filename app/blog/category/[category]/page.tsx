@@ -1,7 +1,11 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 
-export async function generateMetadata({ params }: { params: { category: string } }): Promise<Metadata> {
+export async function generateMetadata({ 
+  params 
+}: { 
+  params: { category: string } 
+}): Promise<Metadata> {
   // In a real implementation, you would fetch the category data based on the slug
   // and use it to generate dynamic metadata
   const category = decodeURIComponent(params.category)

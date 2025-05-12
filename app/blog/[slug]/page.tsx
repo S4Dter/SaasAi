@@ -3,7 +3,11 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 
 // This would be replaced with your actual data fetching logic
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata({ 
+  params 
+}: { 
+  params: { slug: string } 
+}): Promise<Metadata> {
   // In a real implementation, you would fetch the article data based on the slug
   // and use it to generate dynamic metadata
   const slug = params.slug
