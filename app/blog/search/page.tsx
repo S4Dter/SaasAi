@@ -6,10 +6,10 @@ export const metadata: Metadata = {
   description: 'Rechercher des articles dans notre blog',
 };
 
-export default function SearchPage({
-  searchParams,
-}: {
-  searchParams?: { q: string };
+export default function SearchPage({ 
+  searchParams 
+}: { 
+  searchParams: { q?: string | string[] }
 }) {
   const query = searchParams?.q || '';
   const hasQuery = query.length > 0;

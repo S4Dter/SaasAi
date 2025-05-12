@@ -1,26 +1,20 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ category: string }>;
-}): Promise<Metadata> {
-  const categoryParam = await params;
-  
+type Props = {
+  params: { category: string };
+  searchParams: Record<string, string | string[] | undefined>;
+};
+
+export function generateMetadata({ params }: Props): Metadata {
   return {
-    title: `${categoryParam.category} - Catégorie - Blog - AgentMarket`,
-    description: `Articles dans la catégorie ${categoryParam.category}`,
+    title: `${params.category} - Catégorie - Blog - AgentMarket`,
+    description: `Articles dans la catégorie ${params.category}`,
   };
 }
 
-export default async function CategoryPage({
-  params,
-}: {
-  params: Promise<{ category: string }>;
-}) {
-  const categoryParam = await params;
-  const category = categoryParam.category;
+export default function CategoryPage({ params }: Props) {
+  const category = params.category;
   
   return (
     <div className="container mx-auto py-10 px-4">
