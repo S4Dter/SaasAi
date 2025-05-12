@@ -50,7 +50,12 @@ export function useRoleBasedRedirection() {
           const userMetadataRole = user.user_metadata?.role;
           console.log('Métadonnées utilisateur dans hook:', user.user_metadata);
           
-          if (userMetadataRole === 'creator') {
+          if (userMetadataRole === 'admin') {
+            console.log('Hook: Redirection vers tableau de bord admin (depuis métadonnées)');
+            if (window.location.pathname !== ROUTES.DASHBOARD.ADMIN.ROOT) {
+              router.push(ROUTES.DASHBOARD.ADMIN.ROOT);
+            }
+          } else if (userMetadataRole === 'creator') {
             console.log('Hook: Redirection vers tableau de bord créateur (depuis métadonnées)');
             if (window.location.pathname !== ROUTES.DASHBOARD.CREATOR.ROOT) {
               router.push(ROUTES.DASHBOARD.CREATOR.ROOT);
@@ -70,6 +75,14 @@ export function useRoleBasedRedirection() {
         // 3. Rediriger en fonction du rôle
         if (userData && userData.role) {
           switch (userData.role) {
+            case 'admin':
+              if (window.location.pathname !== ROUTES.DASHBOARD.ADMIN.ROOT) {
+                router.push(ROUTES.DASHBOARD.ADMIN.ROOT);
+              } else {
+                // Déjà sur la bonne page, ne pas relancer de redirection
+                console.log('Déjà sur le dashboard admin, pas de redirection');
+              }
+              break;
             case 'creator':
               if (window.location.pathname !== ROUTES.DASHBOARD.CREATOR.ROOT) {
                 router.push(ROUTES.DASHBOARD.CREATOR.ROOT);

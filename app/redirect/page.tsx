@@ -15,7 +15,9 @@ export default function RedirectPage() {
 
     try {
       const user = JSON.parse(userSession);
-      if (user.role === 'creator') {
+      if (user.role === 'admin') {
+        router.replace(ROUTES.DASHBOARD.ADMIN.ROOT);
+      } else if (user.role === 'creator') {
         router.replace(ROUTES.DASHBOARD.CREATOR.ROOT);
       } else if (user.role === 'enterprise') {
         router.replace(ROUTES.DASHBOARD.ENTERPRISE.ROOT);

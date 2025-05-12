@@ -111,17 +111,27 @@ export default function SignInPage() {
       
       // 2. Fallback avec router.push avec délai court
       setTimeout(() => {
-        const dashboardPath = userRole === 'creator' 
-          ? ROUTES.DASHBOARD.CREATOR.ROOT
-          : ROUTES.DASHBOARD.ENTERPRISE.ROOT;
+        let dashboardPath;
+        if (userRole === 'admin') {
+          dashboardPath = ROUTES.DASHBOARD.ADMIN.ROOT;
+        } else if (userRole === 'creator') {
+          dashboardPath = ROUTES.DASHBOARD.CREATOR.ROOT;
+        } else {
+          dashboardPath = ROUTES.DASHBOARD.ENTERPRISE.ROOT;
+        }
         router.push(dashboardPath);
       }, 100);
       
       // 3. Fallback ultime avec window.location.href
       setTimeout(() => {
-        const dashboardPath = userRole === 'creator' 
-          ? ROUTES.DASHBOARD.CREATOR.ROOT
-          : ROUTES.DASHBOARD.ENTERPRISE.ROOT;
+        let dashboardPath;
+        if (userRole === 'admin') {
+          dashboardPath = ROUTES.DASHBOARD.ADMIN.ROOT;
+        } else if (userRole === 'creator') {
+          dashboardPath = ROUTES.DASHBOARD.CREATOR.ROOT;
+        } else {
+          dashboardPath = ROUTES.DASHBOARD.ENTERPRISE.ROOT;
+        }
         window.location.href = dashboardPath;
       }, 300);
       

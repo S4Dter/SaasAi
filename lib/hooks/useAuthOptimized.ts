@@ -152,9 +152,12 @@ export function useAuthOptimized(): HookState<User> & {
     if (!state.data) return;
     
     const userRole = state.data.role;
-    if (userRole === 'creator') {
+    if (userRole === 'admin') {
+      router.push(ROUTES.DASHBOARD.ADMIN.ROOT);
+    } else if (userRole === 'creator') {
       router.push(ROUTES.DASHBOARD.CREATOR.ROOT);
     } else {
+      // Par défaut: rôle enterprise ou tout autre rôle non spécifié
       router.push(ROUTES.DASHBOARD.ENTERPRISE.ROOT);
     }
   }, [router, state.data]);
