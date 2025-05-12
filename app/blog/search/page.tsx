@@ -1,18 +1,19 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { searchArticles } from '@/lib/utils/blog';
 
 export const metadata: Metadata = {
   title: 'Recherche - Blog - AgentMarket',
-  description: 'Rechercher des articles dans notre blog',
+  description: 'Rechercher des articles sur notre blog',
 };
 
-export default function SearchPage({ 
-  searchParams 
-}: { 
-  searchParams: { q?: string | string[] }
+export default function SearchPage({
+  searchParams,
+}: {
+  searchParams: { q?: string };
 }) {
-  const query = searchParams?.q || '';
-  const hasQuery = query.length > 0;
+  const searchQuery = searchParams.q || '';
+  const searchResults = searchQuery ? searchArticles(searchQuery) : [];
   
   return (
     <div className="container mx-auto py-10 px-4">
@@ -22,104 +23,96 @@ export default function SearchPage({
         </Link>
       </div>
       
-      <section className="mb-10">
-        <h1 className="text-4xl font-bold mb-6">Recherche d'articles</h1>
+      <section className="mb-12">
+        <h1 className="text-4xl font-bold mb-4">Résultats de recherche</h1>
+        <p className="text-xl text-gray-600">
+          {searchQuery ? (
+            <>
+              {searchResults.length} résultat{searchResults.length !== 1 ? 's' : ''} trouvé{searchResults.length !== 1 ? 's' : ''} pour <strong>"{searchQuery}"</strong>
+            </>
+          ) : (
+            'Veuillez saisir un terme de recherche'
+          )}
+        </p>
         
-        <form className="mb-8 max-w-3xl mx-auto">
-          <div className="flex items-center">
-            <div className="relative flex-grow">
-              <input
-                type="text"
-                name="q"
-                placeholder="Rechercher des articles..."
-                defaultValue={query}
-                className="w-full px-4 py-3 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
+        <div className="mt-6">
+          <form action="/blog/search" method="get" className="flex w-full max-w-2xl">
+            <input
+              type="text"
+              name="q"
+              defaultValue={searchQuery}
+              placeholder="Rechercher des articles..."
+              className="flex-grow px-4 py-3 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
             <button
               type="submit"
-              className="bg-blue-600 text-white px-6 py-3 rounded-r-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="bg-blue-600 text-white px-6 py-3 rounded-r-md hover:bg-blue-700 transition"
             >
               Rechercher
             </button>
-          </div>
-        </form>
-        
-        {hasQuery ? (
-          <>
-            <p className="text-xl mb-8 text-center">
-              Résultats de recherche pour : <span className="font-semibold">"{query}"</span>
-            </p>
-            
-            {/* Résultats de recherche */}
-            <div className="space-y-8 max-w-4xl mx-auto">
-              <article className="bg-white p-6 rounded-lg shadow-md flex flex-col md:flex-row gap-6">
-                <div className="md:w-1/4 bg-gray-200 h-48 flex items-center justify-center rounded-lg">
-                  [Image de l'article]
-                </div>
-                <div className="md:w-3/4">
-                  <span className="text-gray-500 text-sm">01 JAN 2025 • CATÉGORIE</span>
-                  <h2 className="text-xl font-bold mt-2 mb-3">Résultat d'article 1 contenant "{query}"</h2>
-                  <p className="text-gray-600 mb-4">
-                    Description de l'article avec le terme <mark className="bg-yellow-200 px-1">{query}</mark> mis en évidence.
-                    Cette description donne un aperçu du contenu et incite à la lecture.
-                  </p>
-                  <Link href="/blog/article-1" className="text-blue-600 hover:underline">
-                    Lire la suite &rarr;
-                  </Link>
-                </div>
-              </article>
-              
-              <article className="bg-white p-6 rounded-lg shadow-md flex flex-col md:flex-row gap-6">
-                <div className="md:w-1/4 bg-gray-200 h-48 flex items-center justify-center rounded-lg">
-                  [Image de l'article]
-                </div>
-                <div className="md:w-3/4">
-                  <span className="text-gray-500 text-sm">01 JAN 2025 • CATÉGORIE</span>
-                  <h2 className="text-xl font-bold mt-2 mb-3">Résultat d'article 2 avec "{query}"</h2>
-                  <p className="text-gray-600 mb-4">
-                    Description de l'article avec le terme <mark className="bg-yellow-200 px-1">{query}</mark> mis en évidence.
-                    Cette description donne un aperçu du contenu et incite à la lecture.
-                  </p>
-                  <Link href="/blog/article-2" className="text-blue-600 hover:underline">
-                    Lire la suite &rarr;
-                  </Link>
-                </div>
-              </article>
-              
-              <article className="bg-white p-6 rounded-lg shadow-md flex flex-col md:flex-row gap-6">
-                <div className="md:w-1/4 bg-gray-200 h-48 flex items-center justify-center rounded-lg">
-                  [Image de l'article]
-                </div>
-                <div className="md:w-3/4">
-                  <span className="text-gray-500 text-sm">01 JAN 2025 • CATÉGORIE</span>
-                  <h2 className="text-xl font-bold mt-2 mb-3">Résultat d'article 3 mentionnant "{query}"</h2>
-                  <p className="text-gray-600 mb-4">
-                    Description de l'article avec le terme <mark className="bg-yellow-200 px-1">{query}</mark> mis en évidence.
-                    Cette description donne un aperçu du contenu et incite à la lecture.
-                  </p>
-                  <Link href="/blog/article-3" className="text-blue-600 hover:underline">
-                    Lire la suite &rarr;
-                  </Link>
-                </div>
-              </article>
-            </div>
-            
-            <div className="mt-10 flex justify-center">
-              <nav className="flex items-center">
-                <span className="px-4 py-2 text-gray-500">Page</span>
-                <a href="#" className="px-4 py-2 mx-1 bg-blue-600 text-white rounded-md">1</a>
-                <a href="#" className="px-4 py-2 mx-1 text-gray-700 hover:bg-gray-100 rounded-md">2</a>
-                <span className="px-4 py-2 text-gray-500">...</span>
-              </nav>
-            </div>
-          </>
-        ) : (
-          <div className="text-center text-gray-600 mt-10">
-            Entrez un terme de recherche ci-dessus pour trouver des articles.
-          </div>
-        )}
+          </form>
+        </div>
       </section>
+      
+      {searchQuery && (
+        <div className="space-y-8">
+          {searchResults.length > 0 ? (
+            searchResults.map((article, index) => (
+              <article key={index} className="flex flex-col md:flex-row gap-6 pb-8 border-b border-gray-200">
+                <div className="md:w-1/3 h-48 bg-gray-100 rounded-lg flex items-center justify-center">
+                  <span className="text-gray-400">[Image de l'article]</span>
+                </div>
+                <div className="md:w-2/3">
+                  <div className="text-sm text-gray-500 mb-2">{article.date} • {article.category.toUpperCase()}</div>
+                  <h3 className="text-xl font-bold mb-2">{article.title}</h3>
+                  <p className="text-gray-600 mb-4">
+                    {article.excerpt}
+                  </p>
+                  <Link href={`/blog/${article.slug}`} className="text-blue-600 font-medium hover:underline">
+                    Lire la suite →
+                  </Link>
+                </div>
+              </article>
+            ))
+          ) : (
+            <div className="text-center py-12">
+              <div className="text-7xl mb-4">🔍</div>
+              <h2 className="text-2xl font-bold mb-2">Aucun résultat trouvé</h2>
+              <p className="text-gray-600 mb-6">
+                Nous n'avons trouvé aucun article correspondant à votre recherche. Essayez avec d'autres termes.
+              </p>
+              <Link href="/blog" className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition">
+                Retourner au blog
+              </Link>
+            </div>
+          )}
+        </div>
+      )}
+      
+      {searchResults.length > 0 && searchResults.length > 10 && (
+        <div className="mt-12 flex justify-center">
+          <nav className="inline-flex">
+            <span className="px-4 py-2 border border-gray-300 rounded-l-md bg-white text-gray-500">
+              Précédent
+            </span>
+            <span className="px-4 py-2 border-t border-b border-gray-300 bg-blue-600 text-white">
+              1
+            </span>
+            <a href="#" className="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-700 hover:bg-gray-50">
+              2
+            </a>
+            <a href="#" className="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-700 hover:bg-gray-50">
+              3
+            </a>
+            <span className="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-700">
+              ...
+            </span>
+            <a href="#" className="px-4 py-2 border border-gray-300 rounded-r-md bg-white text-gray-700 hover:bg-gray-50">
+              Suivant
+            </a>
+          </nav>
+        </div>
+      )}
     </div>
   );
 }

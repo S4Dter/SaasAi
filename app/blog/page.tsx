@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { getArticles, getCategories } from '@/lib/utils/blog';
 
 export const metadata: Metadata = {
   title: 'Blog - AgentMarket',
@@ -13,6 +14,11 @@ export const metadata: Metadata = {
 };
 
 export default function BlogPage() {
+  const articles = getArticles(10, 0);
+  const featuredArticles = articles.slice(0, 2);
+  const regularArticles = articles.slice(2, 7);
+  const categories = getCategories();
+  const popularArticles = [...articles].sort(() => 0.5 - Math.random()).slice(0, 3);
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Hero Section */}
@@ -37,13 +43,13 @@ export default function BlogPage() {
         <h2 className="text-2xl font-bold mb-6">Catégories</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {/* Category items */}
-          {Array.from({ length: 5 }).map((_, i) => (
+          {categories.slice(0, 5).map((category, i) => (
             <Link
               key={i}
-              href={`/blog/category/categorie-${i + 1}`}
+              href={`/blog/category/${category.name.toLowerCase().replace(/\s+/g, '-')}`}
               className="bg-gray-50 rounded-lg p-4 text-center cursor-pointer hover:bg-gray-100 transition"
             >
-              <h3 className="font-medium">Catégorie {i + 1}</h3>
+              <h3 className="font-medium">{category.name}</h3>
             </Link>
           ))}
         </div>
@@ -54,18 +60,18 @@ export default function BlogPage() {
         <h2 className="text-2xl font-bold mb-6">Articles à la Une</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Featured post items */}
-          {Array.from({ length: 2 }).map((_, i) => (
+          {featuredArticles.map((article, i) => (
             <div key={i} className="bg-white rounded-xl overflow-hidden shadow-md">
               <div className="h-48 bg-gray-100 flex items-center justify-center">
                 <span className="text-gray-400">[Image de l'article]</span>
               </div>
               <div className="p-6">
-                <div className="text-sm text-gray-500 mb-2">JAN 01, 2025 • CATÉGORIE</div>
-                <h3 className="text-xl font-bold mb-2">Titre de l'article à la une {i + 1}</h3>
+                <div className="text-sm text-gray-500 mb-2">{article.date} • {article.category.toUpperCase()}</div>
+                <h3 className="text-xl font-bold mb-2">{article.title}</h3>
                 <p className="text-gray-600 mb-4">
-                  Description courte de l'article qui présente son contenu de manière attrayante.
+                  {article.excerpt}
                 </p>
-                <Link href={`/blog/article-${i + 1}`} className="text-blue-600 font-medium hover:underline">
+                <Link href={`/blog/${article.slug}`} className="text-blue-600 font-medium hover:underline">
                   Lire la suite →
                 </Link>
               </div>
@@ -82,19 +88,18 @@ export default function BlogPage() {
 
           <div className="space-y-8">
             {/* Blog post items */}
-            {Array.from({ length: 5 }).map((_, i) => (
+            {regularArticles.map((article, i) => (
               <article key={i} className="flex flex-col md:flex-row gap-6 pb-8 border-b border-gray-200">
                 <div className="md:w-1/3 h-48 bg-gray-100 rounded-lg flex items-center justify-center">
                   <span className="text-gray-400">[Image de l'article]</span>
                 </div>
                 <div className="md:w-2/3">
-                  <div className="text-sm text-gray-500 mb-2">JAN 0{i + 1}, 2025 • CATÉGORIE</div>
-                  <h3 className="text-xl font-bold mb-2">Titre de l'article de blog {i + 1}</h3>
+                  <div className="text-sm text-gray-500 mb-2">{article.date} • {article.category.toUpperCase()}</div>
+                  <h3 className="text-xl font-bold mb-2">{article.title}</h3>
                   <p className="text-gray-600 mb-4">
-                    Description de l'article qui donne envie au lecteur de cliquer pour en savoir plus.
-                    Ce résumé doit être optimisé pour le SEO tout en restant attractif.
+                    {article.excerpt}
                   </p>
-                  <Link href={`/blog/article-${i + 3}`} className="text-blue-600 font-medium hover:underline">
+                  <Link href={`/blog/${article.slug}`} className="text-blue-600 font-medium hover:underline">
                     Lire la suite →
                   </Link>
                 </div>
@@ -149,16 +154,16 @@ export default function BlogPage() {
           <div className="bg-gray-50 p-6 rounded-xl">
             <h3 className="text-lg font-bold mb-4">Articles Populaires</h3>
             <div className="space-y-4">
-              {Array.from({ length: 3 }).map((_, i) => (
+              {popularArticles.map((article, i) => (
                 <div key={i} className="flex gap-3">
                   <div className="w-16 h-16 bg-gray-200 rounded flex-shrink-0 flex items-center justify-center">
                     <span className="text-gray-400 text-xs">[Image]</span>
                   </div>
                   <div>
-                    <Link href={`/blog/article-populaire-${i + 1}`} className="font-medium hover:text-blue-600">
-                      Article populaire {i + 1}
+                    <Link href={`/blog/${article.slug}`} className="font-medium hover:text-blue-600">
+                      {article.title}
                     </Link>
-                    <p className="text-sm text-gray-500">JAN 0{i + 1}, 2025</p>
+                    <p className="text-sm text-gray-500">{article.date}</p>
                   </div>
                 </div>
               ))}
@@ -169,14 +174,14 @@ export default function BlogPage() {
           <div className="bg-gray-50 p-6 rounded-xl">
             <h3 className="text-lg font-bold mb-4">Catégories</h3>
             <ul className="space-y-2">
-              {Array.from({ length: 6 }).map((_, i) => (
+              {categories.map((category, i) => (
                 <li key={i}>
                   <Link
-                    href={`/blog/category/categorie-${i + 1}`}
+                    href={`/blog/category/${category.name.toLowerCase().replace(/\s+/g, '-')}`}
                     className="flex justify-between items-center text-gray-700 hover:text-blue-600"
                   >
-                    <span>Catégorie {i + 1}</span>
-                    <span className="text-gray-500 text-sm">(12)</span>
+                    <span>{category.name}</span>
+                    <span className="text-gray-500 text-sm">({category.count})</span>
                   </Link>
                 </li>
               ))}
