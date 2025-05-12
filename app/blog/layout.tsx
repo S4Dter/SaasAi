@@ -1,82 +1,152 @@
-import { ReactNode } from 'react'
+import { Metadata } from 'next';
+import Link from 'next/link';
 
-interface BlogLayoutProps {
-  children: ReactNode
-}
+export const metadata: Metadata = {
+  title: 'Blog - AgentMarket',
+  description: 'Découvrez les dernières tendances, astuces et actualités sur AgentMarket',
+  keywords: 'blog, agents, intelligence artificielle, marché, tendances, astuces, actualités',
+  openGraph: {
+    title: 'Blog - AgentMarket',
+    description: 'Découvrez les dernières tendances, astuces et actualités sur AgentMarket',
+    type: 'website',
+  },
+};
 
-export default function BlogLayout({ children }: BlogLayoutProps) {
+export default function BlogLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <main className="min-h-screen bg-white">
-      {/* Blog Header - Optional custom header for the blog section */}
-      <header className="border-b border-gray-100 bg-white">
+    <div className="min-h-screen bg-gray-50">
+      <div className="border-b bg-white shadow-sm">
         <div className="container mx-auto px-4 py-4">
-          <nav className="flex items-center justify-between">
-            <div className="flex items-center space-x-6">
-              <a href="/" className="text-gray-900 font-medium">Accueil</a>
-              <a href="/blog" className="text-blue-600 font-medium">Blog</a>
-              {/* Add more navigation items as needed */}
-              <a href="#" className="text-gray-600 hover:text-gray-900">Catégories</a>
-              <a href="#" className="text-gray-600 hover:text-gray-900">Archives</a>
-              <a href="#" className="text-gray-600 hover:text-gray-900">À propos</a>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+            <div className="flex items-center gap-2 mb-4 md:mb-0">
+              <Link href="/" className="text-blue-600 hover:text-blue-800 font-bold text-xl">
+                AgentMarket
+              </Link>
+              <span className="text-gray-400">/</span>
+              <Link href="/blog" className="text-gray-800 hover:text-blue-600 font-medium">
+                Blog
+              </Link>
             </div>
-            <div>
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition">
-                S'abonner
-              </button>
+            
+            <div className="flex items-center gap-4">
+              <Link 
+                href="/blog/search" 
+                className="text-gray-600 hover:text-blue-600 text-sm font-medium"
+              >
+                Rechercher
+              </Link>
+              <Link 
+                href="/blog/categories" 
+                className="text-gray-600 hover:text-blue-600 text-sm font-medium"
+              >
+                Catégories
+              </Link>
+              <Link 
+                href="/blog/archives" 
+                className="text-gray-600 hover:text-blue-600 text-sm font-medium"
+              >
+                Archives
+              </Link>
+              <Link 
+                href="/blog/rss" 
+                className="text-gray-600 hover:text-blue-600 text-sm font-medium"
+                title="Flux RSS"
+              >
+                RSS
+              </Link>
             </div>
-          </nav>
+          </div>
         </div>
-      </header>
-
-      {/* Main Content */}
-      {children}
-
-      {/* Blog Footer */}
-      <footer className="bg-gray-50 border-t border-gray-100 mt-16">
+      </div>
+      
+      <main>
+        {children}
+      </main>
+      
+      <footer className="bg-gray-800 text-white mt-20">
         <div className="container mx-auto px-4 py-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-              <h3 className="text-lg font-bold mb-4">À propos du blog</h3>
-              <p className="text-gray-600">
-                Notre blog partage des informations pertinentes, des analyses approfondies et des conseils pratiques 
-                dans notre domaine d'expertise.
+              <h3 className="text-xl font-bold mb-4">À propos du blog</h3>
+              <p className="text-gray-300 mb-4">
+                Notre blog couvre les dernières tendances, astuces et actualités dans le domaine des agents intelligents et de l'IA.
               </p>
+              <Link 
+                href="/blog/about" 
+                className="text-blue-400 hover:text-blue-300"
+              >
+                En savoir plus
+              </Link>
             </div>
+            
             <div>
-              <h3 className="text-lg font-bold mb-4">Liens rapides</h3>
+              <h3 className="text-xl font-bold mb-4">Catégories populaires</h3>
               <ul className="space-y-2">
-                <li><a href="#" className="text-gray-600 hover:text-blue-600">Catégories</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-blue-600">Articles populaires</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-blue-600">Archives</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-blue-600">À propos</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-blue-600">Contact</a></li>
+                <li>
+                  <Link 
+                    href="/blog/category/intelligence-artificielle" 
+                    className="text-gray-300 hover:text-blue-300"
+                  >
+                    Intelligence Artificielle
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/blog/category/tutoriels" 
+                    className="text-gray-300 hover:text-blue-300"
+                  >
+                    Tutoriels
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/blog/category/etudes-de-cas" 
+                    className="text-gray-300 hover:text-blue-300"
+                  >
+                    Études de cas
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/blog/category/tendances" 
+                    className="text-gray-300 hover:text-blue-300"
+                  >
+                    Tendances du marché
+                  </Link>
+                </li>
               </ul>
             </div>
+            
             <div>
-              <h3 className="text-lg font-bold mb-4">Restez connecté</h3>
-              <p className="text-gray-600 mb-4">
-                Abonnez-vous à notre newsletter pour recevoir les derniers articles et mises à jour.
+              <h3 className="text-xl font-bold mb-4">S'abonner</h3>
+              <p className="text-gray-300 mb-4">
+                Recevez nos derniers articles directement dans votre boîte mail.
               </p>
               <form className="flex">
-                <input 
-                  type="email" 
-                  placeholder="Votre email" 
-                  className="flex-grow px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                <input
+                  type="email"
+                  placeholder="Votre email"
+                  className="px-4 py-2 w-full rounded-l focus:outline-none text-gray-800"
                 />
-                <button 
-                  type="submit" 
-                  className="bg-blue-600 text-white px-4 py-2 rounded-r-md hover:bg-blue-700 transition"
+                <button
+                  type="submit"
+                  className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-r"
                 >
-                  →
+                  S'abonner
                 </button>
               </form>
             </div>
           </div>
-          <div className="border-t border-gray-200 mt-8 pt-8 text-center text-gray-500 text-sm">
-            <p>© {new Date().getFullYear()} Your Company. Tous droits réservés.</p>
+          
+          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+            <p>&copy; {new Date().getFullYear()} AgentMarket. Tous droits réservés.</p>
           </div>
         </div>
       </footer>
-    </main>
-  )
+    </div>
+  );
 }
