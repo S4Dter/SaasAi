@@ -389,11 +389,13 @@ export async function getPosts(filters: BlogFilters = {}): Promise<PaginatedPost
     throw new Error('Failed to fetch posts');
   }
   
-  // Fetch categories and tags for each post
+  // Fetch categories and tags for each post - Use supabaseAdmin to avoid permission issues
+  const { supabaseAdmin } = await import('./supabase-server-utils');
+  
   const postsWithRelations: PostWithRelations[] = await Promise.all(
     data.map(async (post: Post) => {
       // Get categories for this post
-      const { data: postCategories } = await supabase
+      const { data: postCategories } = await supabaseAdmin
         .from('post_categories')
         .select('category_id')
         .eq('post_id', post.id);
@@ -402,7 +404,7 @@ export async function getPosts(filters: BlogFilters = {}): Promise<PaginatedPost
       
       let categories: Category[] = [];
       if (categoryIds.length > 0) {
-        const { data: categoriesData } = await supabase
+        const { data: categoriesData } = await supabaseAdmin
           .from('categories')
           .select('*')
           .in('id', categoryIds);
@@ -410,7 +412,7 @@ export async function getPosts(filters: BlogFilters = {}): Promise<PaginatedPost
       }
       
       // Get tags for this post
-      const { data: postTags } = await supabase
+      const { data: postTags } = await supabaseAdmin
         .from('post_tags')
         .select('tag_id')
         .eq('post_id', post.id);
@@ -419,7 +421,7 @@ export async function getPosts(filters: BlogFilters = {}): Promise<PaginatedPost
       
       let tags: Tag[] = [];
       if (tagIds.length > 0) {
-        const { data: tagsData } = await supabase
+        const { data: tagsData } = await supabaseAdmin
           .from('tags')
           .select('*')
           .in('id', tagIds);

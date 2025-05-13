@@ -1,4 +1,6 @@
 import { Suspense } from 'react';
+// Force dynamic rendering for this page too
+export const dynamic = 'force-dynamic';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { getPosts } from '@/lib/blog/actions';
