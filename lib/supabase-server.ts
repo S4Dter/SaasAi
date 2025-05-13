@@ -14,7 +14,7 @@ export const supabaseAdmin = createClient<Database>(
 
 /**
  * Crée un client Supabase côté serveur
- * À utiliser dans les Server Components ou Server Actions
+ * À utiliser UNIQUEMENT dans les Server Components ou Server Actions
  */
 export function createServerSupabaseClient() {
   return createServerComponentClient<Database>({ cookies });
@@ -272,7 +272,7 @@ export async function getCreatorByAgentId(agentId: string) {
 /**
  * Formatte un agent Supabase pour correspondre au type Agent de l'application
  */
-function formatAgent(agent: any) {
+function formatAgent(agent: Record<string, any>) {
   return {
     id: agent.id,
     name: agent.name,
@@ -297,14 +297,14 @@ function formatAgent(agent: any) {
 /**
  * Formatte plusieurs agents Supabase
  */
-function formatAgents(agents: any[]) {
+function formatAgents(agents: Record<string, any>[]) {
   return agents.map(formatAgent);
 }
 
 /**
  * Formatte un utilisateur Supabase pour correspondre au type User de l'application
  */
-function formatUser(user: any) {
+function formatUser(user: Record<string, any>) {
   return {
     id: user.id,
     name: user.name,
@@ -321,6 +321,6 @@ function formatUser(user: any) {
 /**
  * Formatte plusieurs utilisateurs Supabase
  */
-function formatUsers(users: any[]) {
+function formatUsers(users: Record<string, any>[]) {
   return users.map(formatUser);
 }

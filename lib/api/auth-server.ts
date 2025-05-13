@@ -1,10 +1,10 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
-import type { Database } from '@/types/supabase'; // Remplace ceci si tu n'as pas de typage personnalisé
+import type { Database } from '@/types/supabase';
 
 /**
  * Crée un client Supabase côté serveur pour les fonctions d'authentification
- * À utiliser dans les Server Components ou Server Actions
+ * À utiliser UNIQUEMENT dans les Server Components ou Server Actions
  */
 export function createServerSupabaseClient() {
   return createServerComponentClient<Database>({ cookies });
