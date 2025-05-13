@@ -1,4 +1,6 @@
 import { Metadata } from 'next';
+// Force dynamic rendering for admin pages
+export const dynamic = 'force-dynamic';
 import { getAllTags } from '@/lib/blog/actions';
 import { TagManager } from '@/components/blog-admin/tag-manager';
 

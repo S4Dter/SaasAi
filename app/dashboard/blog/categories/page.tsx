@@ -1,4 +1,6 @@
 import { Metadata } from 'next';
+// Force dynamic rendering for admin pages
+export const dynamic = 'force-dynamic';
 import { getAllCategories } from '@/lib/blog/actions';
 import { CategoryManager } from '@/components/blog-admin/category-manager';
 

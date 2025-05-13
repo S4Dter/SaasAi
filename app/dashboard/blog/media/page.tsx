@@ -1,4 +1,6 @@
 import { Metadata } from 'next';
+// Force dynamic rendering for admin pages
+export const dynamic = 'force-dynamic';
 import { getAllMedia } from '@/lib/blog/actions';
 import { MediaLibrary } from '@/components/blog-admin/media-library';
 

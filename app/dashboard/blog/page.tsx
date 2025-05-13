@@ -1,4 +1,6 @@
 import { Metadata } from 'next';
+// Force dynamic rendering for admin pages
+export const dynamic = 'force-dynamic';
 import Link from 'next/link';
 import { getPosts } from '@/lib/blog/actions';
 import { PostList } from '@/components/blog-admin/post-list';
