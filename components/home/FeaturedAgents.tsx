@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { getFeaturedAgents } from '@/mock/agents';
 import { ROUTES, UI_CONFIG } from '@/constants';
-import Card, { CardBody, CardFooter } from '../ui/Card';
+import { Card, CardBody, CardFooter } from '../ui/Card';
 import Button from '../ui/Button';
 import type { Route } from 'next';
 
@@ -65,7 +65,7 @@ const FeaturedAgents: React.FC = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featuredAgents.map((agent) => (
-            <Card key={agent.id} hoverable className="h-full flex flex-col">
+            <Card key={agent.id} className="h-full flex flex-col hover:shadow-md transition-shadow">
               <CardBody className="flex-grow">
                 <div className="flex items-start mb-4">
                   {/* Logo de l'agent (placeholder en attendant les vraies images) */}
@@ -112,7 +112,7 @@ const FeaturedAgents: React.FC = () => {
                 </span>
                 
                 <Link href={ROUTES.AGENT_DETAILS(agent.id)as Route}>
-                  <Button variant="primary" size="sm">
+                  <Button variant="default" size="sm">
                     Voir les détails
                   </Button>
                 </Link>

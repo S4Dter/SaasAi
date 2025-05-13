@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { STATS_METRICS, AGENT_CATEGORIES } from '@/constants';
-import Card, { CardBody, CardHeader } from '@/components/ui/Card';
+import { Card, CardBody, CardHeader } from '@/components/ui/Card';
 import { supabase } from '@/lib/supabaseClient';
 import { useAuth } from '@/lib/context/AuthContext';
 

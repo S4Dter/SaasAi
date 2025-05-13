@@ -1,8 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
-import { Agent } from '@/types';
+import { Agent } from '@/types'; // Import from global types
+// Make sure this aligns with SupabaseAgent in lib/supabase-server.ts
 import { ROUTES } from '@/constants';
-import Card, { CardBody, CardFooter } from '../ui/Card';
+import { Card, CardBody, CardFooter } from '../ui/Card';
 import Button from '../ui/Button';
 import type { Route } from 'next';
 
@@ -44,7 +45,7 @@ const AgentCard: React.FC<AgentCardProps> = ({ agent, compact = false }) => {
   };
 
   return (
-    <Card hoverable className="h-full flex flex-col">
+    <Card className="h-full flex flex-col hover:shadow-md transition-shadow">
       <CardBody className="flex-grow">
         <div className="flex items-start mb-4">
           {/* Logo de l'agent (placeholder en attendant les vraies images) */}
@@ -96,7 +97,7 @@ const AgentCard: React.FC<AgentCardProps> = ({ agent, compact = false }) => {
         </span>
         
         <Link href={ROUTES.AGENT_DETAILS(agent.id) as Route}>
-          <Button variant="primary" size="sm">
+          <Button variant="default" size="sm">
             Voir les détails
           </Button>
         </Link>
