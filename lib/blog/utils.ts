@@ -1,109 +1,102 @@
 /**
- * Helper functions for blog-related operations
- */
-
-/**
- * Generates a URL-friendly slug from a string
+ * Generates a URL-friendly slug from a given string
  */
 export function generateSlug(text: string): string {
   return text
-    .toString()
     .toLowerCase()
-    .trim()
-    .replace(/\s+/g, '-') // Replace spaces with -
-    .replace(/&/g, '-and-') // Replace & with 'and'
-    .replace(/[^\w\-]+/g, '') // Remove all non-word characters
-    .replace(/\-\-+/g, '-') // Replace multiple - with single -
-    .replace(/^-+/, '') // Trim - from start of text
-    .replace(/-+$/, ''); // Trim - from end of text
+    .replace(/[^\w\s-]/g, '') // Remove special characters
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/-+/g, '-') // Replace multiple hyphens with a single one
+    .trim();
 }
 
 /**
- * Formats a date using Intl.DateTimeFormat
+ * Creates a concise excerpt from a longer text
  */
-export function formatDate(date: string | Date, locale = 'fr-FR'): string {
-  const dateObj = typeof date === 'string' ? new Date(date) : date;
-  
-  return new Intl.DateTimeFormat(locale, {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  }).format(dateObj);
-}
-
-/**
- * Creates an excerpt from post content
- */
-export function createExcerpt(content: string, maxLength = 160): string {
+export function createExcerpt(text: string, maxLength = 160): string {
   // Remove HTML tags
-  const textOnly = content.replace(/<\/?[^>]+(>|$)/g, '');
+  const strippedText = text.replace(/<[^>]+>/g, '');
   
-  if (textOnly.length <= maxLength) {
-    return textOnly;
+  if (strippedText.length <= maxLength) {
+    return strippedText;
   }
   
   // Find the last space before maxLength
-  const lastSpace = textOnly.lastIndexOf(' ', maxLength);
-  return textOnly.substring(0, lastSpace) + '...';
+  const lastSpace = strippedText.substring(0, maxLength).lastIndexOf(' ');
+  
+  // Cut at the last space or at maxLength if no space is found
+  const excerpt = strippedText.substring(0, lastSpace > 0 ? lastSpace : maxLength);
+  
+  return excerpt + '...';
 }
 
 /**
- * Calculates estimated reading time
+ * Calculates the estimated reading time for a given text
  */
 export function calculateReadingTime(content: string): number {
   // Average reading speed: 200 words per minute
   const wordsPerMinute = 200;
-  // Remove HTML tags and count words
-  const textOnly = content.replace(/<\/?[^>]+(>|$)/g, '');
-  const wordCount = textOnly.split(/\s+/).length;
   
-  return Math.ceil(wordCount / wordsPerMinute);
+  // Remove HTML tags
+  const strippedText = content.replace(/<[^>]+>/g, '');
+  
+  // Count words (approximate method)
+  const words = strippedText.trim().split(/\s+/).length;
+  
+  // Calculate time in minutes
+  const readingTime = Math.ceil(words / wordsPerMinute);
+  
+  // Return at least 1 minute
+  return Math.max(1, readingTime);
 }
 
 /**
- * Gets post status display label
+ * Formats a date string or Date object into a human-readable format
  */
-export function getPostStatusLabel(status: string): string {
-  const statusMap: Record<string, string> = {
-    'draft': 'Brouillon',
-    'published': 'Publié',
+export function formatDate(date: string | Date | null): string {
+  if (!date) return '';
+  
+  const options: Intl.DateTimeFormatOptions = { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
   };
   
-  return statusMap[status] || status;
+  return new Date(date).toLocaleDateString('fr-FR', options);
 }
 
 /**
- * Validates if required post fields are filled
+ * Validates post fields and returns validation errors if any
  */
-export function validatePostFields(data: any): { valid: boolean; errors: Record<string, string> } {
+export function validatePostFields(fields: { 
+  title?: string; 
+  content?: string; 
+  slug?: string;
+}) {
   const errors: Record<string, string> = {};
   
-  if (!data.title || data.title.trim() === '') {
+  if (!fields.title || fields.title.trim() === '') {
     errors.title = 'Le titre est requis';
   }
   
-  if (!data.content || data.content.trim() === '') {
+  if (!fields.content || fields.content.trim() === '') {
     errors.content = 'Le contenu est requis';
   }
   
-  if (!data.slug || data.slug.trim() === '') {
-    errors.slug = 'Le slug est requis';
+  if (fields.slug && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(fields.slug)) {
+    errors.slug = 'Le slug doit contenir uniquement des lettres minuscules, des chiffres et des tirets';
   }
   
   return {
     valid: Object.keys(errors).length === 0,
-    errors,
+    errors
   };
 }
 
 /**
- * Formats file size in human-readable format
+ * Truncates a string to a specified length
  */
-export function formatFileSize(bytes: number): string {
-  if (bytes === 0) return '0 Bytes';
-  
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(1024));
-  
-  return parseFloat((bytes / Math.pow(1024, i)).toFixed(2)) + ' ' + sizes[i];
+export function truncateString(str: string, maxLength: number): string {
+  if (str.length <= maxLength) return str;
+  return str.substring(0, maxLength) + '...';
 }

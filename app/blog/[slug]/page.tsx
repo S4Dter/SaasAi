@@ -1,86 +1,84 @@
 import { Metadata } from 'next';
-import Link from 'next/link';
-import { getArticleBySlug, getArticles } from '@/lib/utils/blog';
 import { notFound } from 'next/navigation';
+import { getPostBySlug, getPosts } from '@/lib/blog/actions';
+import { BlogPostContent } from '@/components/blog/blog-post-content';
+import { BlogSidebar } from '@/components/blog/blog-sidebar';
+import { createExcerpt } from '@/lib/blog/utils';
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}): Promise<Metadata> {
-  const article = getArticleBySlug(params.slug);
+interface BlogPostPageProps {
+  params: {
+    slug: string;
+  };
+}
+
+// Generate metadata for SEO
+export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
+  const post = await getPostBySlug(params.slug);
   
-  if (!article) {
+  if (!post) {
     return {
-      title: 'Article non trouvé - Blog - AgentMarket',
-      description: 'Cet article n\'existe pas ou a été déplacé.',
+      title: 'Article non trouvé',
+      description: 'L\'article que vous recherchez n\'existe pas ou a été déplacé.'
     };
   }
   
   return {
-    title: `${article.title} - Blog - AgentMarket`,
-    description: article.excerpt,
+    title: post.title,
+    description: post.excerpt || createExcerpt(post.content),
+    openGraph: {
+      title: post.title,
+      description: post.excerpt || createExcerpt(post.content),
+      type: 'article',
+      ...(post.featured_image && {
+        images: [{ url: post.featured_image }]
+      })
+    }
   };
 }
 
-export default function BlogPostPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const article = getArticleBySlug(params.slug);
+// Generate static params for all posts (for static site generation)
+export async function generateStaticParams() {
+  const { data: posts } = await getPosts({ status: 'published' });
   
-  if (!article) {
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
+
+export default async function BlogPostPage({ params }: BlogPostPageProps) {
+  const post = await getPostBySlug(params.slug);
+  
+  if (!post) {
     notFound();
   }
   
-  const allArticles = getArticles(100);
-  const similarArticles = allArticles
-    .filter(a => a.category === article.category && a.slug !== article.slug)
-    .slice(0, 3);
+  // Check if post is published
+  if (post.status !== 'published') {
+    notFound();
+  }
+  
+  // Get recent posts for sidebar
+  const { data: recentPosts } = await getPosts({
+    status: 'published',
+    page: 1,
+    pageSize: 5,
+    orderBy: 'published_at',
+    orderDirection: 'desc',
+  });
   
   return (
-    <div className="container mx-auto py-10 px-4">
-      <article className="max-w-4xl mx-auto">
-        <div className="mb-8">
-          <Link href="/blog" className="text-blue-600 hover:underline">
-            &larr; Retour au blog
-          </Link>
+    <div className="container px-4 py-12 mx-auto max-w-7xl">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        {/* Main content */}
+        <div className="lg:col-span-2">
+          <BlogPostContent post={post} />
         </div>
         
-        <div className="mb-10">
-          <span className="text-gray-500 text-sm uppercase">{article.date} • {article.category.toUpperCase()}</span>
-          <h1 className="text-4xl font-bold mt-2 mb-4">{article.title}</h1>
-          <div className="relative w-full h-96 bg-gray-100 mb-6 flex items-center justify-center">
-            [Image principale de l'article]
-          </div>
-        </div>
-        
-        <div className="prose lg:prose-xl mx-auto">
-          <div dangerouslySetInnerHTML={{ __html: article.content.replace(/\n/g, '<br />') }} />
-        </div>
-        
-        <div className="mt-12 pt-8 border-t border-gray-200">
-          <h3 className="text-2xl font-bold mb-6">Articles similaires</h3>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {similarArticles.length > 0 ? (
-              similarArticles.map((similarArticle, i) => (
-                <div key={i} className="bg-gray-50 p-4 rounded-lg">
-                  <h4 className="font-bold mb-2">{similarArticle.title}</h4>
-                  <p className="text-sm text-gray-600 mb-2">{similarArticle.excerpt.substring(0, 80)}...</p>
-                  <Link href={`/blog/${similarArticle.slug}`} className="text-blue-600 text-sm hover:underline">
-                    Lire la suite &rarr;
-                  </Link>
-                </div>
-              ))
-            ) : (
-              <div className="lg:col-span-3 text-center py-4">
-                <p className="text-gray-600">Aucun article similaire trouvé</p>
-              </div>
-            )}
-          </div>
-        </div>
-      </article>
+        {/* Sidebar */}
+        <aside className="lg:col-span-1">
+          <BlogSidebar recentPosts={recentPosts} />
+        </aside>
+      </div>
     </div>
   );
 }

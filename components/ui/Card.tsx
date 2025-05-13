@@ -1,79 +1,79 @@
-import React from 'react';
+import * as React from "react";
 
-interface CardProps {
-  children: React.ReactNode;
-  className?: string;
-  hoverable?: boolean;
-  bordered?: boolean;
-}
+import { cn } from "@/lib/utils";
 
-/**
- * Composant Card réutilisable
- * 
- * Peut être utilisé pour afficher des informations dans un conteneur élégant.
- * 
- * @param {React.ReactNode} children - Contenu de la carte
- * @param {string} className - Classes CSS additionnelles
- * @param {boolean} hoverable - Si la carte doit avoir un effet au survol
- * @param {boolean} bordered - Si la carte doit avoir une bordure
- */
-const Card: React.FC<CardProps> = ({ 
-  children, 
-  className = '',
-  hoverable = false,
-  bordered = true
-}) => {
-  const baseClasses = 'bg-white rounded-lg overflow-hidden shadow-sm';
-  const hoverClasses = hoverable ? 'transition-all duration-200 hover:shadow-md hover:-translate-y-1' : '';
-  const borderClasses = bordered ? 'border border-gray-200' : '';
-  
-  return (
-    <div className={`${baseClasses} ${hoverClasses} ${borderClasses} ${className}`}>
-      {children}
-    </div>
-  );
-};
+const Card = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "rounded-lg border bg-card text-card-foreground shadow-sm",
+      className
+    )}
+    {...props}
+  />
+));
+Card.displayName = "Card";
 
-/**
- * En-tête de la carte
- */
-export const CardHeader: React.FC<{ className?: string; children: React.ReactNode }> = ({ 
-  children,
-  className = '' 
-}) => {
-  return (
-    <div className={`px-4 py-3 border-b border-gray-200 font-medium ${className}`}>
-      {children}
-    </div>
-  );
-};
+const CardHeader = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex flex-col space-y-1.5 p-6", className)}
+    {...props}
+  />
+));
+CardHeader.displayName = "CardHeader";
 
-/**
- * Corps de la carte
- */
-export const CardBody: React.FC<{ className?: string; children: React.ReactNode }> = ({ 
-  children,
-  className = '' 
-}) => {
-  return (
-    <div className={`p-4 ${className}`}>
-      {children}
-    </div>
-  );
-};
+const CardTitle = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLHeadingElement>
+>(({ className, ...props }, ref) => (
+  <h3
+    ref={ref}
+    className={cn(
+      "text-2xl font-semibold leading-none tracking-tight",
+      className
+    )}
+    {...props}
+  />
+));
+CardTitle.displayName = "CardTitle";
 
-/**
- * Pied de la carte
- */
-export const CardFooter: React.FC<{ className?: string; children: React.ReactNode }> = ({ 
-  children,
-  className = '' 
-}) => {
-  return (
-    <div className={`px-4 py-3 bg-gray-50 border-t border-gray-200 ${className}`}>
-      {children}
-    </div>
-  );
-};
+const CardDescription = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => (
+  <p
+    ref={ref}
+    className={cn("text-sm text-muted-foreground", className)}
+    {...props}
+  />
+));
+CardDescription.displayName = "CardDescription";
 
-export default Card;
+const CardContent = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+));
+CardContent.displayName = "CardContent";
+
+const CardFooter = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex items-center p-6 pt-0", className)}
+    {...props}
+  />
+));
+CardFooter.displayName = "CardFooter";
+
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent };

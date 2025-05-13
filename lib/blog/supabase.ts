@@ -1,40 +1,56 @@
 import { createClient } from '@supabase/supabase-js';
 import { Database } from '@/types/supabase';
+import { createServerSupabaseClient, supabaseAdmin as serverAdmin } from '../supabase-server';
+import { supabaseAdmin as clientAdmin } from '../supabase-client-admin';
 
-// Create a single supabase client for interacting with your database
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
+// Initialize Supabase client
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-export const supabase = createClient<Database>(supabaseUrl, supabaseKey);
+// Client-side Supabase client
+export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
 
-// Server-side client with service role key for admin operations
-export const supabaseAdmin = () => {
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY as string;
-  return createClient<Database>(supabaseUrl, supabaseServiceKey);
-};
+// Server-side Supabase client with cookies
+export function getServerSupabaseClient() {
+  return createServerSupabaseClient();
+}
 
-// Helper function to get authenticated Supabase client on the server
-export const getServerSupabaseClient = async () => {
-  const { cookies } = await import('next/headers');
-  const cookieStore = cookies();
+// Admin Supabase client (with service role key) - use server version for server components and client version for client components
+export const supabaseAdmin = typeof window === 'undefined' ? serverAdmin : clientAdmin;
+
+// Helper function to check if user has admin permission for the blog
+export async function isUserBlogAdmin() {
+  const { data: { user } } = await supabase.auth.getUser();
   
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
+  if (!user) {
+    return false;
+  }
   
-  return createClient<Database>(
-    supabaseUrl,
-    supabaseKey,
-    {
-      auth: {
-        persistSession: false,
-        autoRefreshToken: false,
-        detectSessionInUrl: false,
-      },
-      global: {
-        headers: {
-          Cookie: cookieStore.toString(),
-        },
-      },
-    }
-  );
-};
+  // Fetch user's role from the database
+  const { data } = await supabase
+    .from('users')
+    .select('role')
+    .eq('id', user.id)
+    .single();
+  
+  // Check if the user has admin or content_creator role
+  return data?.role === 'admin' || data?.role === 'content_creator';
+}
+
+// Helper function to get current user profile
+export async function getCurrentUser() {
+  const { data: { user } } = await supabase.auth.getUser();
+  
+  if (!user) {
+    return null;
+  }
+  
+  // Fetch user profile
+  const { data } = await supabase
+    .from('users')
+    .select('*')
+    .eq('id', user.id)
+    .single();
+  
+  return data;
+}
