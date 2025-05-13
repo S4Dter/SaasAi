@@ -269,10 +269,85 @@ export async function getCreatorByAgentId(agentId: string) {
   return formatUser(creator);
 }
 
+// Définir l'interface Agent
+export interface Agent {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  shortDescription: string;
+  category: string;
+  creatorId: string;
+  pricing: {
+    model: string;
+    startingPrice: number;
+    currency: string;
+  };
+  featured: boolean;
+  logoUrl: string;
+  integrations: string[];
+  demoUrl?: string;
+  demoVideoUrl?: string;
+  screenshots: string[];
+  createdAt: Date;
+  updatedAt: Date;
+  isPublic: boolean;
+}
+
+// Définir l'interface User
+export interface User {
+  id: string;
+  name: string | null;
+  email: string;
+  role: string | null;
+  avatar?: string | null;
+  company?: string | null;
+  bio?: string | null;
+  createdAt: Date;
+  updatedAt?: Date;
+}
+
+// Définir les types d'objets de base de Supabase
+interface SupabaseAgent {
+  id: string;
+  name: string;
+  slug?: string;
+  description?: string;
+  short_description?: string;
+  category?: string;
+  creator_id: string;
+  pricing?: {
+    model: string;
+    startingPrice: number;
+    currency: string;
+  };
+  featured?: boolean;
+  logo_url?: string;
+  integrations?: string[];
+  demo_url?: string;
+  demo_video_url?: string;
+  screenshots?: string[];
+  created_at: string;
+  updated_at?: string;
+  is_public?: boolean;
+}
+
+interface SupabaseUser {
+  id: string;
+  name?: string;
+  email: string;
+  role?: string;
+  avatar?: string;
+  company?: string;
+  bio?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
 /**
  * Formatte un agent Supabase pour correspondre au type Agent de l'application
  */
-function formatAgent(agent: Record<string, any>) {
+function formatAgent(agent: SupabaseAgent): Agent {
   return {
     id: agent.id,
     name: agent.name,
@@ -297,22 +372,22 @@ function formatAgent(agent: Record<string, any>) {
 /**
  * Formatte plusieurs agents Supabase
  */
-function formatAgents(agents: Record<string, any>[]) {
+function formatAgents(agents: SupabaseAgent[]): Agent[] {
   return agents.map(formatAgent);
 }
 
 /**
  * Formatte un utilisateur Supabase pour correspondre au type User de l'application
  */
-function formatUser(user: Record<string, any>) {
+function formatUser(user: SupabaseUser): User {
   return {
     id: user.id,
-    name: user.name,
+    name: user.name || null,
     email: user.email,
-    role: user.role,
-    avatar: user.avatar,
-    company: user.company,
-    bio: user.bio,
+    role: user.role || null,
+    avatar: user.avatar || null,
+    company: user.company || null,
+    bio: user.bio || null,
     createdAt: user.created_at ? new Date(user.created_at) : new Date(),
     updatedAt: user.updated_at ? new Date(user.updated_at) : undefined
   };
@@ -321,6 +396,6 @@ function formatUser(user: Record<string, any>) {
 /**
  * Formatte plusieurs utilisateurs Supabase
  */
-function formatUsers(users: Record<string, any>[]) {
+function formatUsers(users: SupabaseUser[]): User[] {
   return users.map(formatUser);
 }

@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { getServerSupabaseClient, supabaseAdmin } from './supabase';
+import { getServerSupabaseClient, supabaseAdmin } from './supabase-server-utils';
 import { generateSlug, createExcerpt, validatePostFields } from './utils';
 import { Post, Category, Tag, Media, BlogFilters, PaginatedPosts, PostWithRelations } from '@/types/blog';
 
@@ -141,7 +141,18 @@ export async function updatePost(postId: string, formData: FormData) {
     .single();
   
   // Prepare updated data
-  const updateData: any = {
+  type UpdateData = {
+    title: string;
+    slug: string;
+    content: string;
+    excerpt: string;
+    featured_image: string | null;
+    status: string;
+    updated_at: string;
+    published_at?: string | null;
+  };
+  
+  const updateData: UpdateData = {
     title,
     slug,
     content,
@@ -364,14 +375,14 @@ export async function getPosts(filters: BlogFilters = {}): Promise<PaginatedPost
   
   // Fetch categories and tags for each post
   const postsWithRelations: PostWithRelations[] = await Promise.all(
-    data.map(async (post) => {
+    data.map(async (post: Post) => {
       // Get categories for this post
       const { data: postCategories } = await supabase
         .from('post_categories')
         .select('category_id')
         .eq('post_id', post.id);
       
-      const categoryIds = postCategories?.map(pc => pc.category_id) || [];
+      const categoryIds = postCategories?.map((pc: {category_id: string}) => pc.category_id) || [];
       
       let categories: Category[] = [];
       if (categoryIds.length > 0) {
@@ -456,7 +467,7 @@ export async function getPostById(id: string): Promise<PostWithRelations | null>
     .select('category_id')
     .eq('post_id', data.id);
   
-  const categoryIds = postCategories?.map(pc => pc.category_id) || [];
+  const categoryIds = postCategories?.map((pc: {category_id: string}) => pc.category_id) || [];
   
   let categories: Category[] = [];
   if (categoryIds.length > 0) {
@@ -1008,14 +1019,14 @@ export async function searchPosts(query: string, page = 1, pageSize = 10) {
   
   // Fetch categories and tags for each post
   const postsWithRelations = await Promise.all(
-    data.map(async (post) => {
+    data.map(async (post: Post) => {
       // Get categories for this post
       const { data: postCategories } = await supabase
         .from('post_categories')
         .select('category_id')
         .eq('post_id', post.id);
       
-      const categoryIds = postCategories?.map(pc => pc.category_id) || [];
+      const categoryIds = postCategories?.map((pc: {category_id: string}) => pc.category_id) || [];
       
       let categories: Category[] = [];
       if (categoryIds.length > 0) {

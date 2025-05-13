@@ -1,22 +1,15 @@
-import { createClient } from '@supabase/supabase-js';
+// lib/blog/supabase.ts - VERSION CLIENT UNIQUEMENT
+'use client';
+
 import { Database } from '@/types/supabase';
-import { createServerSupabaseClient, supabaseAdmin as serverAdmin } from '../supabase-server';
+import { supabase as browserClient, createBrowserSupabaseClient } from '../supabase-browser';
 import { supabaseAdmin as clientAdmin } from '../supabase-client-admin';
 
-// Initialize Supabase client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-
 // Client-side Supabase client
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
+export const supabase = browserClient;
 
-// Server-side Supabase client with cookies
-export function getServerSupabaseClient() {
-  return createServerSupabaseClient();
-}
-
-// Admin Supabase client (with service role key) - use server version for server components and client version for client components
-export const supabaseAdmin = typeof window === 'undefined' ? serverAdmin : clientAdmin;
+// Admin Supabase client (client version only)
+export const supabaseAdmin = clientAdmin;
 
 // Helper function to check if user has admin permission for the blog
 export async function isUserBlogAdmin() {
