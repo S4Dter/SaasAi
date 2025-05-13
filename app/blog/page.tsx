@@ -1,90 +1,120 @@
-import { Suspense } from 'react';
-// Force dynamic rendering for this page because it depends on getPosts which accesses users table
-export const dynamic = 'force-dynamic'; 
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { getPosts } from '@/lib/blog/actions';
-import { BlogPostCard } from '@/components/blog/blog-post-card';
-import { BlogPagination } from '@/components/blog/blog-pagination';
-import { BlogSidebar } from '@/components/blog/blog-sidebar';
+import Image from 'next/image';
+import { getAllBlogPosts, getAllCategories, getAllTags } from '@/data/blog-posts';
 
 export const metadata: Metadata = {
-  title: 'Blog - Articles et actualités',
-  description: 'Découvrez nos articles et actualités sur notre blog',
+  title: 'Blog - Articles sur les agents IA',
+  description: 'Découvrez nos articles sur les agents IA, les tendances et les meilleures pratiques pour intégrer l\'intelligence artificielle.',
 };
 
-interface BlogPageProps {
-  searchParams: {
-    page?: string;
-    category?: string;
-    tag?: string;
-  };
-}
-
-export default async function BlogPage({ searchParams }: BlogPageProps) {
-  const page = Number(searchParams.page) || 1;
-  const pageSize = 9; // Number of posts per page
-  
-  // Get blog posts
-  const { data: posts, count, totalPages } = await getPosts({
-    status: 'published',
-    page,
-    pageSize,
-    orderBy: 'published_at',
-    orderDirection: 'desc',
-  });
-  
-  // Get recent posts for sidebar
-  const { data: recentPosts } = await getPosts({
-    status: 'published',
-    page: 1,
-    pageSize: 5,
-    orderBy: 'published_at',
-    orderDirection: 'desc',
-  });
+export default function BlogPage() {
+  const posts = getAllBlogPosts();
+  const categories = getAllCategories();
+  const tags = getAllTags();
   
   return (
-    <div className="container px-4 py-12 mx-auto max-w-7xl">
-      <header className="mb-12 text-center">
-        <h1 className="text-4xl font-bold tracking-tight mb-4">Blog</h1>
-        <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-          Découvrez nos derniers articles, actualités et conseils
-        </p>
-      </header>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        {/* Main content */}
-        <div className="lg:col-span-2">
-          {posts.length === 0 ? (
-            <div className="text-center py-12">
-              <h2 className="text-2xl font-bold mb-4">Aucun article disponible</h2>
-              <p className="text-muted-foreground">
-                Revenez bientôt pour découvrir nos nouveaux articles.
-              </p>
-            </div>
-          ) : (
-            <>
-              <div className="grid gap-6 md:grid-cols-2 mb-10">
-                {posts.map((post) => (
-                  <BlogPostCard key={post.id} post={post} />
-                ))}
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex flex-col md:flex-row gap-8">
+        {/* Articles */}
+        <div className="w-full md:w-2/3">
+          <h2 className="text-2xl font-bold mb-6">Tous les articles</h2>
+          
+          <div className="grid grid-cols-1 gap-8">
+            {posts.map((post) => (
+              <div key={post.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="md:flex">
+                  {post.coverImage && (
+                    <div className="md:w-1/3">
+                      <Link href={`/blog/${post.slug}`}>
+                        <div className="relative h-48 md:h-full">
+                          <Image 
+                            src={post.coverImage}
+                            alt={post.title}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                      </Link>
+                    </div>
+                  )}
+                  
+                  <div className="p-6 md:w-2/3">
+                    <div className="flex items-center text-sm text-gray-500 mb-2">
+                      <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
+                        {post.category}
+                      </span>
+                      <span className="mx-2">•</span>
+                      <time dateTime={post.date}>
+                        {new Date(post.date).toLocaleDateString('fr-FR', {
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric'
+                        })}
+                      </time>
+                    </div>
+                    
+                    <Link href={`/blog/${post.slug}`}>
+                      <h3 className="text-xl font-bold text-gray-900 mb-2 hover:text-blue-600 transition-colors">
+                        {post.title}
+                      </h3>
+                    </Link>
+                    
+                    <p className="text-gray-600 mb-4 line-clamp-3">
+                      {post.description}
+                    </p>
+                    
+                    <div className="flex items-center">
+                      {post.author.avatar && (
+                        <div className="relative w-10 h-10 mr-4">
+                          <Image
+                            src={post.author.avatar}
+                            alt={post.author.name}
+                            fill
+                            className="rounded-full object-cover"
+                          />
+                        </div>
+                      )}
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">{post.author.name}</p>
+                        <p className="text-sm text-gray-500">{post.author.role}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              
-              <BlogPagination
-                currentPage={page}
-                totalPages={totalPages}
-                baseUrl="/blog"
-              />
-            </>
-          )}
+            ))}
+          </div>
         </div>
         
         {/* Sidebar */}
-        <aside className="lg:col-span-1">
-          <Suspense fallback={<div>Chargement...</div>}>
-            <BlogSidebar recentPosts={recentPosts} />
-          </Suspense>
-        </aside>
+        <div className="w-full md:w-1/3">
+          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h3 className="text-lg font-bold mb-4">Catégories</h3>
+            <div className="flex flex-wrap gap-2">
+              {categories.map((category) => (
+                <Link key={category} href={`/blog/category/${category.toLowerCase()}`}>
+                  <span className="bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium px-3 py-1 rounded-full transition-colors">
+                    {category}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-lg font-bold mb-4">Tags populaires</h3>
+            <div className="flex flex-wrap gap-2">
+              {tags.map((tag) => (
+                <Link key={tag} href={`/blog/tag/${tag}`}>
+                  <span className="bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded transition-colors">
+                    #{tag}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

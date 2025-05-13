@@ -1,12 +1,31 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import { APP_NAME, ROUTES, SOCIAL_LINKS } from '@/constants';
+import { useAuthOptimized } from '@/lib/hooks/useAuthOptimized';
 
 /**
  * Composant Footer pour le pied de page
  */
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
+  const { data: user } = useAuthOptimized();
+  
+  // Fonction pour déterminer le lien du dashboard en fonction du rôle
+  const getDashboardLink = () => {
+    if (!user) return ROUTES.AUTH.SIGNIN;
+    
+    switch (user.role) {
+      case 'admin':
+        return ROUTES.DASHBOARD.ADMIN.ROOT;
+      case 'creator':
+        return ROUTES.DASHBOARD.CREATOR.ROOT;
+      case 'enterprise':
+      default:
+        return ROUTES.DASHBOARD.ENTERPRISE.ROOT;
+    }
+  };
 
   return (
     <footer className="bg-gray-100 border-t border-gray-200">
@@ -120,6 +139,11 @@ const Footer: React.FC = () => {
                   Témoignages
                 </Link>
               </li>
+              <li>
+                <Link href={getDashboardLink()} className="text-gray-600 hover:text-blue-600">
+                  Accéder au dashboard
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -147,6 +171,11 @@ const Footer: React.FC = () => {
               <li>
                 <Link href="/createurs/communaute" className="text-gray-600 hover:text-blue-600">
                   Communauté
+                </Link>
+              </li>
+              <li>
+                <Link href={getDashboardLink()} className="text-gray-600 hover:text-blue-600">
+                  Accéder au dashboard
                 </Link>
               </li>
             </ul>

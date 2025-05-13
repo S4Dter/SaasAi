@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import Button from '../ui/Button';
 import { APP_NAME, ROUTES } from '@/constants';
-import { useAuth } from '@/lib/hooks/useAuth';
+import { useAuthOptimized } from '@/lib/hooks/useAuthOptimized';
 import { signOut } from '@/lib/api/auth';
 
 /**
@@ -21,7 +21,7 @@ const Header: React.FC = () => {
   const [isClient, setIsClient] = useState(false);
   
   // Utilisation du hook d'authentification pour récupérer l'état de connexion
-  const { data: user, loading } = useAuth();
+  const { data: user, loading } = useAuthOptimized();
   
   // Détermine si l'utilisateur est connecté et son rôle
   const isLoggedIn = !!user;
@@ -166,6 +166,24 @@ const Header: React.FC = () => {
                 </Button>
               </>
             )}
+
+            {/* Liens pour administrateurs connectés */}
+            {isLoggedIn && userRole === 'admin' && (
+              <>
+                <span className="text-gray-700">
+                  Bonjour, {userName || 'Admin'}
+                </span>
+                <Link 
+                  href={ROUTES.DASHBOARD.ADMIN.ROOT}
+                  className={`text-gray-700 hover:text-blue-600 ${isActive(ROUTES.DASHBOARD.ADMIN.ROOT) ? 'font-medium text-blue-600' : ''}`}
+                >
+                  Administration
+                </Link>
+                <Button variant="outline" size="sm" onClick={handleSignOut}>
+                  Déconnexion
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Bouton hamburger pour mobile */}
@@ -266,6 +284,25 @@ const Header: React.FC = () => {
                 </Link>
                 <Link href={ROUTES.DASHBOARD.CREATOR.ADD_AGENT} className="w-full" onClick={() => setIsMenuOpen(false)}>
                   <Button fullWidth>Ajouter un agent</Button>
+                </Link>
+                <Button variant="outline" fullWidth onClick={handleSignOut}>
+                  Déconnexion
+                </Button>
+              </div>
+            )}
+            
+            {/* Liens pour administrateurs connectés */}
+            {isLoggedIn && userRole === 'admin' && (
+              <div className="flex flex-col space-y-2">
+                <span className="block py-2 text-gray-700">
+                  Bonjour, {userName || 'Admin'}
+                </span>
+                <Link 
+                  href={ROUTES.DASHBOARD.ADMIN.ROOT}
+                  className={`block py-2 text-gray-700 hover:text-blue-600 ${isActive(ROUTES.DASHBOARD.ADMIN.ROOT) ? 'font-medium text-blue-600' : ''}`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Administration
                 </Link>
                 <Button variant="outline" fullWidth onClick={handleSignOut}>
                   Déconnexion

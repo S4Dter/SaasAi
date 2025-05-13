@@ -1,68 +1,30 @@
-import { ReactNode } from 'react';
-import Link from 'next/link';
+import React from 'react';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: {
-    default: 'Blog',
-    template: '%s | Blog'
-  },
-  description: 'Découvrez nos articles et actualités',
+  title: 'Blog - Articles sur les agents IA et l\'innovation',
+  description: 'Découvrez nos articles sur les agents IA, les tendances du marché et les meilleures pratiques pour les entreprises et créateurs.',
 };
 
-interface BlogLayoutProps {
-  children: ReactNode;
-}
-
-export default function BlogLayout({ children }: BlogLayoutProps) {
+export default function BlogLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Blog Navigation */}
-      <div className="border-b">
-        <div className="container mx-auto max-w-7xl px-4 py-4">
-          <nav className="flex items-center justify-between">
-            <div className="flex items-center space-x-6">
-              <Link 
-                href="/blog" 
-                className="text-lg font-medium hover:text-primary transition-colors"
-              >
-                Accueil
-              </Link>
-              <Link 
-                href="/blog/search" 
-                className="text-lg font-medium hover:text-primary transition-colors"
-              >
-                Recherche
-              </Link>
-            </div>
-            
-            <div>
-              <Link
-                href="/dashboard/blog"
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-              >
-                Admin
-              </Link>
-            </div>
-          </nav>
+    <div className="min-h-screen bg-white">
+      {/* Bannière du blog */}
+      <div className="bg-blue-50 py-6">
+        <div className="container mx-auto px-4">
+          <h1 className="text-2xl font-bold text-center text-blue-600">Blog</h1>
+          <p className="text-center text-gray-600 mt-2 max-w-2xl mx-auto">
+            Découvrez nos articles sur les agents IA, les innovations et les meilleures pratiques
+          </p>
         </div>
       </div>
-      
-      {/* Main content */}
-      <main className="flex-grow">
-        {children}
-      </main>
-      
-      {/* Blog Footer */}
-      <footer className="border-t mt-20">
-        <div className="container mx-auto max-w-7xl px-4 py-8">
-          <div className="text-center">
-            <p className="text-muted-foreground">
-              © {new Date().getFullYear()} | Tous droits réservés
-            </p>
-          </div>
-        </div>
-      </footer>
+
+      {/* Contenu principal */}
+      <main>{children}</main>
     </div>
   );
 }
