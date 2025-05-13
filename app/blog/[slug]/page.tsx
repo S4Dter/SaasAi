@@ -38,11 +38,27 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
 // Generate static params for all posts (for static site generation)
 export async function generateStaticParams() {
-  const { data: posts } = await getPosts({ status: 'published' });
-  
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+  try {
+    // Utiliser le client admin qui ne dépend pas des cookies
+    const { supabaseAdmin } = await import('@/lib/blog/supabase-server-utils');
+    
+    const { data: posts, error } = await supabaseAdmin
+      .from('posts')
+      .select('slug')
+      .eq('status', 'published');
+      
+    if (error || !posts) {
+      console.error('Erreur lors de la génération des paramètres statiques:', error);
+      return [];
+    }
+    
+    return posts.map((post) => ({
+      slug: post.slug,
+    }));
+  } catch (error) {
+    console.error('Erreur lors de la génération des paramètres statiques:', error);
+    return [];
+  }
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
