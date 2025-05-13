@@ -43,7 +43,7 @@ export function BlogSidebar({ recentPosts = [] }: BlogSidebarProps) {
               {categories.map((category) => (
                 <li key={category.id}>
                   <Link 
-                    href={`/blog/category/${category.slug}`}
+                    href={`/blog/categories/${category.slug}`}
                     className="text-sm hover:underline hover:text-primary transition-colors"
                   >
                     {category.name}
@@ -96,7 +96,7 @@ export function BlogSidebar({ recentPosts = [] }: BlogSidebarProps) {
               {tags.map((tag) => (
                 <Link 
                   key={tag.id}
-                  href={`/blog/tag/${tag.slug}`}
+                  href={`/blog/tags/${tag.slug}`}
                   className="no-underline"
                 >
                   <Badge variant="outline" className="font-normal">

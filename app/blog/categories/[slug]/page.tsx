@@ -100,7 +100,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
               <BlogPagination
                 currentPage={page}
                 totalPages={totalPages}
-                baseUrl={`/blog/category/${category.slug}`}
+                baseUrl={`/blog/categories/${category.slug}`}
               />
             </>
           )}

@@ -21,7 +21,7 @@ export function BlogPostContent({ post }: BlogPostContentProps) {
           {post.categories?.map((category) => (
             <Link 
               key={category.id}
-              href={`/blog/category/${category.slug}`}
+              href={`/blog/categories/${category.slug}`}
               className="no-underline"
             >
               <Badge variant="secondary" className="font-normal">
@@ -76,7 +76,7 @@ export function BlogPostContent({ post }: BlogPostContentProps) {
             {post.tags.map((tag) => (
               <Link 
                 key={tag.id}
-                href={`/blog/tag/${tag.slug}`}
+                href={`/blog/tags/${tag.slug}`}
                 className="no-underline"
               >
                 <Badge variant="outline" className="font-normal">

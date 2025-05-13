@@ -97,7 +97,7 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
               <BlogPagination
                 currentPage={page}
                 totalPages={totalPages}
-                baseUrl={`/blog/tag/${tag.slug}`}
+                baseUrl={`/blog/tags/${tag.slug}`}
               />
             </>
           )}
