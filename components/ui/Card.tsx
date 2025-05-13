@@ -93,3 +93,5 @@ export {
   CardContent,
   CardBody 
 };
+
+export default Card;

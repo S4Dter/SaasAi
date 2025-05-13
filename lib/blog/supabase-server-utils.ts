@@ -5,8 +5,17 @@ import { cookies } from 'next/headers';
 import { supabaseAdmin } from '../supabase-server';
 
 // Server-side Supabase client with cookies
+// Only call this function within a Request context (Server Action or Server Component)
 export function getServerSupabaseClient() {
-  return createServerComponentClient<Database>({ cookies });
+  try {
+    return createServerComponentClient<Database>({ 
+      cookies 
+    });
+  } catch (error) {
+    console.error("Error creating Supabase client:", error);
+    // In static generation contexts, use the admin client instead as a fallback
+    return supabaseAdmin;
+  }
 }
 
 // Admin Supabase client (server version)

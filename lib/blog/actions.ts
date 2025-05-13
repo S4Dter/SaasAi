@@ -340,13 +340,29 @@ export async function getPosts(filters: BlogFilters = {}): Promise<PaginatedPost
     query = query.or(`title.ilike.%${search}%,content.ilike.%${search}%`);
   }
   
-  // Get count before pagination
+  // Get count using separate count query
   let count = 0;
   let countError = null;
   
   try {
-    // @ts-ignore - Supabase types are not up to date
-    const { count: countResult, error } = await query.count();
+    const countQuery = supabase
+      .from('posts')
+      .select('id', { count: 'exact' });
+    
+    // Apply same filters as the main query
+    if (status) {
+      countQuery.eq('status', status);
+    }
+    
+    if (authorId) {
+      countQuery.eq('author_id', authorId);
+    }
+    
+    if (search) {
+      countQuery.or(`title.ilike.%${search}%,content.ilike.%${search}%`);
+    }
+    
+    const { count: countResult, error } = await countQuery;
     count = countResult || 0;
     countError = error;
   } catch (error) {
@@ -985,13 +1001,21 @@ export async function searchPosts(query: string, page = 1, pageSize = 10) {
     .eq('status', 'published')
     .or(`title.ilike.%${query}%,content.ilike.%${query}%`);
   
-  // Get count
+  // Get count using separate count query
   let totalCount = 0;
   let countError = null;
   
   try {
-    // @ts-ignore - Supabase types are not up to date
-    const { count: countResult, error } = await searchQuery.count();
+    const countQuery = supabase
+      .from('posts')
+      .select('id', { count: 'exact' })
+      .eq('status', 'published');
+      
+    if (query) {
+      countQuery.or(`title.ilike.%${query}%,content.ilike.%${query}%`);
+    }
+    
+    const { count: countResult, error } = await countQuery;
     totalCount = countResult || 0;
     countError = error;
   } catch (error) {
