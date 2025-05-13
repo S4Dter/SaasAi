@@ -55,7 +55,7 @@ const Header: React.FC = () => {
   // Cela évite les erreurs de mismatch entre serveur et client
   if (!isClient) {
     return (
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <header className="bg-white bg-opacity-100 border-b border-gray-200 sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <nav className="flex items-center justify-between">
             {/* Logo uniquement au chargement initial */}
@@ -80,7 +80,7 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <header className="bg-white bg-opacity-100 border-b border-gray-200 sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4">
         <nav className="flex items-center justify-between">
           {/* Logo et nom */}

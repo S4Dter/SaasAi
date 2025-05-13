@@ -52,7 +52,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit, isLoading = false, 
       <form onSubmit={handleSubmit} className="space-y-6">
         {!isSignIn && (
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="name" className="block text-sm font-medium text-black mb-1">
               Nom
             </label>
             <input
@@ -67,7 +67,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit, isLoading = false, 
         )}
 
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="email" className="block text-sm font-medium text-black mb-1">
             Email
           </label>
           <input
@@ -84,7 +84,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit, isLoading = false, 
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="password" className="block text-sm font-medium text-black mb-1">
             Mot de passe
           </label>
           <input
@@ -102,7 +102,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit, isLoading = false, 
 
         {!isSignIn && (
           <div>
-            <label htmlFor="userType" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="userType" className="block text-sm font-medium text-black mb-1">
               Je suis
             </label>
             <select
@@ -126,7 +126,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit, isLoading = false, 
                 type="checkbox"
                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+              <label htmlFor="remember-me" className="ml-2 block text-sm text-black">
                 Se souvenir de moi
               </label>
             </div>
@@ -156,7 +156,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit, isLoading = false, 
       </form>
 
       <div className="mt-6 text-center">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-black">
           {isSignIn ? "Vous n&apos;avez pas de compte ?" : 'Vous avez déjà un compte ?'}{' '}
           <Link
             href={isSignIn ? ROUTES.AUTH.SIGNUP : ROUTES.AUTH.SIGNIN}
