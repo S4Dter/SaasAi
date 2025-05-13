@@ -39,18 +39,10 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 // Generate static params for all posts (for static site generation)
 export async function generateStaticParams() {
   try {
-    // Utiliser le client admin qui ne dépend pas des cookies
-    const { supabaseAdmin } = await import('@/lib/blog/supabase-server-utils');
+    // Utiliser le client admin spécifique qui ne dépend pas des cookies
+    const { getPublishedPostSlugs } = await import('@/lib/supabase-admin');
     
-    const { data: posts, error } = await supabaseAdmin
-      .from('posts')
-      .select('slug')
-      .eq('status', 'published');
-      
-    if (error || !posts) {
-      console.error('Erreur lors de la génération des paramètres statiques:', error);
-      return [];
-    }
+    const posts = await getPublishedPostSlugs();
     
     return posts.map((post) => ({
       slug: post.slug,

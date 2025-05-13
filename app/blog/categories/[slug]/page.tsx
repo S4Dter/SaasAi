@@ -35,17 +35,10 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
 // Generate static params for all categories (for static site generation)
 export async function generateStaticParams() {
   try {
-    // Utiliser le client admin qui ne dépend pas des cookies
-    const { supabaseAdmin } = await import('@/lib/blog/supabase-server-utils');
+    // Utiliser le client admin spécifique qui ne dépend pas des cookies
+    const { getCategorySlugs } = await import('@/lib/supabase-admin');
     
-    const { data: categories, error } = await supabaseAdmin
-      .from('categories')
-      .select('slug');
-      
-    if (error || !categories) {
-      console.error('Erreur lors de la génération des paramètres statiques pour les catégories:', error);
-      return [];
-    }
+    const categories = await getCategorySlugs();
     
     return categories.map((category) => ({
       slug: category.slug,

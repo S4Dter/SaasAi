@@ -35,17 +35,10 @@ export async function generateMetadata({ params }: TagPageProps): Promise<Metada
 // Generate static params for all tags (for static site generation)
 export async function generateStaticParams() {
   try {
-    // Utiliser le client admin qui ne dépend pas des cookies
-    const { supabaseAdmin } = await import('@/lib/blog/supabase-server-utils');
+    // Utiliser le client admin spécifique qui ne dépend pas des cookies
+    const { getTagSlugs } = await import('@/lib/supabase-admin');
     
-    const { data: tags, error } = await supabaseAdmin
-      .from('tags')
-      .select('slug');
-      
-    if (error || !tags) {
-      console.error('Erreur lors de la génération des paramètres statiques pour les tags:', error);
-      return [];
-    }
+    const tags = await getTagSlugs();
     
     return tags.map((tag) => ({
       slug: tag.slug,

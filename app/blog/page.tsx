@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
-// Force dynamic rendering for this page too
-export const dynamic = 'force-dynamic';
+// Force dynamic rendering for this page because it depends on getPosts which accesses users table
+export const dynamic = 'force-dynamic'; 
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { getPosts } from '@/lib/blog/actions';
