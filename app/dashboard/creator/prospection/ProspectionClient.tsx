@@ -8,8 +8,28 @@ import RecommendationCard from './RecommendationCard';
 import ProspectRow, { Prospect } from './ProspectRow';
 import ProspectionFilters, { ProspectionFilters as FiltersType } from './ProspectionFilters';
 import Pagination from './Pagination';
+import ContactModal from './ContactModal';
 import { useAuth } from '@/lib/context/AuthContext';
 import { supabase } from '@/lib/supabaseClient';
+
+// Interface étendue pour correspondre à notre schéma Supabase
+interface SupabaseProspect extends Prospect {
+  created_at: string;
+  updated_at: string;
+  creator_id: string;
+}
+
+// Interface pour les recommandations de catégorie
+interface CategoryRecommendation {
+  id: string;
+  category: string;
+  prospect_count: number;
+  match_score: number;
+  avg_budget: string;
+  created_at: string;
+  updated_at: string;
+  creator_id: string;
+}
 
 export default function ProspectionClient() {
   const { user } = useAuth();
@@ -34,55 +54,72 @@ export default function ProspectionClient() {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  
+  // État pour le modal de contact
+  const [contactModalOpen, setContactModalOpen] = useState(false);
+  const [selectedProspect, setSelectedProspect] = useState<{
+    id: string;
+    name: string;
+    company: string;
+  } | null>(null);
+
+  // Fonction pour obtenir le label de catégorie à partir de sa valeur
+  const getCategoryLabel = (categoryValue: string): string => {
+    const category = AGENT_CATEGORIES.find(cat => cat.value.toLowerCase() === categoryValue.toLowerCase());
+    return category ? category.label : categoryValue;
+  };
 
   // Effet pour charger les données
   useEffect(() => {
     const fetchData = async () => {
+      if (!userId || !supabase) return;
+      
       setLoading(true);
       try {
-        // Simuler le chargement des prospects depuis l'API
-        // Dans une vraie implémentation, ces données viendraient de Supabase
+        // Charger les prospects depuis Supabase
+        const { data: prospectsData, error: prospectsError } = await supabase
+          .from('prospects')
+          .select('*')
+          .eq('creator_id', userId)
+          .order('match_score', { ascending: false });
+          
+        if (prospectsError) throw prospectsError;
         
-        // Générer des données aléatoires pour la démo
-        const industries = ['Tech', 'Finance', 'Retail', 'Healthcare', 'Manufacturing'];
-        const locations = ['Paris, France', 'Lyon, France', 'Bordeaux, France', 'Marseille, France', 'Lille, France'];
-        const budgets = ['< 200€/mois', '200€-500€/mois', '500€-1000€/mois', '> 1000€/mois'];
-        const activities = ['1 jour', '2 jours', '3 jours', '5 jours', '1 semaine'];
-        
-        // Générer 30 prospects aléatoires
-        const mockProspects: Prospect[] = Array.from({ length: 30 }, (_, i) => ({
-          id: `prospect-${i+1}`,
-          name: `Contact ${i+1}`,
-          company: `Entreprise ${i+1}`,
-          location: locations[i % locations.length],
-          industryInterest: industries[i % industries.length],
-          budget: budgets[i % budgets.length],
-          matchScore: Math.floor(Math.random() * 41) + 60, // Score entre 60 et 100
-          lastActivity: activities[i % activities.length],
-          contacted: Math.random() > 0.6,
-          notes: Math.random() > 0.5 ? `Notes sur l'entreprise ${i+1}` : undefined,
+        // Transformer les données pour correspondre à l'interface Prospect
+        const formattedProspects: Prospect[] = prospectsData.map(prospect => ({
+          id: prospect.id,
+          name: prospect.name,
+          company: prospect.company,
+          avatar: prospect.avatar || undefined,
+          location: prospect.location || undefined,
+          industryInterest: prospect.industry_interest,
+          budget: prospect.budget,
+          matchScore: prospect.match_score,
+          lastActivity: getTimeAgo(new Date(prospect.last_activity)),
+          contacted: prospect.contacted,
+          notes: prospect.notes || undefined,
         }));
         
-        // Trier les prospects par score de correspondance
-        mockProspects.sort((a, b) => b.matchScore - a.matchScore);
-        
-        // Recommandations par catégorie
-        const recommendations = AGENT_CATEGORIES.slice(0, 3).map((category, index) => {
-          const prospectCount = Math.floor(Math.random() * 20) + 5;
-          const matchScore = Math.floor(Math.random() * 21) + 80;
+        // Charger les recommandations par catégorie
+        const { data: recommendationsData, error: recommendationsError } = await supabase
+          .from('category_recommendations')
+          .select('*')
+          .eq('creator_id', userId);
           
-          return {
-            category: category.value,
-            categoryLabel: category.label,
-            prospectCount,
-            matchScore,
-            averageBudget: "300€-500€/mois"
-          };
-        });
+        if (recommendationsError) throw recommendationsError;
         
-        setProspects(mockProspects);
-        setFilteredProspects(mockProspects);
-        setRecommendedCategories(recommendations);
+        // Transformer les données pour l'affichage
+        const formattedRecommendations = recommendationsData.map(rec => ({
+          category: rec.category,
+          categoryLabel: getCategoryLabel(rec.category),
+          prospectCount: rec.prospect_count,
+          matchScore: rec.match_score,
+          averageBudget: rec.avg_budget
+        }));
+        
+        setProspects(formattedProspects);
+        setFilteredProspects(formattedProspects);
+        setRecommendedCategories(formattedRecommendations);
       } catch (error) {
         console.error('Erreur lors du chargement des données de prospection:', error);
       } finally {
@@ -92,6 +129,29 @@ export default function ProspectionClient() {
     
     fetchData();
   }, [userId]);
+  
+  // Fonction pour formater la date relative (temps écoulé)
+  const getTimeAgo = (date: Date): string => {
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - date.getTime());
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 0) {
+      const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+      if (diffHours === 0) {
+        return 'moins d\'une heure';
+      }
+      return `${diffHours} heure${diffHours > 1 ? 's' : ''}`;
+    } else if (diffDays < 7) {
+      return `${diffDays} jour${diffDays > 1 ? 's' : ''}`;
+    } else if (diffDays < 30) {
+      const diffWeeks = Math.floor(diffDays / 7);
+      return `${diffWeeks} semaine${diffWeeks > 1 ? 's' : ''}`;
+    } else {
+      const diffMonths = Math.floor(diffDays / 30);
+      return `${diffMonths} mois`;
+    }
+  };
 
   // Fonction pour filtrer les prospects
   const applyFilters = () => {
@@ -134,7 +194,7 @@ export default function ProspectionClient() {
     }
     
     setFilteredProspects(result);
-    setCurrentPage(1); // Reset to first page after filtering
+    setCurrentPage(1); // Réinitialiser à la première page après filtrage
   };
 
   // Gestionnaire de changement de filtre
@@ -143,20 +203,106 @@ export default function ProspectionClient() {
   };
 
   // Gestionnaires d'actions
-  const handleViewProfile = (id: string) => {
-    console.log(`Voir profil du prospect ${id}`);
-    // Dans une vraie implémentation, ceci pourrait ouvrir un modal avec le profil détaillé
+  const handleViewProfile = async (id: string) => {
+    try {
+      // Enregistrer cette activité dans Supabase
+      if (userId && supabase) {
+        // Mettre à jour le champ last_activity du prospect
+        await supabase
+          .from('prospects')
+          .update({ 
+            last_activity: new Date().toISOString(),
+            last_activity_type: 'profile_view'
+          })
+          .eq('id', id);
+      }
+      
+      // Trouver le prospect pour afficher ses détails
+      const prospect = prospects.find(p => p.id === id);
+      if (prospect) {
+        alert(`Profil de ${prospect.company}\n\nNom: ${prospect.name}\nSecteur: ${prospect.industryInterest}\nBudget: ${prospect.budget}\nScore: ${prospect.matchScore}%\nNotes: ${prospect.notes || 'Aucune note'}`);
+      }
+    } catch (error) {
+      console.error('Erreur lors de la consultation du profil:', error);
+    }
   };
 
   const handleContact = (id: string) => {
-    console.log(`Contacter le prospect ${id}`);
-    // Dans une vraie implémentation, ceci pourrait ouvrir un modal de contact
+    // Trouver le prospect à contacter
+    const prospect = prospects.find(p => p.id === id);
+    if (prospect) {
+      setSelectedProspect({
+        id: prospect.id,
+        name: prospect.name,
+        company: prospect.company
+      });
+      setContactModalOpen(true);
+    }
+  };
+  
+  const handleContactSubmit = async (prospectId: string, message: string) => {
+    try {
+      if (!userId || !supabase) return;
+      
+      // Mettre à jour le statut du prospect comme contacté
+      await supabase
+        .from('prospects')
+        .update({ 
+          contacted: true,
+          last_activity: new Date().toISOString(),
+          last_activity_type: 'contact_creator',
+          notes: (prospects.find(p => p.id === prospectId)?.notes || '') + `\n\n[${new Date().toLocaleString()}] Message envoyé: ${message}`
+        })
+        .eq('id', prospectId);
+      
+      // Ajouter une activité
+      await supabase
+        .from('prospect_activities')
+        .insert({
+          prospect_id: prospectId,
+          creator_id: userId,
+          activity_type: 'contact_creator',
+          description: `Message envoyé: ${message.substring(0, 50)}...`
+        });
+      
+      // Rafraîchir les données
+      const { data, error } = await supabase
+        .from('prospects')
+        .select('*')
+        .eq('creator_id', userId)
+        .order('match_score', { ascending: false });
+        
+      if (error) throw error;
+      
+      // Mettre à jour la liste des prospects
+      const updatedProspects: Prospect[] = data.map(prospect => ({
+        id: prospect.id,
+        name: prospect.name,
+        company: prospect.company,
+        avatar: prospect.avatar || undefined,
+        location: prospect.location || undefined,
+        industryInterest: prospect.industry_interest,
+        budget: prospect.budget,
+        matchScore: prospect.match_score,
+        lastActivity: getTimeAgo(new Date(prospect.last_activity)),
+        contacted: prospect.contacted,
+        notes: prospect.notes || undefined,
+      }));
+      
+      setProspects(updatedProspects);
+      applyFilters();
+      
+      alert('Message envoyé avec succès!');
+    } catch (error) {
+      console.error('Erreur lors de l\'envoi du message:', error);
+      alert('Erreur lors de l\'envoi du message. Veuillez réessayer.');
+    }
   };
   
   const handleExploreCategory = (category: string) => {
-    console.log(`Explorer la catégorie ${category}`);
     setFilters(prev => ({ ...prev, industry: category }));
-    applyFilters();
+    // Appliquer les filtres après avoir défini le filtre d'industrie
+    setTimeout(applyFilters, 0);
   };
 
   // Pagination
@@ -206,19 +352,25 @@ export default function ProspectionClient() {
         </CardHeader>
         <CardBody>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {recommendedCategories.map((recommendation, index) => (
-              <RecommendationCard
-                key={recommendation.category}
-                category={{
-                  value: recommendation.category,
-                  label: recommendation.categoryLabel
-                }}
-                prospectCount={recommendation.prospectCount}
-                matchScore={recommendation.matchScore}
-                averageBudget={recommendation.averageBudget}
-                onExplore={handleExploreCategory}
-              />
-            ))}
+            {recommendedCategories.length > 0 ? (
+              recommendedCategories.map((recommendation, index) => (
+                <RecommendationCard
+                  key={recommendation.category}
+                  category={{
+                    value: recommendation.category,
+                    label: recommendation.categoryLabel
+                  }}
+                  prospectCount={recommendation.prospectCount}
+                  matchScore={recommendation.matchScore}
+                  averageBudget={recommendation.averageBudget}
+                  onExplore={handleExploreCategory}
+                />
+              ))
+            ) : (
+              <div className="col-span-3 text-center py-6 text-gray-500">
+                Aucune recommandation disponible. Ajoutez des agents ou prospects pour générer des recommandations.
+              </div>
+            )}
           </div>
         </CardBody>
       </Card>
@@ -231,56 +383,72 @@ export default function ProspectionClient() {
           </h2>
         </CardHeader>
         <CardBody>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Entreprise
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Secteur
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Budget estimé
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Correspondance
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Dernière activité
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Statut
-                  </th>
-                  <th scope="col" className="relative px-6 py-3">
-                    <span className="sr-only">Actions</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {paginatedProspects.map((prospect) => (
-                  <ProspectRow
-                    key={prospect.id}
-                    prospect={prospect}
-                    onViewProfile={handleViewProfile}
-                    onContact={handleContact}
-                  />
-                ))}
-              </tbody>
-            </table>
-          </div>
-          
-          {/* Pagination */}
-          <Pagination
-            currentPage={currentPage}
-            totalPages={Math.ceil(filteredProspects.length / itemsPerPage)}
-            totalItems={filteredProspects.length}
-            itemsPerPage={itemsPerPage}
-            onPageChange={setCurrentPage}
-          />
+          {filteredProspects.length > 0 ? (
+            <>
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Entreprise
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Secteur
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Budget estimé
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Correspondance
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Dernière activité
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Statut
+                      </th>
+                      <th scope="col" className="relative px-6 py-3">
+                        <span className="sr-only">Actions</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {paginatedProspects.map((prospect) => (
+                      <ProspectRow
+                        key={prospect.id}
+                        prospect={prospect}
+                        onViewProfile={handleViewProfile}
+                        onContact={handleContact}
+                      />
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              
+              {/* Pagination */}
+              <Pagination
+                currentPage={currentPage}
+                totalPages={Math.ceil(filteredProspects.length / itemsPerPage)}
+                totalItems={filteredProspects.length}
+                itemsPerPage={itemsPerPage}
+                onPageChange={setCurrentPage}
+              />
+            </>
+          ) : (
+            <div className="text-center py-10 text-gray-500">
+              Aucun prospect trouvé. Ajustez vos filtres ou ajoutez de nouveaux prospects.
+            </div>
+          )}
         </CardBody>
       </Card>
+      
+      {/* Modal de contact */}
+      <ContactModal
+        isOpen={contactModalOpen}
+        onClose={() => setContactModalOpen(false)}
+        prospect={selectedProspect}
+        onSubmit={handleContactSubmit}
+      />
     </div>
   );
 }
