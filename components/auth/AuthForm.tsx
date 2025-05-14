@@ -157,12 +157,12 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onSubmit, isLoading = false, 
 
       <div className="mt-6 text-center">
         <p className="text-sm text-black">
-          {isSignIn ? "Vous n&apos;avez pas de compte ?" : 'Vous avez déjà un compte ?'}{' '}
+          {isSignIn ? "Vous n'avez pas de compte ?" : 'Vous avez déjà un compte ?'}{' '}
           <Link
             href={isSignIn ? ROUTES.AUTH.SIGNUP : ROUTES.AUTH.SIGNIN}
             className="text-blue-600 hover:text-blue-500 font-medium"
           >
-            {isSignIn ? "S&apos;inscrire" : 'Se connecter'}
+            {isSignIn ? "S'inscrire" : 'Se connecter'}
           </Link>
         </p>
       </div>
