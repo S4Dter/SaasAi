@@ -19,6 +19,7 @@ const Header: React.FC = () => {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   
   // Utilisation du hook d'authentification pour récupérer l'état de connexion
   const { data: user, loading } = useAuthOptimized();
@@ -42,12 +43,31 @@ const Header: React.FC = () => {
   // Fonction pour la déconnexion
   const handleSignOut = async () => {
     try {
+      // Indiquer le chargement pendant la déconnexion
+      setIsLoggingOut(true);
+      
+      // Nettoyer immédiatement l'état local pour éviter les problèmes d'affichage
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('user');
+        localStorage.removeItem('user-id');
+        localStorage.removeItem('user-role');
+        localStorage.removeItem('user-email');
+        localStorage.removeItem('user-name');
+        localStorage.removeItem('supabase.auth.token');
+        
+        // Effacer les cookies
+        document.cookie = 'user-session=; path=/; max-age=0; SameSite=Strict';
+        document.cookie = 'supabase-auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      }
+      
+      // Appeler la fonction de déconnexion
       await signOut();
-      // Forcer le rafraîchissement de la page après déconnexion
-      router.push(ROUTES.HOME);
-      router.refresh();
+      
+      // Forcer une redirection complète vers la page d'accueil
+      window.location.href = ROUTES.HOME;
     } catch (error) {
       console.error('Erreur lors de la déconnexion:', error);
+      setIsLoggingOut(false);
     }
   };
   
@@ -143,8 +163,16 @@ const Header: React.FC = () => {
               )
             )}
 
+            {/* État de déconnexion */}
+            {isLoggingOut && (
+              <div className="flex items-center space-x-2">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                <span className="text-gray-700">Déconnexion...</span>
+              </div>
+            )}
+            
             {/* Liens pour entreprises connectées */}
-            {isLoggedIn && userRole === 'enterprise' && (
+            {isLoggedIn && userRole === 'enterprise' && !isLoggingOut && (
               <>
                 <span className="text-gray-700">
                   Bonjour, {userName || 'Utilisateur'}
@@ -162,7 +190,7 @@ const Header: React.FC = () => {
             )}
 
             {/* Liens pour créateurs connectés */}
-            {isLoggedIn && userRole === 'creator' && (
+            {isLoggedIn && userRole === 'creator' && !isLoggingOut && (
               <>
                 <span className="text-gray-700">
                   Bonjour, {userName || 'Créateur'}
@@ -177,7 +205,7 @@ const Header: React.FC = () => {
             )}
 
             {/* Liens pour administrateurs connectés */}
-            {isLoggedIn && userRole === 'admin' && (
+            {isLoggedIn && userRole === 'admin' && !isLoggingOut && (
               <>
                 <span className="text-gray-700">
                   Bonjour, {userName || 'Admin'}
@@ -275,8 +303,18 @@ const Header: React.FC = () => {
               )
             )}
 
+            {/* État de déconnexion */}
+            {isLoggingOut && (
+              <div className="flex justify-center py-4">
+                <div className="flex items-center space-x-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                  <span className="text-gray-700">Déconnexion...</span>
+                </div>
+              </div>
+            )}
+            
             {/* Liens pour entreprises connectées */}
-            {isLoggedIn && userRole === 'enterprise' && (
+            {isLoggedIn && userRole === 'enterprise' && !isLoggingOut && (
               <div className="flex flex-col space-y-2">
                 <span className="block py-2 text-gray-700">
                   Bonjour, {userName || 'Utilisateur'}
@@ -295,7 +333,7 @@ const Header: React.FC = () => {
             )}
 
             {/* Liens pour créateurs connectés */}
-            {isLoggedIn && userRole === 'creator' && (
+            {isLoggedIn && userRole === 'creator' && !isLoggingOut && (
               <div className="flex flex-col space-y-2">
                 <span className="block py-2 text-gray-700">
                   Bonjour, {userName || 'Créateur'}
@@ -317,7 +355,7 @@ const Header: React.FC = () => {
             )}
             
             {/* Liens pour administrateurs connectés */}
-            {isLoggedIn && userRole === 'admin' && (
+            {isLoggedIn && userRole === 'admin' && !isLoggingOut && (
               <div className="flex flex-col space-y-2">
                 <span className="block py-2 text-gray-700">
                   Bonjour, {userName || 'Admin'}
