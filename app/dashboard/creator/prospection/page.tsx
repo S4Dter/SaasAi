@@ -237,9 +237,9 @@ export default function ProspectionPage() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <span className="text-sm text-gray-900 mr-2">{prospect.matchScore}%</span>
-                        <div className="w-24 bg-gray-200 rounded-full h-2">
+                        <div className="w-24 bg-gray-200 rounded-full h-2.5">
                           <div 
-                            className={`h-2 rounded-full ${
+                            className={`h-2.5 rounded-full ${
                               prospect.matchScore > 80 ? 'bg-green-500' : 
                               prospect.matchScore > 70 ? 'bg-yellow-500' : 'bg-red-500'
                             }`} 
