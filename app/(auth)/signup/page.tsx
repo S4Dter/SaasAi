@@ -186,8 +186,7 @@ export default function SignUpPage() {
         {!registeredEmail && (
           <div className="mt-8 text-center text-sm text-gray-600">
             <p>
-              Note: Cette page est une maquette. Dans une application réelle, l&apos;authentification
-              serait connectée à un backend sécurisé.
+              Note: Les dashboards et fonctionnalités sont disponibles après la création de votre compte.
             </p>
           </div>
         )}
