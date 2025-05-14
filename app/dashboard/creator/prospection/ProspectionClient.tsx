@@ -69,10 +69,27 @@ export default function ProspectionClient() {
     return category ? category.label : categoryValue;
   };
 
+  // État pour gérer les erreurs
+  const [error, setError] = useState<string | null>(null);
+
   // Effet pour charger les données
   useEffect(() => {
+    let isMounted = true;
     const fetchData = async () => {
-      if (!userId || !supabase) return;
+      if (!userId || !supabase) {
+        if (isMounted) {
+          setLoading(false);
+        }
+        return;
+      }
+      
+      // Définir un timeout pour éviter le chargement indéfini
+      const timeoutId = setTimeout(() => {
+        if (isMounted) {
+          setLoading(false);
+          setError("Le chargement des données prend plus de temps que prévu. L'algorithme de prospects n'est peut-être pas encore implémenté.");
+        }
+      }, 5000); // 5 secondes de timeout
       
       setLoading(true);
       try {
@@ -84,6 +101,17 @@ export default function ProspectionClient() {
           .order('match_score', { ascending: false });
           
         if (prospectsError) throw prospectsError;
+        
+        if (!isMounted) return;
+        
+        // Vérifier si des données ont été retournées
+        if (!prospectsData || prospectsData.length === 0) {
+          setProspects([]);
+          setFilteredProspects([]);
+          setLoading(false);
+          clearTimeout(timeoutId);
+          return;
+        }
         
         // Transformer les données pour correspondre à l'interface Prospect
         const formattedProspects: Prospect[] = prospectsData.map(prospect => ({
@@ -108,26 +136,40 @@ export default function ProspectionClient() {
           
         if (recommendationsError) throw recommendationsError;
         
+        if (!isMounted) return;
+        
         // Transformer les données pour l'affichage
-        const formattedRecommendations = recommendationsData.map(rec => ({
+        const formattedRecommendations = recommendationsData ? recommendationsData.map(rec => ({
           category: rec.category,
           categoryLabel: getCategoryLabel(rec.category),
           prospectCount: rec.prospect_count,
           matchScore: rec.match_score,
           averageBudget: rec.avg_budget
-        }));
+        })) : [];
         
         setProspects(formattedProspects);
         setFilteredProspects(formattedProspects);
         setRecommendedCategories(formattedRecommendations);
+        setError(null);
       } catch (error) {
-        console.error('Erreur lors du chargement des données de prospection:', error);
+        if (isMounted) {
+          console.error('Erreur lors du chargement des données de prospection:', error);
+          setError("Une erreur est survenue lors du chargement des données. Veuillez réessayer plus tard.");
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          clearTimeout(timeoutId);
+          setLoading(false);
+        }
       }
     };
     
     fetchData();
+    
+    // Nettoyage lors du démontage du composant
+    return () => {
+      isMounted = false;
+    };
   }, [userId]);
   
   // Fonction pour formater la date relative (temps écoulé)
@@ -313,8 +355,33 @@ export default function ProspectionClient() {
   
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="flex flex-col justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
+        <p className="text-gray-600">Chargement des données de prospection...</p>
+      </div>
+    );
+  }
+  
+  if (error) {
+    return (
+      <div className="flex flex-col justify-center items-center h-64">
+        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 w-full max-w-2xl">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <p className="text-sm text-yellow-700">
+                {error}
+              </p>
+              <p className="mt-2 text-xs text-yellow-600">
+                Vous pouvez ajouter des données de test en utilisant le script fourni dans le README.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -436,7 +503,25 @@ export default function ProspectionClient() {
             </>
           ) : (
             <div className="text-center py-10 text-gray-500">
-              Aucun prospect trouvé. Ajustez vos filtres ou ajoutez de nouveaux prospects.
+              <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              <h3 className="mt-2 text-sm font-medium text-gray-900">Aucun prospect disponible</h3>
+              <p className="mt-1 text-sm text-gray-500">
+                L'algorithme de recommandation de prospects n'est pas encore implémenté ou aucun prospect ne correspond à vos critères.
+              </p>
+              <div className="mt-6">
+                <button
+                  type="button"
+                  className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  onClick={() => window.location.reload()}
+                >
+                  <svg className="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
+                  </svg>
+                  Rafraîchir
+                </button>
+              </div>
             </div>
           )}
         </CardBody>
