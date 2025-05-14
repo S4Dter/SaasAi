@@ -131,6 +131,32 @@ const Header: React.FC = () => {
               Blog
             </Link>
             
+            {/* Menu déroulant pour la tarification sur desktop */}
+            <div className="relative group">
+              <button className={`flex items-center text-gray-700 hover:text-blue-600 ${isActive(ROUTES.PRICING.MAIN) || isActive(ROUTES.PRICING.ENTERPRISE) || isActive(ROUTES.PRICING.CREATOR) ? 'font-medium text-blue-600' : ''}`}>
+                Tarification
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div className="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                <div className="p-2">
+                  <Link 
+                    href={ROUTES.PRICING.ENTERPRISE} 
+                    className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded-md"
+                  >
+                    Pour les entreprises
+                  </Link>
+                  <Link 
+                    href={ROUTES.PRICING.CREATOR} 
+                    className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded-md"
+                  >
+                    Pour les créateurs
+                  </Link>
+                </div>
+              </div>
+            </div>
+            
             {/* Dashboard link that persists across all pages when logged in */}
             {isLoggedIn && (
               <Link 
@@ -269,6 +295,31 @@ const Header: React.FC = () => {
             >
               Blog
             </Link>
+            
+            {/* Menu tarification mobile */}
+            <div className="py-2">
+              <div 
+                className={`block py-2 text-gray-700 ${isActive(ROUTES.PRICING.MAIN) || isActive(ROUTES.PRICING.ENTERPRISE) || isActive(ROUTES.PRICING.CREATOR) ? 'font-medium text-blue-600' : ''}`}
+              >
+                Tarification
+              </div>
+              <div className="pl-4 space-y-2 mt-1">
+                <Link 
+                  href={ROUTES.PRICING.ENTERPRISE}
+                  className="block py-2 text-gray-700 hover:text-blue-600"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Pour les entreprises
+                </Link>
+                <Link 
+                  href={ROUTES.PRICING.CREATOR}
+                  className="block py-2 text-gray-700 hover:text-blue-600"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Pour les créateurs
+                </Link>
+              </div>
+            </div>
             
             {/* Dashboard link for mobile that persists across all pages when logged in */}
             {isLoggedIn && (
