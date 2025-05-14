@@ -40,7 +40,11 @@ export const ROUTES = {
     RESET_PASSWORD: '/reset-password',
     SIGNOUT: '/signout',
   },
-  PRICING: '/pricing',
+  PRICING: {
+    MAIN: '/pricing',
+    ENTERPRISE: '/entreprises/tarification',
+    CREATOR: '/createurs/tarification',
+  },
   CONTACT: '/contact',
   LEGAL: {
     TERMS: '/legal/terms',

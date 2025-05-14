@@ -130,7 +130,7 @@ const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/entreprises/tarification" className="text-gray-600 hover:text-blue-600">
+                <Link href={ROUTES.PRICING.ENTERPRISE} className="text-gray-600 hover:text-blue-600">
                   Tarification
                 </Link>
               </li>
@@ -156,6 +156,11 @@ const Footer: React.FC = () => {
               <li>
                 <Link href="/createurs/publier-agent" className="text-gray-600 hover:text-blue-600">
                   Publier un agent
+                </Link>
+              </li>
+              <li>
+                <Link href={ROUTES.PRICING.CREATOR} className="text-gray-600 hover:text-blue-600">
+                  Tarification
                 </Link>
               </li>
               <li>
