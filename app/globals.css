@@ -25,3 +25,53 @@ body {
 .text-gray-700 {
   color: #000000 !important;
 }
+
+/* Fix for invisible text in blog */
+.blog-content p, 
+.blog-content span, 
+.blog-content div, 
+.blog-content h1, 
+.blog-content h2, 
+.blog-content h3, 
+.blog-content h4, 
+.blog-content h5, 
+.blog-content li,
+.blog-content a {
+  color: #000000 !important;
+}
+
+/* Fix for burger menu text */
+nav a, 
+nav span, 
+.menu-item, 
+button span,
+.hamburger-menu * {
+  color: #000000 !important;
+}
+
+/* Fix for form fields text */
+input, 
+input::placeholder, 
+textarea, 
+textarea::placeholder,
+select,
+.form-field,
+.password-field {
+  color: #000000 !important;
+}
+
+/* Ensure text is visible on all UI components */
+.text-gray-500,
+.text-gray-600,
+.text-gray-800,
+.text-gray-900,
+.text-slate-700,
+.text-slate-800,
+.text-slate-900 {
+  color: #000000 !important;
+}
+
+/* Fix for any other potentially invisible text */
+[class*="text-"] {
+  color: #000000 !important;
+}
