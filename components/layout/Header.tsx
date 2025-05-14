@@ -111,6 +111,21 @@ const Header: React.FC = () => {
               Blog
             </Link>
             
+            {/* Dashboard link that persists across all pages when logged in */}
+            {isLoggedIn && (
+              <Link 
+                href={userRole === 'admin' 
+                  ? ROUTES.DASHBOARD.ADMIN.ROOT
+                  : userRole === 'creator'
+                    ? ROUTES.DASHBOARD.CREATOR.ROOT
+                    : ROUTES.DASHBOARD.ENTERPRISE.ROOT
+                }
+                className={`text-gray-700 hover:text-blue-600 ${pathname?.includes('/dashboard') ? 'font-medium text-blue-600' : ''}`}
+              >
+                Dashboard
+              </Link>
+            )}
+            
             {/* Affichage d'un indicateur de chargement pendant la vérification d'authentification */}
             {loading ? (
               <div className="animate-pulse w-20 h-8 bg-gray-200 rounded"></div>
@@ -152,12 +167,6 @@ const Header: React.FC = () => {
                 <span className="text-gray-700">
                   Bonjour, {userName || 'Créateur'}
                 </span>
-                <Link 
-                  href={ROUTES.DASHBOARD.CREATOR.ROOT}
-                  className={`text-gray-700 hover:text-blue-600 ${isActive(ROUTES.DASHBOARD.CREATOR.ROOT) ? 'font-medium text-blue-600' : ''}`}
-                >
-                  Tableau de bord
-                </Link>
                 <Link href={ROUTES.DASHBOARD.CREATOR.ADD_AGENT}>
                   <Button size="sm">Ajouter un agent</Button>
                 </Link>
@@ -232,6 +241,22 @@ const Header: React.FC = () => {
             >
               Blog
             </Link>
+            
+            {/* Dashboard link for mobile that persists across all pages when logged in */}
+            {isLoggedIn && (
+              <Link 
+                href={userRole === 'admin' 
+                  ? ROUTES.DASHBOARD.ADMIN.ROOT
+                  : userRole === 'creator'
+                    ? ROUTES.DASHBOARD.CREATOR.ROOT
+                    : ROUTES.DASHBOARD.ENTERPRISE.ROOT
+                }
+                className={`block py-2 text-gray-700 hover:text-blue-600 ${pathname?.includes('/dashboard') ? 'font-medium text-blue-600' : ''}`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Dashboard
+              </Link>
+            )}
             
             {/* Affichage d'un indicateur de chargement pendant la vérification d'authentification */}
             {loading ? (
