@@ -1,99 +1,95 @@
-# Module de Prospection pour Créateurs
+# Module de Prospection
 
-Ce module permet aux créateurs d'agents IA de prospecter de nouveaux clients potentiels qui correspondent à leurs agents.
+Ce module permet aux créateurs d'agents IA de gérer leurs prospects, suivre les activités et générer des emails personnalisés.
 
-## Fonctionnalités
+## Structure du dossier
 
-- Affichage des prospects avec leur niveau de correspondance
-- Filtrage par secteur d'activité, budget et statut
-- Recommandations de ciblage par catégorie 
-- Gestion des interactions (consultation de profil, envoi de messages)
-- Suivi des activités des prospects
-
-## Configuration de la base de données Supabase
-
-Les tables Supabase nécessaires au fonctionnement de ce module ont déjà été créées selon le schéma suivant :
-
-```sql
--- Table des prospects
-CREATE TABLE prospects (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  name TEXT NOT NULL,
-  company TEXT NOT NULL,
-  email TEXT,
-  avatar TEXT,
-  location TEXT,
-  industry_interest TEXT NOT NULL,
-  budget TEXT NOT NULL,
-  match_score INTEGER NOT NULL,
-  last_activity TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  last_activity_type TEXT,
-  contacted BOOLEAN DEFAULT FALSE,
-  notes TEXT,
-  creator_id UUID REFERENCES users(id),
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-
--- Table des activités des prospects
-CREATE TABLE prospect_activities (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  prospect_id UUID REFERENCES prospects(id) ON DELETE CASCADE,
-  creator_id UUID REFERENCES users(id),
-  activity_type TEXT NOT NULL, -- 'profile_view', 'agent_view', 'contact_creator', 'platform_join'
-  description TEXT,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-
--- Table des recommandations par catégorie
-CREATE TABLE category_recommendations (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  category TEXT NOT NULL,
-  prospect_count INTEGER NOT NULL,
-  match_score INTEGER NOT NULL,
-  avg_budget TEXT,
-  creator_id UUID REFERENCES users(id),
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
+```
+app/dashboard/creator/prospection/
+├─ page.tsx                 – Server Component (auth + data prefetch)
+├─ ProspectsTable.tsx       – Client Component
+├─ ProspectFormDialog.tsx   – formulaire détaillé d'ajout/édition
+├─ EmailDraftDrawer.tsx     – aperçu et édition du brouillon
+├─ ActivityTimeline.tsx     – activités du prospect
+└─ hooks/
+   └─ useGenerateEmail.ts   – mutate pour POST /api/generate-email
 ```
 
-## Données de test
+## Configuration de l'environnement
 
-Pour ajouter des données de test à votre base de données, utilisez le script `test-data.js` :
+Pour utiliser ce module, vous devez configurer les variables d'environnement suivantes dans votre fichier `.env.local` :
 
-1. Assurez-vous d'avoir les variables d'environnement Supabase configurées
-2. Exécutez la commande suivante en remplaçant `USER_ID` par l'ID de l'utilisateur créateur :
+```
+NEXT_PUBLIC_SUPABASE_URL=votre_url_supabase
+NEXT_PUBLIC_SUPABASE_ANON_KEY=votre_clé_anon_supabase
+OPENAI_API_KEY=votre_clé_api_openai
+```
+
+## Tables Supabase requises
+
+Ce module utilise les tables suivantes dans Supabase :
+
+1. `prospects` - Stockage des prospects
+2. `prospect_activities` - Historique des activités des prospects
+3. `category_recommendations` - Recommandations de catégories pour les prospects
+4. `agents` - Informations sur les agents IA
+
+Assurez-vous que les politiques RLS (Row Level Security) sont configurées pour chaque table afin de restreindre l'accès aux données.
+
+## Tester la génération d'emails
+
+Pour tester la fonctionnalité de génération d'emails :
+
+1. Ajoutez un nouveau prospect en utilisant le formulaire ProspectFormDialog
+2. Dans le tableau des prospects, cliquez sur le bouton "Brouillon" à côté du prospect
+3. L'API `/api/generate-email` sera appelée avec l'ID du prospect
+4. Une fois généré, le brouillon d'email sera affiché dans EmailDraftDrawer
+
+### Simuler l'API de génération d'emails
+
+Pour développer sans appeler l'API OpenAI, vous pouvez créer un endpoint stub :
+
+```typescript
+// app/api/generate-email/route.ts
+import { NextResponse } from 'next/server';
+
+export async function POST(request: Request) {
+  const { prospectId } = await request.json();
+  
+  // Simule un délai de génération
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  
+  return NextResponse.json({
+    email: `Cher prospect,
+
+Nous avons remarqué votre intérêt pour nos agents IA. Voici comment nous pouvons vous aider...
+
+[Contenu d'exemple généré pour le prospect ID: ${prospectId}]
+
+Cordialement,
+L'équipe des Créateurs d'Agents`
+  });
+}
+```
+
+## Intégration future avec n8n
+
+Ce module contient des commentaires TODO pour les points d'intégration avec n8n :
+
+1. Dans `useGenerateEmail.ts` - Pour l'envoi automatique des emails et le suivi des séquences
+2. Dans `ActivityTimeline.tsx` - Pour la mise à jour en temps réel du statut des emails
+
+Ces fonctionnalités seront implémentées ultérieurement lorsque les workflows n8n seront disponibles.
+
+## Tests
+
+Des tests basiques sont inclus pour vérifier le bon fonctionnement du module :
+
+- Rendu du tableau de prospects avec des données fictives
+- Vérification du tri par score de compatibilité
+- Mocking de l'appel à l'API de génération d'email
+
+Pour exécuter les tests :
 
 ```bash
-node app/dashboard/creator/prospection/test-data.js USER_ID
-```
-
-Si vous n'indiquez pas d'ID utilisateur, un ID aléatoire sera généré.
-
-## Structure du code
-
-- `page.tsx` : Page serveur qui utilise le composant client
-- `ProspectionClient.tsx` : Composant principal avec la logique et l'interface
-- `ProspectRow.tsx` : Composant pour afficher une ligne de prospect dans le tableau
-- `ProspectionFilters.tsx` : Filtres de recherche et tri
-- `RecommendationCard.tsx` : Carte de recommandation par catégorie
-- `ContactModal.tsx` : Modal pour contacter un prospect
-- `Pagination.tsx` : Composant de pagination
-
-## Comment ça marche
-
-1. Les données sont chargées depuis Supabase au chargement de la page
-2. Les prospects sont filtrés selon les critères sélectionnés
-3. Les actions (consultation de profil, contact) sont enregistrées dans la base de données
-4. Les recommandations de ciblage sont générées automatiquement grâce aux triggers Supabase
-
-## Développement futur
-
-Fonctionnalités qui pourraient être ajoutées :
-
-- Intégration avec un système de CRM
-- Export des prospects en CSV
-- Formulaire d'ajout manuel de prospects
-- Graphiques d'analyse des taux de conversion
-- Intégration avec des sources de données externes
+npm test app/dashboard/creator/prospection

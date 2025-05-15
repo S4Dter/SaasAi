@@ -137,6 +137,45 @@ export type Database = {
         };
         Update: Partial<Database['public']['Tables']['contacts']['Insert']>;
       };
+      prospects: {
+        Row: {
+          id: string;
+          user_id: string;
+          name: string;
+          company: string;
+          email: string;
+          avatar?: string | null;
+          location?: string | null;
+          industry_interest: string;
+          budget: string;
+          company_size: string;
+          needs?: string | null;
+          match_score: number;
+          contacted: boolean;
+          last_activity?: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id?: string;
+          name: string;
+          company: string;
+          email: string;
+          avatar?: string | null;
+          location?: string | null;
+          industry_interest: string;
+          budget: string;
+          company_size: string;
+          needs?: string | null;
+          match_score?: number;
+          contacted?: boolean;
+          last_activity?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<Database['public']['Tables']['prospects']['Insert']>;
+      };
     };
     Views: {};
     Functions: {};
